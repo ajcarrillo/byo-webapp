@@ -1,0 +1,77 @@
+.SignIn-container {
+  width: 80%; 
+  margin: auto;
+  display: flex; 
+  flex-direction: row; 
+  justify-content: center; 
+  background-color: rgb(42,42,42);
+  border-radius: .6rem;
+  padding: 3rem 2rem;
+}
+
+.SignIn-leftCol {
+  flex-basis: 0;
+  flex-grow: 2;
+  order: 1;
+  padding-right: 2rem;
+}
+
+.SignIn-rightCol {
+  flex-basis: 0;
+  flex-grow: 3;
+  order: 2;
+  border-left: 2px solid rgb(59, 58, 57);
+  padding-left: 1rem
+}
+
+.SignIn-logo-container {
+  display: flex; 
+  width: 100%;
+  height: 100%;
+  justify-content: center; 
+  align-items: center;
+}
+
+.SignIn-logo-container img {
+  max-width: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+  .SignIn-container {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .SignIn-container {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .SignIn-container {
+    height: calc(100vh - 5rem); 
+    width: 100%;
+    flex-direction: column; 
+    border-radius: 0;
+    padding: 1rem;
+  }
+
+  .SignIn-leftCol {
+    flex-grow: 3;
+    order: 2;
+    padding: 0;
+  }
+  
+  .SignIn-rightCol {
+    flex-grow: 2;
+    order: 1;
+    border-left: none;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .SignIn-logo-container img {
+    max-width: 80%;
+  }
+}

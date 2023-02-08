@@ -1,0 +1,100 @@
+.App-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: rgb(24, 23, 29);
+  height: 60px;
+  padding: 0 10px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+.App-header-icon-container {
+  display: flex;
+  align-items: center;
+  height: 100%
+}
+
+.Button-header {
+  height: 34px;
+  background: none;
+  border: 1px solid rgb(40, 49, 93);
+  padding: 0 1rem;
+  color:rgb(58, 76, 156);
+  cursor: pointer;
+  outline: none;
+  transition: .3s;
+  margin-left: 1rem
+}
+
+.Button-header:hover {
+  background-color: rgb(39, 37, 60);
+}
+
+.App-header-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  color: rgb(81,111,248);
+}
+
+.App-header-icon span {
+  font-size: 1rem;
+  padding-left: 6px;
+}
+
+.App-header-icon i {
+  font-size: 14px;
+  color: rgb(46, 59, 114);
+}
+
+.App-header-logo-container {
+  display: flex; 
+  flex-direction: column;
+  width: 40px;
+  justify-content: center; 
+  align-items: center;
+  margin-right: .2rem;
+}
+
+.App-header-basket-icon-badge {
+  position: absolute;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 40%;
+  font-size: .7rem;
+  background-color: rgb(36,36,36);
+  top: 1.6rem;
+  left: .4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 1024px) {
+
+}
+
+@media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 480px) {
+  .App-header {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 0;
+  }
+
+  .App-header-container {
+    width: 100%;
+    justify-content: center;
+    height: 5rem;
+    background-color: rgb(34, 34, 34);
+  }
+}

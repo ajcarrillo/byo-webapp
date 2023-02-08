@@ -1,0 +1,7 @@
+.Pagination-page-button {
+
+}
+
+.Pagination-page-button:not(:first-child) { 
+  margin-left: .4rem;
+}

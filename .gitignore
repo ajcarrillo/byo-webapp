@@ -1,0 +1,5 @@
+/build
+/node_modules
+/config/*
+!/config/Readme.md
+/coverage

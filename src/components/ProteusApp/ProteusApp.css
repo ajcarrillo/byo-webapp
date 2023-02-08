@@ -1,0 +1,63 @@
+.Proteus-container {
+  width: 100%;
+  height: calc(100vh - 60px);
+}
+
+.Proteus-splashscreen-container {
+  display: flex; 
+  width: 80%;
+  height: 90%;
+  justify-content: center; 
+  align-items: center;
+  flex-direction: column;
+  margin: auto
+}
+
+.Proteus-splashscreen-container img {
+  max-width: 100%;
+}
+
+.Proteus-splashscreen-buttons {
+  padding-top: 4rem;
+}
+
+.Proteus-splashscreen-version {
+  width: 100%;
+  text-align: right;
+  padding-right: 24px;
+  color: rgb(103 127 144);
+}
+
+.Button-proteus {
+  height: 34px;
+  background: none;
+  border: 1px solid rgb(40, 49, 93);
+  padding: 0 1rem;
+  color:rgb(58, 76, 156);
+  cursor: pointer;
+  outline: none;
+  transition: .3s;
+  margin-left: 1rem
+}
+
+.Button-proteus:hover {
+  background-color: rgb(39, 37, 60);
+}
+
+.Button-proteus-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  color: rgb(81,111,248);
+}
+
+.Button-proteus-icon span {
+  font-size: 1rem;
+  padding-left: 6px;
+}
+
+.Button-proteus-icon i {
+  font-size: 20px;
+  color: rgb(46, 59, 114);
+}

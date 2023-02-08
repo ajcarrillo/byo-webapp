@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@400;600;800;900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Ropa Sans', sans-serif;
+}
+
+html {
+  font-size: 14px;
+  font-family: 'Ropa Sans', sans-serif;
+  background-color: rgb(26,27,36);
+  color: rgb(178,178,178);
+}
+
+body {
+  width: 100%;
+  height: 100%
+}
+
+ul {
+  list-style-type: none;
+  line-height: 1.4rem;
+}
+
+a {
+  color: rgb(194, 136, 45);
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(218, 158, 62);
+  text-decoration: none ;
+}
+
+p { margin: 1rem 0; line-height: 1.3rem; }
+
+h1, h2, h3 { color: rgb(220,220,220) }
+
+.App-container {
+  width: 100%;
+  height: 100%;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+@keyframes fade-out { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes fade { to { height: 0; opacity: 0; margin: 0; } }
+@keyframes blinker { 50% { opacity: 0; } }
+
+.BlinkMe {
+  animation: blinker 1s step-start infinite;
+}
+
+.HideAfterDelay {
+  height: auto;
+  animation: fade 1s linear; 
+  animation-delay: 2s; 
+  animation-fill-mode: forwards;
+}
+
+.BreakLongText {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.AlertShow {
+  opacity: 1;
+  transition: all 250ms linear;
+}
+
+.AlertHide {
+  opacity: 0;
+  transition: all 250ms linear 2s;
+}
+
+.Button-text {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  font-size: 1rem;
+  color: rgb(128,92,36);
+}
+
+.Button-text:hover {
+  color: rgb(172, 119, 34);
+}
+
+.Button-text-selected {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  font-size: 1rem;
+  color: rgb(172, 119, 34);
+  text-decoration: underline;
+}
+
+.Button-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  font-size: .9rem;
+}
+
+.Button-icon i {
+  font-size: 1.6rem;
+  color: rgb(128,92,36);
+}
+
+.Button-icon i:hover {
+  color: rgb(172, 119, 34);
+}
+
+.Button-icon-small {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  font-size: .9rem;
+}
+
+.Button-icon-small i {
+  font-size: 1.2rem;
+  color: rgb(128,92,36);
+}
+
+.Button-icon-small i:hover {
+  color: rgb(172, 119, 34);
+}
+
+.Button-icon-small-selected {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  font-size: .9rem;
+}
+
+.Button-small {
+  background-color: rgb(128,92,36);
+  border: none;
+  border-radius: .3rem;
+  padding: .4rem .8rem;
+  color:rgb(212, 212, 212);
+  cursor: pointer;
+  outline: none;
+  font-size: .9rem;
+}
+
+.Button-small:hover {
+  background-color: rgb(172, 119, 34);
+}
+
+.Button-standard {
+  background-color: rgb(128,92,36);
+  border: none;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  color:rgb(212, 212, 212);
+  cursor: pointer;
+  outline: none;
+}
+
+.Button-standard:hover {
+  background-color: rgb(172, 119, 34);
+}
+
+.Button-standard-disabled {
+  background-color: rgb(78, 68, 53);
+  border: none;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  color:rgb(126, 126, 126);
+  outline: none;
+}
+
+.Button-animated {
+  background-color: rgb(18,11,1);
+  border: 3px solid rgb(154, 90, 7);
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  color:rgb(204, 126, 0);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.1s ease-in-out 0s
+}
+
+.Button-large:hover {
+  color:rgb(232, 153, 28);
+  transform: scale(1.03);
+  box-shadow: 0 0 1rem -0.8rem rgba(0, 0, 0, 0.8);
+}
+
+.Colour-orange-bright { color: rgb(194, 136, 45) }
+.Colour-white-bright { color: rgb(248, 248, 248) }
+.Colour-blue-bright { color: rgb(81,111,248) }
+
+.Textfield-dark {
+  background-color: rgb(33, 33, 33);
+  color: rgb(184, 184, 184);
+  border-radius: .4rem;
+  border: none;
+  outline: none;
+  padding: .5rem;
+}
+
+.Textfield-dark-disabled { color: rgb(121, 121, 121)}
+
+.PanelLabel {
+  background-color: rgb(47,47,47);
+  padding: .6rem;
+  font-size: .8rem;
+  color: rgb(140,140,140);
+  line-height: 1.2rem;
+}
+
+.Formfield-error-inline {
+  background-color: rgb(50,50,50);
+  padding: .4rem;
+  color: rgb(194, 105, 45);
+  font-size: .9rem;
+}
+
+.Formfield-help-inline {
+  background-color: rgb(50,50,50);
+  padding: .4rem;
+  color: rgb(167, 167, 167);
+  font-size: .9rem;
+}
+
+.Tab-item-off {
+  cursor: pointer;
+  display: inline-block;
+  color: rgb(100,100,100);
+  padding: 0.5rem 1rem;
+  background-image: linear-gradient(rgb(53, 53, 53), rgb(42,42,42));
+  border-bottom: 1px solid rgb(32,32,32);
+}
+
+.Tab-item-off:hover {
+  color: rgb(209, 209, 209);
+}
+
+.Tab-item-on {
+  display: inline-block;
+  color: rgb(209, 209, 209);
+  padding: 0.5rem 1rem;
+  border-radius: 6px 6px 0 0;
+  background-image: linear-gradient(rgb(70,70,70), rgb(42,42,42));
+}
+
+::placeholder {
+  color: rgb(82, 82, 82);
+  padding: 0.5rem;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
+
+label {
+  color:rgb(145, 145, 145);
+  font-size: .9rem;
+  padding-left: .4rem;
+}
+
+textarea {
+  resize: none;
+}
+
+.RangeSlider {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  background: rgba(50,50,50,1);
+  height: 4px;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-moz-range-track {
+  -moz-appearance: none;
+  background: rgba(50,50,50,1);
+  height: 4px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border-radius: 20%;
+  height: 14px;
+  width: 14px;
+  /* max-width: 40px; */
+  position: relative;
+  bottom: 6px;
+  background-color: rgb(128,92,36);
+  cursor: -webkit-grab;
+}
+
+input[type=range]::-moz-range-thumb {
+  -moz-appearance: none;
+  border-radius: 50%;
+  height: 14px;
+  width: 14px;
+  /* max-width: 40px; */
+  position: relative;
+  bottom: 6px;
+  background-color: rgb(128,92,36);
+  cursor: -moz-grab;
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+  cursor: -webkit-grabbing;
+}
+
+input[type=range]::-moz-range-thumb:active {
+  cursor: -moz-grabbing;
+}
+
+/* SCROLL BARS */
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(81,111,248) rgb(11,15,32);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(11,15,32);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(81,111,248);
+  border-radius: 20px;
+  border: 3px solid rgb(11,15,32);
+}
+
+@media screen and (max-width: 1024px) {
+
+}
+
+@media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 480px) {
+  html {
+    background-color: rgb(42,42,42);
+  }
+}
