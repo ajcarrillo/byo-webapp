@@ -1,19 +1,25 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 
 import { APIResponse } from '../../types/api-types'
+import { ConnectedController } from '../../types/controller-types'
 import { apiCall } from '../../utils/api-utils'
-import { generateApiError } from '../../utils/error-utils'
+import { generateApiError, generateControllerConnectionError } from '../../utils/error-utils'
+import { connectController } from '../../utils/proteus-utils'
 import { 
   getStoredAccessToken, 
   updateStoredAccessToken
 } from '../../utils/user-utils'
 import {
+  PROTEUS_CONNECT_CONTROLLER_REQUEST,
+  PROTEUS_CONNECT_CONTROLLER_ERROR_MESSAGES,
   PROTEUS_GET_MODULES_REQUEST,
   PROTEUS_MODULES_API_ERROR_MESSAGES
 } from './proteus-constants'
 import { 
   getModulesFailure,
-  getModulesSuccess
+  getModulesSuccess,
+  connectControllerFailure,
+  connectControllerSuccess,
 } from './proteus-actions'
 
 export function* getProteusModulesSaga(action: any){
@@ -40,6 +46,30 @@ export function* getProteusModulesSaga(action: any){
   }
 }
 
+export function* connectControllerSaga(action: any){
+  try {
+    const response: ConnectedController = yield call(
+      connectController, 
+      action.connectType
+    )
+
+    if(response.connected){
+      yield put(connectControllerSuccess(response))
+    }
+    else {
+      yield put(connectControllerFailure(generateControllerConnectionError('CONNECT_CANCELLED', PROTEUS_CONNECT_CONTROLLER_ERROR_MESSAGES)))
+    }
+  } 
+  catch(e) {
+    const message = e instanceof Error ? e.message : 'UNKNOWN_ERROR'
+    yield put(connectControllerFailure(generateControllerConnectionError(message, PROTEUS_CONNECT_CONTROLLER_ERROR_MESSAGES)))
+  }
+}
+
 export function* getProteusModulesSagaWatcher(){
   yield takeLatest(PROTEUS_GET_MODULES_REQUEST, getProteusModulesSaga)
+}
+
+export function* connectControllerSagaWatcher(){
+  yield takeLatest(PROTEUS_CONNECT_CONTROLLER_REQUEST, connectControllerSaga)
 }

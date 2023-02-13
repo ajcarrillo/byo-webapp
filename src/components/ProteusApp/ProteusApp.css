@@ -61,3 +61,17 @@
   font-size: 20px;
   color: rgb(46, 59, 114);
 }
+
+.Proteus-connect-error-panel {
+  display: flex;
+  align-items: center;
+  background-color: rgb(33 33 37);
+  color: rgb(200,200,200);
+  border-radius: 3px;
+  padding: .8rem;
+  border: 1px dashed rgb(123, 61, 40);
+}
+
+.Proteus-connect-error-panel i {
+  color: rgb(194, 77, 45);
+}

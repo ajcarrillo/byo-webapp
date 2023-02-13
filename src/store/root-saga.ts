@@ -14,7 +14,8 @@ import {
 } from './authentication/authentication-sagas'
 
 import { 
-  getProteusModulesSagaWatcher
+  getProteusModulesSagaWatcher,
+  connectControllerSagaWatcher
 } from './proteus/proteus-sagas'
 
 export function* rootSaga(){
@@ -27,4 +28,5 @@ export function* rootSaga(){
   yield fork(rquestPasswordResetSagaWatcher)
   yield fork(changePasswordSagaWatcher)
   yield fork(getProteusModulesSagaWatcher)
+  yield fork(connectControllerSagaWatcher)
 }

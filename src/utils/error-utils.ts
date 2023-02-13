@@ -10,3 +10,6 @@ export const generateApiError = (scope: string, response: APIResponse | undefine
     code: 'API_ERROR'
   }
 }
+
+export const generateControllerConnectionError = (error: string, errMessages: any): string => 
+  errMessages[error] || 'Error'

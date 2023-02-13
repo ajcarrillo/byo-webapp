@@ -1,0 +1,15 @@
+{
+  "apiError": null,
+  "authenticationLoading": false,
+  "userAddress": null,
+  "accessToken": null,
+  "accessTokenValid": false,
+  "signupComplete": false,
+  "emailResent": false,
+  "confirmingEmail": false,
+  "emailConfirmed": false,
+  "passwordResetRequested": false,
+  "passwordChanged": false,
+  "saveUserDetailsApiError": null,
+  "userDetails": null
+}
