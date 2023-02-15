@@ -1,5 +1,6 @@
 import { APIError, APIResponse } from '../../types/api-types'
-import { ConnectedController, ControllerConfiguration } from '../../types/controller-types'
+import { ControllerConfiguration } from '../../types/controller-types'
+import { ConnectedController } from '../../types/proteus-types'
 import {
   PROTEUS_GET_MODULES_REQUEST,
   PROTEUS_GET_MODULES_SUCCESS,
@@ -9,7 +10,10 @@ import {
   PROTEUS_CONNECT_CONTROLLER_FAILURE,
   PROTEUS_GET_CONTROLLER_CONFIG_REQUEST,
   PROTEUS_GET_CONTROLLER_CONFIG_SUCCESS,
-  PROTEUS_GET_CONTROLLER_CONFIG_FAILURE
+  PROTEUS_GET_CONTROLLER_CONFIG_FAILURE,
+  PROTEUS_GET_APP_SETTINGS_REQUEST,
+  PROTEUS_GET_APP_SETTINGS_SUCCESS,
+  PROTEUS_GET_APP_SETTINGS_FAILURE
 } from './proteus-constants'
 
 export const getControllerConfigRequest = () => ({
@@ -52,5 +56,19 @@ export const getModulesSuccess = (response: APIResponse) => ({
 
 export const getModulesFailure = (error: APIError) => ({
   type: PROTEUS_GET_MODULES_FAILURE,
+  payload: error,
+})
+
+export const getApplicationSettingsRequest = () => ({
+  type: PROTEUS_GET_APP_SETTINGS_REQUEST,
+})
+
+export const getApplicationSettingsSuccess = (response: APIResponse) => ({
+  type: PROTEUS_GET_APP_SETTINGS_SUCCESS,
+  payload: response,
+})
+
+export const getApplicationSettingsFailure = (error: APIError) => ({
+  type: PROTEUS_GET_APP_SETTINGS_FAILURE,
   payload: error,
 })

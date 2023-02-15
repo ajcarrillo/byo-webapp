@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { connectControllerRequest, getModulesRequest } from '../../store/proteus/proteus-actions'
+import { connectControllerRequest, getApplicationSettingsRequest, getModulesRequest } from '../../store/proteus/proteus-actions'
 import { IStoreState } from '../../types/store-types'
-import { UnityContainer } from './WebGL/UnityContainer'
+import ProteusShell from './ProteusShell'
 import Spinner from '../Spinner'
 import SplashScreen from '../../assets/images/proteus-splash-screen.png'
 import './ProteusApp.css'
@@ -26,9 +26,17 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
     dispatch(getModulesRequest())
   }, [dispatch])
 
+  const loadSettings = useCallback(() => {
+    dispatch(getApplicationSettingsRequest())
+  }, [dispatch])
+
   useEffect(() => {
     if(!proteus.modules) loadModules()
   }, [proteus.modules, loadModules])
+
+  useEffect(() => {
+    if(!proteus.settings) loadSettings()
+  }, [proteus.settings, loadSettings])
 
   const handleClickConnectDevice = (connectType: string) => {
     connectController(connectType)
@@ -37,11 +45,11 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
   return (
     <div className={'App-container'}>
       <div className='Proteus-container'>
-        {proteus.modulesLoading ? (
+        {proteus.modulesLoading || proteus.settingsLoading ? (
           <Spinner />
         ) : (
           <>
-            {!proteus.connectedController?.connected ? (
+            {proteus.connectedController?.connected ? (
               <div className="Proteus-splashscreen-container">
                 <img src={SplashScreen} alt="Proteus Splash Screen" />
                 <div className="Proteus-splashscreen-version">Version: {proteus.version}</div>
@@ -71,12 +79,9 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
                 )}
               </div>
             ) : (
-              <UnityContainer 
-                loaderUrl={process.env.REACT_APP_PROTEUS_LOADER_URL || ''} 
-                dataUrl={process.env.REACT_APP_PROTEUS_DATA_URL || ''} 
-                frameworkUrl={process.env.REACT_APP_PROTEUS_FRAMEWORK_URL || ''} 
-                codeUrl={process.env.REACT_APP_PROTEUS_CODE_URL || ''} 
-              />                
+              <ProteusShell 
+                proteus={proteus} 
+              />
             )}
           </>
         )}

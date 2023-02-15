@@ -1,0 +1,15 @@
+.Proteus-hint-container {
+  position: absolute; 
+  z-index: 10; 
+  height: 50%; 
+  width: 20%;
+  background-color: rgb(28, 30, 46);
+  top: 0;
+  border-radius: 0 0 10px 0;
+  transform: translateY(-100%);
+  transition: .5s transform ease-in;
+}
+
+.Proteus-hint-container.open {
+  transform: translateY(0);
+}

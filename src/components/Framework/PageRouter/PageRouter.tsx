@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom'
+import { Switch, Route, Redirect, BrowserRouter, withRouter } from 'react-router-dom'
 import { useMobileOrientation } from 'react-device-detect'
 
 import Header from '../Header'
@@ -86,29 +86,33 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
     device,
   }
 
+  const HeaderWithRoute = withRouter((routeProps) => <Header {...toolsHeaderConfig} routeProps={routeProps} />)
+
   return (
     <BrowserRouter>
-      <Header {...toolsHeaderConfig} />
-      <Switch>
-        <Route exact path="/" render={(p: any) => <HomePage {...p} />} />
-        <Route path="/home" component={HomePage} />
-        <Route path="/sign-in" render={(p) => <SignInPage {...p} tokenIsValid={tokenIsValid} />} />
-        <Route path="/sign-up" render={(p) => <SignUpPage {...p} />} />
-        <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-        <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-        {/* <Route path="/pass-reset" render={(p) => <PasswordResetPage {...p} />} />
-        <Route path="/marketplace" render={(p) => <MarketplacePage {...p} />} />
-        <PrivateRoute path="/profile/:address" component={UserProfilePage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-        <PrivateRoute path="/dashboard" component={DashboardPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-        <PrivateRoute path="/checkout" component={CheckoutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-        <PrivateRoute path="/profile-settings" component={ProfileSettingsPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-        <PrivateRoute path="/module-music" component={ModuleMusicPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-        <PrivateRoute path="/crypto-tools" component={CryptoToolsPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} />  */}
+      <>
+        <HeaderWithRoute />
+        <Switch>
+          <Route exact path="/" render={(p: any) => <HomePage {...p} />} />
+          <Route path="/home" component={HomePage} />
+          <Route path="/sign-in" render={(p) => <SignInPage {...p} tokenIsValid={tokenIsValid} />} />
+          <Route path="/sign-up" render={(p) => <SignUpPage {...p} />} />
+          <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          {/* <Route path="/pass-reset" render={(p) => <PasswordResetPage {...p} />} />
+          <Route path="/marketplace" render={(p) => <MarketplacePage {...p} />} />
+          <PrivateRoute path="/profile/:address" component={UserProfilePage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/dashboard" component={DashboardPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/checkout" component={CheckoutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/profile-settings" component={ProfileSettingsPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/module-music" component={ModuleMusicPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/crypto-tools" component={CryptoToolsPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} />  */}
 
-        <Route path="/404" component={(p: any) => <NotFoundPage {...p} />} />
-        <Redirect from='*' to='/404' />
-      </Switch>
-      {/* <Footer /> */}
+          <Route path="/404" component={(p: any) => <NotFoundPage {...p} />} />
+          <Redirect from='*' to='/404' />
+        </Switch>
+        {/* <Footer /> */}
+      </>
     </BrowserRouter>
   )
 }

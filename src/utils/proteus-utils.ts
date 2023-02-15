@@ -1,4 +1,10 @@
-import { ConnectedController } from '../types/controller-types'
+import { 
+  ControllerConfiguration, 
+  Module
+} from '../types/controller-types'
+import { ConnectedController } from '../types/proteus-types'
+import { transformModuleListFromHardware } from '../transformers/controller-transformers'
+import { getStoredUserAddress } from './user-utils'
 
 /**
  * Connects the controller by Bluetooth or USB
@@ -47,6 +53,69 @@ const connectController = async (connectionType: string):  Promise<ConnectedCont
   }
 }
 
+/**
+ * Requests the controller configuration from the hardware
+ * @param connectionType As string 'bluetooth' or 'usb'
+ * @param deviceInterface The correct web device interface
+ * @param availableModules An array of available modules from the database/Redux
+ * @returns Returns a controller configuration which can be used to render a visual representation
+ */
+const requestHardwareCofiguration = (
+  connectionType: string, 
+  deviceInterface: BluetoothDevice | USBDevice | null,
+  availableModules: Module[]
+): ControllerConfiguration => {
+  // Using the correct interface, we request a byte array containing the hardware configuration
+  const mother = {
+    id: 0,
+    type: '0x00',
+    buttons: [],
+    rotation: 0,
+    connectsToId: null,
+    connectsToFace: null,
+  }
+  const lAnalog = {
+    id: 1,
+    type: '0x01',
+    buttons: [
+      {default: 'leftAnalog', mapping: 'leftAnalog'},
+      {default: 'leftAnalogPress', mapping: 'leftAnalogPress'},
+      {default: 'analogYStandard', mapping: 'analogYStandard'},
+    ],
+    rotation: 0,
+    connectsToId: 0,
+    connectsToFace: 'left',
+  }
+  const rAnalog = {
+    id: 1,
+    type: '0x01',
+    buttons: [
+      {default: 'rightAnalog', mapping: 'rightAnalog'},
+      {default: 'rightAnalogPress', mapping: 'rightAnalogPress'},
+      {default: 'analogYStandard', mapping: 'analogYInverted'},
+    ],
+    rotation: 0,
+    connectsToId: 0,
+    connectsToFace: 'right',
+  }
+  const byteArr = [mother, lAnalog, rAnalog]
+
+  // Next we transform the byte array into an object of type ControllerConfiguration
+  const config: ControllerConfiguration = {
+    controller: {
+      userAddress: getStoredUserAddress() || '',
+      controllerAddress: '',
+      imageAddress: '',
+      name: '',
+      rating: 0,
+    },
+    modules: transformModuleListFromHardware(byteArr, availableModules),
+  }
+
+  return config
+}
+
 export {
-  connectController
+  connectController,
+  requestHardwareCofiguration
 }

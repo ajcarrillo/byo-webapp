@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Unity, useUnityContext } from 'react-unity-webgl'
 
-interface IWebGLProps {
+interface IUnityContainerProps {
   loaderUrl: string,
   dataUrl: string,
   frameworkUrl: string,
   codeUrl: string,
 }
 
-const UnityContainer: React.FC<IWebGLProps> = (props: IWebGLProps) => {
+const UnityContainer: React.FC<IUnityContainerProps> = (props: IUnityContainerProps) => {
   const { loaderUrl, dataUrl, frameworkUrl, codeUrl } = props
   const GAME_OBJECT = 'ProteusInterface'
 
@@ -30,7 +30,17 @@ const UnityContainer: React.FC<IWebGLProps> = (props: IWebGLProps) => {
     frameworkUrl,
     loaderUrl,
     webglContextAttributes: {
-      preserveDrawingBuffer: true,
+      alpha: true,
+      antialias: true,
+      depth: false,
+      failIfMajorPerformanceCaveat: true,
+      // powerPreference: 'high-performance',
+      powerPreference: 'low-power',
+      premultipliedAlpha: true,
+      preserveDrawingBuffer: false,
+      stencil: false,
+      desynchronized: true,
+      xrCompatible: true,
     },
     cacheControl: (url: string) => 'no-cache',
   })
@@ -94,7 +104,7 @@ const UnityContainer: React.FC<IWebGLProps> = (props: IWebGLProps) => {
 
   return (
     <>
-      <h2>Unity Test</h2>
+      {/* <h2>Unity Test</h2>
       <p>
         Loading progression: <code>{loadingProgression}</code>
         <br />
@@ -124,18 +134,16 @@ const UnityContainer: React.FC<IWebGLProps> = (props: IWebGLProps) => {
         <br />
         Communication:
         <button onClick={handleClickSetLogText}>Set Log Text</button>
-      </p>
+      </p> */}
       <Unity
         unityProvider={unityProvider}
-        style={{
-          width: '100%',
-        }}
+        className={'Proteus-webgl-canvas'}
         devicePixelRatio={window.devicePixelRatio}
-        disabledCanvasEvents={['dragstart']}
-        ref={canvasRef}
+        disabledCanvasEvents={['dragstart', 'scroll', 'click']}
+        // ref={canvasRef}
       />
     </>
   )
 }
 
-export { UnityContainer }
+export default UnityContainer
