@@ -1,6 +1,8 @@
 .Proteus-container {
   width: 100%;
   height: calc(100vh - 30px);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .Proteus-splashscreen-container {
@@ -73,6 +75,21 @@
 }
 
 .Proteus-connect-error-panel i {
+  color: rgb(194, 77, 45);
+}
+
+.Proteus-shell-error-panel {
+  display: flex;
+  align-items: center;
+  background-color: rgb(33 33 37);
+  color: rgb(200,200,200);
+  border-radius: 3px;
+  padding: .5rem;
+  border: 1px dashed rgb(123, 61, 40);
+  margin-left: 10px;
+}
+
+.Proteus-shell-error-panel i {
   color: rgb(194, 77, 45);
 }
 
@@ -151,7 +168,7 @@
 
 .Proteus-shell-workspace-toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 60px;
@@ -200,6 +217,7 @@
 .Proteus-shell-workspace-unity {
   position: relative;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .Proteus-webgl-canvas {

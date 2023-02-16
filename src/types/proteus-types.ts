@@ -4,7 +4,7 @@ import { Controller, ControllerConfiguration, Module } from './controller-types'
 export type ConnectedController = {
   communicating: boolean,
   connected: boolean,
-  connectionType: string,
+  connectionType: 'usb' | 'bluetooth',
   usbDevice?: USBDevice,
   bluetoothDevice?: BluetoothDevice,
   controllerConfiguration?: ControllerConfiguration,

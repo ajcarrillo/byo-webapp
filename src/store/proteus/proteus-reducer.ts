@@ -42,11 +42,11 @@ export const proteusReducer = (state: IProteusState = initialState, action: any)
     return { ...state, controllerConnectionError: action.error, connectedController: null }
 
   case Constants.PROTEUS_GET_CONTROLLER_CONFIG_REQUEST:
-    return { ...state, controllerConnectionError: undefined, connectedController: null }
+    return { ...state, controllerConnectionError: undefined, connectedController: {...state.connectedController, communicating: true} }
   case Constants.PROTEUS_GET_CONTROLLER_CONFIG_SUCCESS:
-    return { ...state, controllerConnectionError: undefined, connectedController: action.payload }
+    return { ...state, controllerConnectionError: undefined, connectedController: {...state.connectedController, communicating: false, controllerConfiguration: action.payload} }
   case Constants.PROTEUS_GET_CONTROLLER_CONFIG_FAILURE:
-    return { ...state, controllerConnectionError: action.error, connectedController: null }
+    return { ...state, controllerConnectionError: action.error, connectedController: {...state.connectedController, communicating: false} }
 
   default:
     return state

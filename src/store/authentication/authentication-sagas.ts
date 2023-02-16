@@ -124,9 +124,6 @@ export function* signInSaga(action: any){
     if(response.status === 200){
       updateStoredAccessToken(response.data.token, true)
       updateStoredUserAddress(response.data.address)
-      updateStoredUserEntitlements(response.data.entitlements)
-      updateStoredUserProfileType(response.data.profileType)
-      updateStoredOnboardingSummary(response.data.onboardingSummary)
       updateStoredUserLocalisation(response.data.localisation)
       updateStoredUserName(response.data.userName)
       yield put(signInSuccess(response.data))

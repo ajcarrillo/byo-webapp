@@ -1,5 +1,5 @@
 import { APIError, APIResponse } from '../../types/api-types'
-import { ControllerConfiguration } from '../../types/controller-types'
+import { ControllerConfiguration, Module } from '../../types/controller-types'
 import { ConnectedController } from '../../types/proteus-types'
 import {
   PROTEUS_GET_MODULES_REQUEST,
@@ -16,8 +16,15 @@ import {
   PROTEUS_GET_APP_SETTINGS_FAILURE
 } from './proteus-constants'
 
-export const getControllerConfigRequest = () => ({
+export const getControllerConfigRequest = (
+  connectType: string,
+  deviceInterface: BluetoothDevice | USBDevice | null,
+  availableModules: Module[]
+) => ({
   type: PROTEUS_GET_CONTROLLER_CONFIG_REQUEST,
+  connectType,
+  deviceInterface,
+  availableModules
 })
 
 export const getControllerConfigSuccess = (controller: ControllerConfiguration) => ({

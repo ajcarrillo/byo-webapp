@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { connectControllerRequest, getApplicationSettingsRequest, getModulesRequest } from '../../store/proteus/proteus-actions'
+import { 
+  connectControllerRequest, 
+  getApplicationSettingsRequest,
+  getModulesRequest 
+} from '../../store/proteus/proteus-actions'
 import { IStoreState } from '../../types/store-types'
 import ProteusShell from './ProteusShell'
 import Spinner from '../Spinner'
@@ -49,7 +53,7 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
           <Spinner />
         ) : (
           <>
-            {proteus.connectedController?.connected ? (
+            {!proteus.connectedController?.connected ? (
               <div className="Proteus-splashscreen-container">
                 <img src={SplashScreen} alt="Proteus Splash Screen" />
                 <div className="Proteus-splashscreen-version">Version: {proteus.version}</div>

@@ -41,8 +41,8 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
     </Link>
   })
 
-  // hide site menu from Proteus app
-  if(routeProps.location.pathname === '/proteus/'){
+  // Hide site menu from Proteus app
+  if(routeProps.location.pathname === '/proteus' || routeProps.location.pathname === '/proteus/'){
     return null
   }
 

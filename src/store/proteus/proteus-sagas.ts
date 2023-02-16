@@ -1,10 +1,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 
 import { APIResponse } from '../../types/api-types'
+import { ControllerConfiguration } from '../../types/controller-types'
 import { ConnectedController } from '../../types/proteus-types'
 import { apiCall } from '../../utils/api-utils'
 import { generateApiError, generateControllerConnectionError } from '../../utils/error-utils'
-import { connectController } from '../../utils/proteus-utils'
+import { connectController, requestHardwareCofiguration } from '../../utils/proteus-utils'
 import { 
   getStoredAccessToken, 
   updateStoredAccessToken
@@ -15,7 +16,9 @@ import {
   PROTEUS_GET_MODULES_REQUEST,
   PROTEUS_MODULES_API_ERROR_MESSAGES,
   PROTEUS_GET_APP_SETTINGS_REQUEST,
-  PROTEUS_APP_SETTINGS_API_ERROR_MESSAGES
+  PROTEUS_APP_SETTINGS_API_ERROR_MESSAGES,
+  PROTEUS_GET_CONTROLLER_CONFIG_REQUEST,
+  PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES
 } from './proteus-constants'
 import { 
   getModulesFailure,
@@ -23,7 +26,9 @@ import {
   connectControllerFailure,
   connectControllerSuccess,
   getApplicationSettingsFailure,
-  getApplicationSettingsSuccess
+  getApplicationSettingsSuccess,
+  getControllerConfigFailure,
+  getControllerConfigSuccess
 } from './proteus-actions'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
@@ -97,6 +102,29 @@ export function* connectControllerSaga(action: any){
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function* getControllerConfigSaga(action: any){
+  try {
+    const response: ControllerConfiguration = yield call(
+      requestHardwareCofiguration, 
+      action.connectType,
+      action.deviceInterface,
+      action.availableModules
+    )
+
+    if(response){
+      yield put(getControllerConfigSuccess(response))
+    }
+    else {
+      yield put(getControllerConfigFailure(generateControllerConnectionError('UNKOWN_ERROR', PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES)))
+    }
+  } 
+  catch(e) {
+    const message = e instanceof Error ? e.message : 'UNKNOWN_ERROR'
+    yield put(getControllerConfigFailure(generateControllerConnectionError(message, PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES)))
+  }
+}
+
 export function* getProteusModulesSagaWatcher(){
   yield takeLatest(PROTEUS_GET_MODULES_REQUEST, getProteusModulesSaga)
 }
@@ -107,4 +135,8 @@ export function* connectControllerSagaWatcher(){
 
 export function* getProteusSettingsSagaWatcher(){
   yield takeLatest(PROTEUS_GET_APP_SETTINGS_REQUEST, getProteusSettingsSaga)
+}
+
+export function* getControllerConfigSagaWatcher(){
+  yield takeLatest(PROTEUS_GET_CONTROLLER_CONFIG_REQUEST, getControllerConfigSaga)
 }

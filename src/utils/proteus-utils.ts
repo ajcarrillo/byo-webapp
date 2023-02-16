@@ -11,7 +11,7 @@ import { getStoredUserAddress } from './user-utils'
  * @param connectionType The type of connection - bluetooth or usb
  * @returns A connected controller object
  */
-const connectController = async (connectionType: string):  Promise<ConnectedController> => {
+const connectController = async (connectionType: 'usb' | 'bluetooth'):  Promise<ConnectedController> => {
   const connection: ConnectedController = {
     communicating: false,
     connected: false,
@@ -60,59 +60,66 @@ const connectController = async (connectionType: string):  Promise<ConnectedCont
  * @param availableModules An array of available modules from the database/Redux
  * @returns Returns a controller configuration which can be used to render a visual representation
  */
-const requestHardwareCofiguration = (
-  connectionType: string, 
+const requestHardwareCofiguration = async (
+  connectionType: 'usb' | 'bluetooth', 
   deviceInterface: BluetoothDevice | USBDevice | null,
   availableModules: Module[]
-): ControllerConfiguration => {
-  // Using the correct interface, we request a byte array containing the hardware configuration
-  const mother = {
-    id: 0,
-    type: '0x00',
-    buttons: [],
-    rotation: 0,
-    connectsToId: null,
-    connectsToFace: null,
-  }
-  const lAnalog = {
-    id: 1,
-    type: '0x01',
-    buttons: [
-      {default: 'leftAnalog', mapping: 'leftAnalog'},
-      {default: 'leftAnalogPress', mapping: 'leftAnalogPress'},
-      {default: 'analogYStandard', mapping: 'analogYStandard'},
-    ],
-    rotation: 0,
-    connectsToId: 0,
-    connectsToFace: 'left',
-  }
-  const rAnalog = {
-    id: 1,
-    type: '0x01',
-    buttons: [
-      {default: 'rightAnalog', mapping: 'rightAnalog'},
-      {default: 'rightAnalogPress', mapping: 'rightAnalogPress'},
-      {default: 'analogYStandard', mapping: 'analogYInverted'},
-    ],
-    rotation: 0,
-    connectsToId: 0,
-    connectsToFace: 'right',
-  }
-  const byteArr = [mother, lAnalog, rAnalog]
+): Promise<ControllerConfiguration | null> => {
+  try {
+    // TODO: Remove this - it just simulates communication with the hardware
+    await new Promise(r => setTimeout(r, 2000))
+    
+    // Using the correct interface, we request a byte array containing the hardware configuration
+    const mother = {
+      id: 0,
+      type: '0x00',
+      buttons: [],
+      rotation: 0,
+      connectsToId: null,
+      connectsToFace: null,
+    }
+    const lAnalog = {
+      id: 1,
+      type: '0x01',
+      buttons: [
+        {default: 'leftAnalog', mapping: 'leftAnalog'},
+        {default: 'leftAnalogPress', mapping: 'leftAnalogPress'},
+        {default: 'analogYStandard', mapping: 'analogYStandard'},
+      ],
+      rotation: 0,
+      connectsToId: 0,
+      connectsToFace: 'left',
+    }
+    const rAnalog = {
+      id: 1,
+      type: '0x01',
+      buttons: [
+        {default: 'rightAnalog', mapping: 'rightAnalog'},
+        {default: 'rightAnalogPress', mapping: 'rightAnalogPress'},
+        {default: 'analogYStandard', mapping: 'analogYInverted'},
+      ],
+      rotation: 0,
+      connectsToId: 0,
+      connectsToFace: 'right',
+    }
+    const byteArr = [mother, lAnalog, rAnalog]
 
-  // Next we transform the byte array into an object of type ControllerConfiguration
-  const config: ControllerConfiguration = {
-    controller: {
-      userAddress: getStoredUserAddress() || '',
-      controllerAddress: '',
-      imageAddress: '',
-      name: '',
-      rating: 0,
-    },
-    modules: transformModuleListFromHardware(byteArr, availableModules),
+    // Next we transform the byte array into an object of type ControllerConfiguration
+    const config: ControllerConfiguration = {
+      controller: {
+        userAddress: getStoredUserAddress() || '',
+        controllerAddress: '',
+        imageAddress: '',
+        name: '',
+        rating: 0,
+      },
+      modules: transformModuleListFromHardware(byteArr, availableModules),
+    }
+    //throw new Error('CONTROLLER_CONFIG_REQUEST_FAILED')
+    return config
+  } catch(e) {
+    return null
   }
-
-  return config
 }
 
 export {

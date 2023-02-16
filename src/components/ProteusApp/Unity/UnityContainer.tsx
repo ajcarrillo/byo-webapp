@@ -1,15 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Unity, useUnityContext } from 'react-unity-webgl'
 
+import { ProteusSettings } from '../../../types/proteus-types'
+
 interface IUnityContainerProps {
   loaderUrl: string,
   dataUrl: string,
   frameworkUrl: string,
   codeUrl: string,
+  settings: ProteusSettings | null
 }
 
 const UnityContainer: React.FC<IUnityContainerProps> = (props: IUnityContainerProps) => {
-  const { loaderUrl, dataUrl, frameworkUrl, codeUrl } = props
+  const { 
+    loaderUrl, 
+    dataUrl, 
+    frameworkUrl, 
+    codeUrl,
+    settings
+  } = props
+
   const GAME_OBJECT = 'ProteusInterface'
 
   const {
@@ -31,15 +41,14 @@ const UnityContainer: React.FC<IUnityContainerProps> = (props: IUnityContainerPr
     loaderUrl,
     webglContextAttributes: {
       alpha: true,
-      antialias: true,
-      depth: false,
+      antialias: settings?.antialiasing,
+      depth: settings?.depthTesting,
       failIfMajorPerformanceCaveat: true,
-      // powerPreference: 'high-performance',
-      powerPreference: 'low-power',
+      powerPreference: settings?.gpuHighPerformance ? 'high-performance' : 'low-power',
       premultipliedAlpha: true,
       preserveDrawingBuffer: false,
-      stencil: false,
-      desynchronized: true,
+      stencil: settings?.multipass,
+      desynchronized: false,
       xrCompatible: true,
     },
     cacheControl: (url: string) => 'no-cache',
@@ -142,6 +151,7 @@ const UnityContainer: React.FC<IUnityContainerProps> = (props: IUnityContainerPr
         disabledCanvasEvents={['dragstart', 'scroll', 'click']}
         // ref={canvasRef}
       />
+      {/* <div className='Proteus-webgl-canvas'></div> */}
     </>
   )
 }
