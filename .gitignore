@@ -3,3 +3,4 @@
 /config/*
 !/config/Readme.md
 /coverage
+/package-lock.json
