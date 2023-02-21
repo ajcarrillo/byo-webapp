@@ -18,7 +18,8 @@ import {
   PROTEUS_GET_APP_SETTINGS_REQUEST,
   PROTEUS_APP_SETTINGS_API_ERROR_MESSAGES,
   PROTEUS_GET_CONTROLLER_CONFIG_REQUEST,
-  PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES
+  PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES,
+  PROTEUS_SET_UNITY_READY_REQUEST
 } from './proteus-constants'
 import { 
   getModulesFailure,
@@ -28,8 +29,14 @@ import {
   getApplicationSettingsFailure,
   getApplicationSettingsSuccess,
   getControllerConfigFailure,
-  getControllerConfigSuccess
+  getControllerConfigSuccess,
+  setUnityReadySuccess
 } from './proteus-actions'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function* setUnityReadySaga(action: any){
+  yield put(setUnityReadySuccess(action.ready))
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 export function* getProteusSettingsSaga(action: any){
@@ -139,4 +146,8 @@ export function* getProteusSettingsSagaWatcher(){
 
 export function* getControllerConfigSagaWatcher(){
   yield takeLatest(PROTEUS_GET_CONTROLLER_CONFIG_REQUEST, getControllerConfigSaga)
+}
+
+export function* setUnityReadySagaWatcher(){
+  yield takeLatest(PROTEUS_SET_UNITY_READY_REQUEST, setUnityReadySaga)
 }

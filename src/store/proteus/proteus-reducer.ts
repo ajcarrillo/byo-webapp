@@ -5,6 +5,7 @@ import { transformApplicationSettingsFromDB } from '../../transformers/proteus-t
 
 const initialState = {
   apiError: null,
+  unityReady: false,
   modulesLoading: false,
   galleryLoading: false,
   settingsLoading: false,
@@ -47,6 +48,11 @@ export const proteusReducer = (state: IProteusState = initialState, action: any)
     return { ...state, controllerConnectionError: undefined, connectedController: {...state.connectedController, communicating: false, controllerConfiguration: action.payload} }
   case Constants.PROTEUS_GET_CONTROLLER_CONFIG_FAILURE:
     return { ...state, controllerConnectionError: action.error, connectedController: {...state.connectedController, communicating: false} }
+
+  case Constants.PROTEUS_SET_UNITY_READY_REQUEST:
+    return { ...state, unityReady: false }
+  case Constants.PROTEUS_SET_UNITY_READY_SUCCESS:
+    return { ...state, unityReady: action.payload }
 
   default:
     return state

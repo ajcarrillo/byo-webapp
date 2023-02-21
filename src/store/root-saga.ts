@@ -17,7 +17,8 @@ import {
   getProteusModulesSagaWatcher,
   connectControllerSagaWatcher,
   getProteusSettingsSagaWatcher,
-  getControllerConfigSagaWatcher
+  getControllerConfigSagaWatcher,
+  setUnityReadySagaWatcher
 } from './proteus/proteus-sagas'
 
 export function* rootSaga(){
@@ -33,4 +34,5 @@ export function* rootSaga(){
   yield fork(connectControllerSagaWatcher)
   yield fork(getProteusSettingsSagaWatcher)
   yield fork(getControllerConfigSagaWatcher)
+  yield fork(setUnityReadySagaWatcher)
 }

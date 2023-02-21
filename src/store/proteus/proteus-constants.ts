@@ -25,3 +25,5 @@ export const PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES = {
   'UNKOWN_ERROR': 'There was an error retrieving controller config.',
   'CONTROLLER_CONFIG_REQUEST_FAILED': 'Request controller config failed.',
 }
+export const PROTEUS_SET_UNITY_READY_REQUEST = 'PROTEUS_SET_UNITY_READY_REQUEST'
+export const PROTEUS_SET_UNITY_READY_SUCCESS = 'PROTEUS_SET_UNITY_READY_SUCCESS'

@@ -1,73 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Unity, useUnityContext } from 'react-unity-webgl'
-
-import { ProteusSettings } from '../../../types/proteus-types'
+import { UnityProvider } from 'react-unity-webgl/distribution/types/unity-provider'
 
 interface IUnityContainerProps {
-  loaderUrl: string,
-  dataUrl: string,
-  frameworkUrl: string,
-  codeUrl: string,
-  settings: ProteusSettings | null
+  unityProvider: UnityProvider,
 }
 
 const UnityContainer: React.FC<IUnityContainerProps> = (props: IUnityContainerProps) => {
-  const { 
-    loaderUrl, 
-    dataUrl, 
-    frameworkUrl, 
-    codeUrl,
-    settings
-  } = props
+  const { unityProvider } = props
 
-  const GAME_OBJECT = 'ProteusInterface'
-
-  const {
-    loadingProgression,
-    unityProvider,
-    isLoaded,
-    requestFullscreen,
-    requestPointerLock,
-    sendMessage,
-    initialisationError,
-    addEventListener,
-    removeEventListener,
-    takeScreenshot,
-    unload,
-  } = useUnityContext({
-    codeUrl,
-    dataUrl,
-    frameworkUrl,
-    loaderUrl,
-    webglContextAttributes: {
-      alpha: true,
-      antialias: settings?.antialiasing,
-      depth: settings?.depthTesting,
-      failIfMajorPerformanceCaveat: true,
-      powerPreference: settings?.gpuHighPerformance ? 'high-performance' : 'low-power',
-      premultipliedAlpha: true,
-      preserveDrawingBuffer: false,
-      stencil: settings?.multipass,
-      desynchronized: false,
-      xrCompatible: true,
-    },
-    cacheControl: (url: string) => 'no-cache',
-  })
-
+  
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [screenshots, setScreenshots] = useState<string[]>([])
 
 
   function handleClickRequestFullScreen() {
-    requestFullscreen(true)
+    //requestFullscreen(true)
   }
 
   function handleClickRequestPointerLock() {
-    requestPointerLock()
+    //requestPointerLock()
   }
 
   function handleClickUnload() {
-    unload()
+    //unload()
   }
 
   function handleClickSetLogText() {
@@ -76,40 +32,19 @@ const UnityContainer: React.FC<IUnityContainerProps> = (props: IUnityContainerPr
     //   'SetLogText',
     //   'Hello World, the time is ' + new Date().toISOString()
     // )
-    sendMessage(GAME_OBJECT, 'ToggleDebug', 'show')
+    //sendMessage(GAME_OBJECT, 'ToggleDebug', 'show')
   }
 
   function handleClickLogCanvasRefToConsole() {
     console.log('Canvas Reference', { canvasRef: canvasRef.current })
   }
 
-  const handleClickTakeScreenshot = () => {
-    const screenshot = takeScreenshot('image/jpg', 1)
-    if (screenshot) {
-      setScreenshots([...screenshots, screenshot])
-    }
-  }
-
-  useEffect(() => {
-    function logParametersToConsole(...parameters: any[]) {
-      //console.log({ parameters })
-    }
-
-    addEventListener('ClickedTestButton', logParametersToConsole)
-    addEventListener('ClickedStringTestButton', logParametersToConsole)
-    addEventListener('ClickedNumberTestButton', logParametersToConsole)
-    addEventListener('ClickedNumbersTestButton', logParametersToConsole)
-    addEventListener('ClickedBoolTestButton', logParametersToConsole)
-    addEventListener('ClickedObjectTestButton', logParametersToConsole)
-    return () => {
-      removeEventListener('ClickedTestButton', logParametersToConsole)
-      removeEventListener('ClickedStringTestButton', logParametersToConsole)
-      removeEventListener('ClickedNumberTestButton', logParametersToConsole)
-      removeEventListener('ClickedNumbersTestButton', logParametersToConsole)
-      removeEventListener('ClickedBoolTestButton', logParametersToConsole)
-      removeEventListener('ClickedObjectTestButton', logParametersToConsole)
-    }
-  }, [addEventListener, removeEventListener])
+  // const handleClickTakeScreenshot = () => {
+  //   const screenshot = takeScreenshot('image/jpg', 1)
+  //   if (screenshot) {
+  //     setScreenshots([...screenshots, screenshot])
+  //   }
+  // }
 
   return (
     <>

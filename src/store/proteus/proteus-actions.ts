@@ -13,8 +13,20 @@ import {
   PROTEUS_GET_CONTROLLER_CONFIG_FAILURE,
   PROTEUS_GET_APP_SETTINGS_REQUEST,
   PROTEUS_GET_APP_SETTINGS_SUCCESS,
-  PROTEUS_GET_APP_SETTINGS_FAILURE
+  PROTEUS_GET_APP_SETTINGS_FAILURE,
+  PROTEUS_SET_UNITY_READY_REQUEST,
+  PROTEUS_SET_UNITY_READY_SUCCESS
 } from './proteus-constants'
+
+export const setUnityReadyRequest = (ready: boolean) => ({
+  type: PROTEUS_SET_UNITY_READY_REQUEST,
+  ready,
+})
+
+export const setUnityReadySuccess = (ready: boolean) => ({
+  type: PROTEUS_SET_UNITY_READY_SUCCESS,
+  payload: ready,
+})
 
 export const getControllerConfigRequest = (
   connectType: string,

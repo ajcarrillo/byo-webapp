@@ -24,6 +24,7 @@ export interface IProteusState {
   modulesLoading: boolean,
   galleryLoading: boolean,
   settingsLoading: boolean,
+  unityReady: boolean,
   apiError: APIError | null;
   version: string | undefined,
   firmwareVersion: string | undefined,
