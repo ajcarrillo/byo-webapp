@@ -15,7 +15,7 @@ You will need to reach out to a member of the development team, for the list of 
 ### Step 3 - Node Module Installation
 Open a terminal window and ensure you are in the root folder of the project, on the same level as the package.json file. Now run the following command in the terminal window:
 ```sh
-npm i
+npm ci
 ```
 ---
 
