@@ -1,6 +1,10 @@
 /// <reference types="react-scripts" />
 
-declare module '*.mp4' {
-  const src: string
-  export default src
+import { IStoreState } from './types/store-types'
+
+export declare global {
+  interface Window {
+    Cypress: Cypress;
+    store: any;
+  }
 }

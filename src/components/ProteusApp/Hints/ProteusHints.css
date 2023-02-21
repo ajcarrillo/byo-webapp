@@ -1,0 +1,57 @@
+.Proteus-hint-container {
+  position: absolute; 
+  z-index: 10; 
+  width: 300px;
+  background-color: rgb(28, 30, 46);
+  top: 0;
+  border-radius: 0 0 10px 0;
+  transform: translateY(-105%);
+  transition: .5s transform ease-in;
+  padding: 1.2rem;
+  box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 5px;
+}
+
+.Proteus-hint-container.open {
+  transform: translateY(0);
+}
+
+.Proteus-hint-icon {
+  display: flex;
+  justify-content: right;
+}
+
+.Proteus-hint-icon i {
+  color: rgb(134, 61, 231);
+  font-size: 1.3rem;
+}
+
+.Proteus-hint-title {
+  color: rgb(102,115,228);
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: .8rem 0 1.4rem 0;
+}
+
+.Proteus-hint-body {
+  font-size: .9rem;
+  line-height: 1.4rem;
+  color: rgb(161,170,242)
+}
+
+
+.Proteus-hint-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  font-size: 1.2rem;
+  text-decoration: underline;
+  font-style: italic;
+  color: rgb(88,102,223);
+  margin-top: 1.6rem
+}
+
+.Proteus-hint-button:hover {
+  color: rgb(132, 142, 231);
+}

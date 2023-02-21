@@ -54,6 +54,10 @@ h1, h2, h3 { color: rgb(220,220,220) }
   animation: blinker 1s step-start infinite;
 }
 
+.BlinkMeQuick {
+  animation: blinker .3s step-start infinite;
+}
+
 .HideAfterDelay {
   height: auto;
   animation: fade 1s linear; 

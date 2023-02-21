@@ -17,6 +17,7 @@ export interface IHeaderProps {
   entitlements: any[],
   profileType: string | null,
   basketItemCount: number,
+  routeProps: any,
 }
 
 type SelectionType = {
@@ -25,7 +26,7 @@ type SelectionType = {
 };
 
 export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
-  const { tokenIsValid, userAddress, entitlements, profileType } = props
+  const { tokenIsValid, userAddress, entitlements, profileType, routeProps } = props
 
   const dispatch = useDispatch()
 
@@ -40,12 +41,17 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
     </Link>
   })
 
+  // Hide site menu from Proteus app
+  if(routeProps.location.pathname === '/proteus' || routeProps.location.pathname === '/proteus/'){
+    return null
+  }
+
   return (
     <header className="App-header">
       <div className="App-header-icon-container">
         <Link to="/" title="Home">
           <div className="App-header-logo-container">
-            <img src={ByoWaveLogo} alt="iYango Logo" style={{width: '100%'}} />
+            <img src={ByoWaveLogo} alt="Byowave Logo" style={{width: '100%'}} />
           </div>
         </Link>
 

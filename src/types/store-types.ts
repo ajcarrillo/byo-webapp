@@ -1,6 +1,6 @@
 import { APIError } from './api-types'
 import { IUserProfileState, User } from './user-types'
-import { IProteusState } from './controller-types'
+import { IProteusState } from './proteus-types'
 
 export interface IStoreState {
   authentication: IAuthenticationState,
