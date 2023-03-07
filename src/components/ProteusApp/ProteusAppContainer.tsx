@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { 
   connectControllerRequest, 
   getApplicationSettingsRequest,
-  getModulesRequest 
+  getModulesRequest
 } from '../../store/proteus/proteus-actions'
 import { IStoreState } from '../../types/store-types'
 import ProteusShell from './ProteusShell'

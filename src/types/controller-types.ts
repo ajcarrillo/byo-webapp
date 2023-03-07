@@ -1,3 +1,9 @@
+export enum ProteusButton {
+  oB01,     // Proteus One Button module
+  tB01,     // Proteus Two Button module - button 1
+  tB02,     // Proteus Two Button module - button 2
+}
+
 export enum XBoxButton {
   analogYStandard,    // Non-standard - suggested flag to reset inverted Y axis for analog
   analogYInverted,    // Non-standard - suggested flag to invert the Y axis for analog
@@ -30,15 +36,20 @@ export enum ModuleCategory {
 }
 
 export enum ModuleType {
-  mother      = 0x00,
-  analog      = 0x01,
-  edge        = 0x02,
-  spacer      = 0x03,
-  dPad        = 0x04,
-  fourButton  = 0x05,
-  twoButton   = 0x06,
-  oneButton   = 0x07,
-  power       = 0x08,
+  motherMaster  = 0x00,
+  motherSlave   = 0x01,
+  spacer        = 0x02,
+  edge          = 0x03,
+  charger       = 0x04,
+  analogRight   = 0x05,
+  analogLeft    = 0x06,
+  dPad          = 0x07,
+  fourButton    = 0x08,
+  twoButton     = 0x09,
+  oneButton     = 0x10,
+  triggerRight  = 0x11,
+  triggerLeft   = 0x12,
+  xBox          = 0x13,
 }
 
 export enum ModuleFace {
@@ -58,8 +69,8 @@ export enum ModuleFaceType {
 }
 
 export type ModuleButton = {
-  default: XBoxButton,
-  mapping: XBoxButton,
+  defaultMapping: XBoxButton,
+  mappedTo: XBoxButton,
 }
 
 export type ModuleFaces = {

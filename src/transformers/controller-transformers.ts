@@ -93,15 +93,15 @@ const transformModuleListFromHardware = (
 
     if (module){
       const buttons: ModuleButton[] = item.buttons.map((b: {[key:string]: string}) => ({
-        default: getXBoxButtonParamFromString(b.default),
-        mapping: getXBoxButtonParamFromString(b.mapping),
+        defaultMapping: getXBoxButtonParamFromString(b.defaultMapping),
+        mappedTo: getXBoxButtonParamFromString(b.mappedTo),
       }))
-      module.buttons = buttons
+
       modules.push({
         id: item.id,
-        module,
-        rotation: item.rotation,
-        connectsToId: item.connectsToId,
+        module: {...module, buttons},
+        rotation: item.rotation * 22.5,
+        connectsToId: item.connectsToId === null ? -1 : item.connectsToId,
         connectsToFace: getModuleFaceFromString(item.connectsToFace)
       })
     }
@@ -112,6 +112,7 @@ const transformModuleListFromHardware = (
 export {
   getModuleFaceTypeFromString,
   getModuleTypeFromHex,
+  getXBoxButtonParamFromString,
   transformModuleListFromDB,
   transformModuleListFromHardware
 }

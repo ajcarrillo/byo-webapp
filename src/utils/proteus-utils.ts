@@ -1,9 +1,11 @@
 import { 
   ControllerConfiguration, 
-  Module
+  IModule, 
+  Module,
+  ModuleButton
 } from '../types/controller-types'
 import { ConnectedController } from '../types/proteus-types'
-import { transformModuleListFromHardware } from '../transformers/controller-transformers'
+import { getXBoxButtonParamFromString, transformModuleListFromHardware } from '../transformers/controller-transformers'
 import { getStoredUserAddress } from './user-utils'
 
 /**
@@ -37,6 +39,9 @@ const connectController = async (connectionType: 'usb' | 'bluetooth'):  Promise<
       const bluetoothDevice: BluetoothDevice = await window.navigator.bluetooth.requestDevice({
         // TODO: Use filter here
         acceptAllDevices: true,
+        // filters: [{
+        //   services: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b']
+        // }],
         optionalServices: [process.env.REACT_APP_PROTEUS_CONTROLLER_BLUETOOTH_PRIMARY_SERVICE || ''],
       })
 
@@ -80,29 +85,80 @@ const requestHardwareCofiguration = async (
     }
     const lAnalog = {
       id: 1,
-      type: '0x01',
+      type: '0x06',
       buttons: [
-        {default: 'leftAnalog', mapping: 'leftAnalog'},
-        {default: 'leftAnalogPress', mapping: 'leftAnalogPress'},
-        {default: 'analogYStandard', mapping: 'analogYStandard'},
+        {defaultMapping: 'leftAnalog', mappedTo: 'leftAnalog'},
+        {defaultMapping: 'leftAnalogPress', mappedTo: 'leftAnalogPress'},
+        {defaultMapping: 'analogYStandard', mappedTo: 'analogYStandard'},
       ],
       rotation: 0,
       connectsToId: 0,
       connectsToFace: 'left',
     }
     const rAnalog = {
-      id: 1,
-      type: '0x01',
+      id: 2,
+      type: '0x05',
       buttons: [
-        {default: 'rightAnalog', mapping: 'rightAnalog'},
-        {default: 'rightAnalogPress', mapping: 'rightAnalogPress'},
-        {default: 'analogYStandard', mapping: 'analogYInverted'},
+        {defaultMapping: 'rightAnalog', mappedTo: 'rightAnalog'},
+        {defaultMapping: 'rightAnalogPress', mappedTo: 'rightAnalogPress'},
+        {defaultMapping: 'analogYStandard', mappedTo: 'analogYInverted'},
       ],
       rotation: 0,
       connectsToId: 0,
       connectsToFace: 'right',
     }
-    const byteArr = [mother, lAnalog, rAnalog]
+    const fourButton = {
+      id: 3,
+      type: '0x08',
+      buttons: [
+        {defaultMapping: 'y', mappedTo: 'y'},
+        {defaultMapping: 'b', mappedTo: 'b'},
+        {defaultMapping: 'a', mappedTo: 'a'},
+        {defaultMapping: 'x', mappedTo: 'x'},
+      ],
+      rotation: 0,
+      connectsToId: 1,
+      connectsToFace: 'front',
+    }
+    const triggerLeft = {
+      id: 4,
+      type: '0x12',
+      buttons: [
+        {defaultMapping: 'leftButton', mappedTo: 'leftButton'},
+        {defaultMapping: 'leftTrigger', mappedTo: 'leftTrigger'},
+      ],
+      rotation: 0,
+      connectsToId: 1,
+      connectsToFace: 'back',
+    }
+    const triggerRight = {
+      id: 5,
+      type: '0x11',
+      buttons: [
+        {defaultMapping: 'rightButton', mappedTo: 'rightButton'},
+        {defaultMapping: 'rightTrigger', mappedTo: 'rightTrigger'},
+      ],
+      rotation: 0,
+      connectsToId: 2,
+      connectsToFace: 'back',
+    }
+    const edge = {
+      id: 6,
+      type: '0x03',
+      buttons: [],
+      rotation: 2,
+      connectsToId: 2,
+      connectsToFace: 'right',
+    }
+    const dPad = {
+      id: 7,
+      type: '0x07',
+      buttons: [],
+      rotation: 0,
+      connectsToId: 6,
+      connectsToFace: 'top',
+    }
+    const byteArr = [mother, lAnalog, rAnalog, fourButton, triggerLeft, triggerRight, edge, dPad]
 
     // Next we transform the byte array into an object of type ControllerConfiguration
     const config: ControllerConfiguration = {
@@ -122,7 +178,58 @@ const requestHardwareCofiguration = async (
   }
 }
 
+/**
+ * Resolves which mode the mapping component should display
+ * @param control A control type
+ * @returns A mapping mode
+ */
+const resolveControllerMappingMode = (control: string): string => {
+  let request = ''
+
+  switch(control){
+  case'leftAnalog':
+  case'rightAnalog':
+    request = 'analog'
+    break
+  case'leftTrigger':
+  case'rightTrigger':
+    request = 'trigger'
+    break
+  default:
+    request = 'button'
+    break
+  }
+
+  return request
+}
+
+/**
+ * Returns the module in the controller configuration which contains a control with the passed mapping
+ * @param controllerConfig 
+ * @param controlMapping 
+ * @returns 
+ */
+const resolveControllerModuleFromMapping = (controllerConfig: ControllerConfiguration | undefined, controlMapping: string): IModule | null => {
+  if(controllerConfig){
+    const xBoxButton = getXBoxButtonParamFromString(controlMapping)
+    let module = null
+    controllerConfig.modules.forEach(m => {
+      for(const b of m.module.buttons){
+        if(b.mappedTo === xBoxButton){
+          module = m
+          break
+        }
+      }
+    })
+    return module 
+  }else{
+    return null
+  }
+}
+
 export {
   connectController,
-  requestHardwareCofiguration
+  requestHardwareCofiguration,
+  resolveControllerMappingMode,
+  resolveControllerModuleFromMapping
 }

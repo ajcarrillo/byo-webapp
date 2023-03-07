@@ -2,7 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useUnityContext } from 'react-unity-webgl'
 
-import { IProteusState } from '../../types/proteus-types'
+import { IProteusState, ProteusMappingConfig } from '../../types/proteus-types'
+import { getControllerConfigRequest, setGamepadReadyRequest, setMappingModeRequest, setUnityReadyRequest } from '../../store/proteus/proteus-actions'
+import ProteusEventHandler from './EventHandler/ProteusEventHandler'
+import { transformProteusWebGLFileVersion } from '../../transformers/proteus-transformers'
 import UnityContainer from './Unity/UnityContainer'
 import ProteusHints from './Hints/ProteusHints'
 import ProteusMapping from './Mapping/ProteusMapping'
@@ -10,8 +13,7 @@ import ProteusGallery from './Gallery/ProteusGallery'
 import ProteusLogo from '../../assets/images/proteus-header-logo.png'
 import ProteusLightGreen from '../../assets/images/proteus-footer-light-green.png'
 import ProteusLightRed from '../../assets/images/proteus-footer-light-red.png'
-import { getControllerConfigRequest, setUnityReadyRequest } from '../../store/proteus/proteus-actions'
-import ProteusEventHandler from './EventHandler/ProteusEventHandler'
+import { resolveControllerMappingMode, resolveControllerModuleFromMapping } from '../../utils/proteus-utils'
 
 interface IProteusShellProps {
   proteus: IProteusState
@@ -39,10 +41,10 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
     takeScreenshot,
     unload,
   } = useUnityContext({
-    codeUrl: process.env.REACT_APP_PROTEUS_CODE_URL || '',
-    dataUrl: process.env.REACT_APP_PROTEUS_DATA_URL || '',
-    frameworkUrl: process.env.REACT_APP_PROTEUS_FRAMEWORK_URL || '',
-    loaderUrl: process.env.REACT_APP_PROTEUS_LOADER_URL || '',
+    codeUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_CODE_URL || '', proteus.version || ''),
+    dataUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_DATA_URL || '', proteus.version || ''),
+    frameworkUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_FRAMEWORK_URL || '', proteus.version || ''),
+    loaderUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_LOADER_URL || '', proteus.version || ''),
     webglContextAttributes: {
       alpha: true,
       antialias: proteus.settings?.antialiasing,
@@ -59,11 +61,17 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
   })
 
   /**
-   * CHanges the current workspace
+   * Changes the current workspace and tells Unity which workspace is active
    * @param worksapce 
    */
   const handleClickWorkspace = (worksapce: string) => {
     setActiveWorkspace(worksapce)
+
+    sendMessage(
+      UNITY_GAME_OBJECT, 
+      'WorkspaceChange', 
+      worksapce
+    )
   }
 
   /**
@@ -75,21 +83,53 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
   }
 
   /**
+   * Updates the Redux store with the Gamepad ready state
+   * @param ready 
+   */
+  const setGamepadReady =  (ready: boolean) => {
+    dispatch(setGamepadReadyRequest(ready))
+  }
+
+  /**
+   * Updates the Redux store with the control used on the gamepad,
+   * and the module it belongs to
+   * @param control 
+   */
+  const setMappingMode = (control: string) => {
+    const mappingConfig: ProteusMappingConfig = {
+      mode: resolveControllerMappingMode(control) as ProteusMappingConfig['mode'],
+      control,
+      module: resolveControllerModuleFromMapping(proteus.connectedController?.controllerConfiguration, control),
+    }
+    dispatch(setMappingModeRequest(mappingConfig))
+  }
+
+  /**
    * Handles a Unity event emitted from the ProteusEventHandler component
    * @param eventtName 
-   * @param jsonData 
+   * @param payload 
    */
-  const handleUnityEvent = (eventtName: string, jsonData: string) => {
+  const handleUnityEvent = (eventtName: string, payload: string) => {
     switch(eventtName){
     // Unity is ready
     case'ready':
       setUnityReady(true)
       break
+    // A connected gamepad has been initialised in Unity
+    case'gamepadReady':
+      setGamepadReady(true)
+      break
     // Unity finsihed rendering the controller
-    case'controllerRendered': 
+    case'controllerBuilt': 
+      sendMessage(
+        UNITY_GAME_OBJECT, 
+        'WorkspaceChange', 
+        activeWorkspace
+      )
       break
     // User used a button/joystick on the controller
     case'buttonPress':
+      setMappingMode(payload)
       break
     default:
       break
@@ -134,20 +174,22 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
    * debug screen (if in debug mode), then we send the controller configuration
    */
   useEffect(() => {
-    if(proteus.unityReady && proteus.connectedController?.controllerConfiguration){
-      if(process.env.REACT_APP_PROTEUS_DEBUG)
-        sendMessage(UNITY_GAME_OBJECT, 'ToggleDebug', 'show')
-
+    if(proteus.unityReady && proteus.connectedController?.controllerConfiguration?.modules){
       setTimeout(() => {
+        //if(process.env.REACT_APP_PROTEUS_DEBUG === 'true')
+        //sendMessage(UNITY_GAME_OBJECT, 'ToggleDebug', 'show')
+
         sendMessage(
           UNITY_GAME_OBJECT, 
           'BuildControllerConfig', 
-          JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules)
+          JSON.stringify({modules:proteus.connectedController?.controllerConfiguration?.modules})
         )
       }, 1000)
     }
   }, [proteus.connectedController?.controllerConfiguration, proteus.unityReady, sendMessage])
 
+  //console.log(proteus.connectedController?.controllerConfiguration?.modules)
+  //console.log(JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules).replaceAll('"', '\\"'))
   return (
     <>
       <div className='Proteus-shell'>
@@ -207,6 +249,8 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
                 unityRemoveEventListener={removeEventListener}
               />
               <UnityContainer 
+                isLoaded={isLoaded}
+                loadingProgression={loadingProgression}
                 unityProvider={unityProvider}
               />
               <ProteusHints 
@@ -215,7 +259,8 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
                 language={'en'}
               />
               <ProteusMapping 
-                mappingType={'button'} 
+                gamepadReady={proteus.gamepadReady}
+                mapping={proteus.mapping} 
                 workspace={activeWorkspace}
                 language={'en'}
               />
