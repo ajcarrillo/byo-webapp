@@ -19,7 +19,9 @@ import {
   PROTEUS_APP_SETTINGS_API_ERROR_MESSAGES,
   PROTEUS_GET_CONTROLLER_CONFIG_REQUEST,
   PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES,
-  PROTEUS_SET_UNITY_READY_REQUEST
+  PROTEUS_SET_UNITY_READY_REQUEST,
+  PROTEUS_SET_GAMEPAD_READY_REQUEST,
+  PROTEUS_SET_MAPPING_MODE_REQUEST
 } from './proteus-constants'
 import { 
   getModulesFailure,
@@ -30,12 +32,24 @@ import {
   getApplicationSettingsSuccess,
   getControllerConfigFailure,
   getControllerConfigSuccess,
-  setUnityReadySuccess
+  setUnityReadySuccess,
+  setGamepadReadySuccess,
+  setMappingModeSuccess
 } from './proteus-actions'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function* setUnityReadySaga(action: any){
   yield put(setUnityReadySuccess(action.ready))
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function* setGamepadReadySaga(action: any){
+  yield put(setGamepadReadySuccess(action.ready))
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function* setMappingModeSaga(action: any){
+  yield put(setMappingModeSuccess(action.mapping))
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
@@ -150,4 +164,12 @@ export function* getControllerConfigSagaWatcher(){
 
 export function* setUnityReadySagaWatcher(){
   yield takeLatest(PROTEUS_SET_UNITY_READY_REQUEST, setUnityReadySaga)
+}
+
+export function* setGamepadReadySagaWatcher(){
+  yield takeLatest(PROTEUS_SET_GAMEPAD_READY_REQUEST, setGamepadReadySaga)
+}
+
+export function* setMappingModeSagaWatcher(){
+  yield takeLatest(PROTEUS_SET_MAPPING_MODE_REQUEST, setMappingModeSaga)
 }

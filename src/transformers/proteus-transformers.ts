@@ -19,6 +19,17 @@ const transformApplicationSettingsFromDB = (input: {[key:string]: any}): Proteus
   return output
 }
 
+/**
+ * Inserts the correct version number into the url string
+ * @param url 
+ * @param version 
+ * @returns 
+ */
+const transformProteusWebGLFileVersion = (url: string, version: string) => {
+  return url.replace('####', version)
+}
+
 export {
-  transformApplicationSettingsFromDB
+  transformApplicationSettingsFromDB,
+  transformProteusWebGLFileVersion
 }

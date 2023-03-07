@@ -6,12 +6,14 @@ import { transformApplicationSettingsFromDB } from '../../transformers/proteus-t
 const initialState = {
   apiError: null,
   unityReady: false,
+  gamepadReady: false,
   modulesLoading: false,
   galleryLoading: false,
   settingsLoading: false,
   version: undefined,
   firmwareVersion: undefined,
   modules: null,
+  mapping: null,
   gallery: null,
   settings: null,
   controllerConnectionError: null,
@@ -53,6 +55,16 @@ export const proteusReducer = (state: IProteusState = initialState, action: any)
     return { ...state, unityReady: false }
   case Constants.PROTEUS_SET_UNITY_READY_SUCCESS:
     return { ...state, unityReady: action.payload }
+
+  case Constants.PROTEUS_SET_GAMEPAD_READY_REQUEST:
+    return { ...state, gamepadReady: false }
+  case Constants.PROTEUS_SET_GAMEPAD_READY_SUCCESS:
+    return { ...state, gamepadReady: action.payload }
+
+  case Constants.PROTEUS_SET_MAPPING_MODE_REQUEST:
+    return { ...state, mapping: null }
+  case Constants.PROTEUS_SET_MAPPING_MODE_SUCCESS:
+    return { ...state, mapping: action.payload }
 
   default:
     return state

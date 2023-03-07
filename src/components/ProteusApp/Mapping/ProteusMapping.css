@@ -23,4 +23,29 @@
   color: rgb(102,115,228);
   font-size: 1.1rem;
   font-weight: bold;
+  height: 10%;
+}
+
+.Proteus-mapping-initialise-text {
+  color: rgb(161,170,242);
+  line-height: 1.6rem;
+  padding-top: 1rem
+}
+
+.Proteus-mapping-initialise-container__red {
+  color: rgb(222, 19, 19);
+  font-size: 4rem
+}
+
+.Proteus-mapping-initialise-container__green {
+  color: rgb(15, 239, 67);
+  font-size: 4rem
+}
+
+.Proteus-mapping-inner-container {
+  padding: 1rem 2rem;
+}
+
+.Proteus-mapping-radio-spacer {
+  margin-top: .8rem
 }

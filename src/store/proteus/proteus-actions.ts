@@ -1,6 +1,6 @@
 import { APIError, APIResponse } from '../../types/api-types'
 import { ControllerConfiguration, Module } from '../../types/controller-types'
-import { ConnectedController } from '../../types/proteus-types'
+import { ConnectedController, ProteusMappingConfig } from '../../types/proteus-types'
 import {
   PROTEUS_GET_MODULES_REQUEST,
   PROTEUS_GET_MODULES_SUCCESS,
@@ -15,8 +15,22 @@ import {
   PROTEUS_GET_APP_SETTINGS_SUCCESS,
   PROTEUS_GET_APP_SETTINGS_FAILURE,
   PROTEUS_SET_UNITY_READY_REQUEST,
-  PROTEUS_SET_UNITY_READY_SUCCESS
+  PROTEUS_SET_UNITY_READY_SUCCESS,
+  PROTEUS_SET_GAMEPAD_READY_REQUEST,
+  PROTEUS_SET_GAMEPAD_READY_SUCCESS,
+  PROTEUS_SET_MAPPING_MODE_REQUEST,
+  PROTEUS_SET_MAPPING_MODE_SUCCESS
 } from './proteus-constants'
+
+export const setMappingModeRequest = (mapping: ProteusMappingConfig) => ({
+  type: PROTEUS_SET_MAPPING_MODE_REQUEST,
+  mapping,
+})
+
+export const setMappingModeSuccess = (mapping: ProteusMappingConfig) => ({
+  type: PROTEUS_SET_MAPPING_MODE_SUCCESS,
+  payload: mapping,
+})
 
 export const setUnityReadyRequest = (ready: boolean) => ({
   type: PROTEUS_SET_UNITY_READY_REQUEST,
@@ -25,6 +39,16 @@ export const setUnityReadyRequest = (ready: boolean) => ({
 
 export const setUnityReadySuccess = (ready: boolean) => ({
   type: PROTEUS_SET_UNITY_READY_SUCCESS,
+  payload: ready,
+})
+
+export const setGamepadReadyRequest = (ready: boolean) => ({
+  type: PROTEUS_SET_GAMEPAD_READY_REQUEST,
+  ready,
+})
+
+export const setGamepadReadySuccess = (ready: boolean) => ({
+  type: PROTEUS_SET_GAMEPAD_READY_SUCCESS,
   payload: ready,
 })
 
