@@ -21,7 +21,10 @@ import {
   PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES,
   PROTEUS_SET_UNITY_READY_REQUEST,
   PROTEUS_SET_GAMEPAD_READY_REQUEST,
-  PROTEUS_SET_MAPPING_MODE_REQUEST
+  PROTEUS_SET_MAPPING_MODE_REQUEST,
+  PROTEUS_GALLERY_ITEMS_API_ERROR_MESSAGES,
+  PROTEUS_GET_GALLERY_ITEMS_REQUEST,
+  PROTEUS_APPEND_GALLERY_ITEM_REQUEST
 } from './proteus-constants'
 import { 
   getModulesFailure,
@@ -34,8 +37,16 @@ import {
   getControllerConfigSuccess,
   setUnityReadySuccess,
   setGamepadReadySuccess,
-  setMappingModeSuccess
+  setMappingModeSuccess,
+  getGalleryItemsSuccess,
+  getGalleryItemsFailure,
+  appendGalleryItemSuccess
 } from './proteus-actions'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function* appendGalleryItemSaga(action: any){
+  yield put(appendGalleryItemSuccess(action.controller))
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function* setUnityReadySaga(action: any){
@@ -99,6 +110,31 @@ export function* getProteusModulesSaga(action: any){
   } 
   catch(e) {
     yield put(getModulesFailure(generateApiError('proteus/getProteusModulesSaga', undefined, PROTEUS_MODULES_API_ERROR_MESSAGES)))
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+export function* getProteusGalleryItemsSaga(action: any){
+  const token = getStoredAccessToken().accesToken
+  try {
+    const response: APIResponse = yield call(
+      apiCall, 
+      `${process.env.REACT_APP_API_BASE_URL}/proteus/gallery/controllers`,
+      'GET',
+      token,
+      'json'
+    )
+
+    if(response.status === 200){
+      yield put(getGalleryItemsSuccess(response.data))
+    }
+    else {
+      if(response.status === 401) updateStoredAccessToken('', false)
+      yield put(getGalleryItemsFailure(generateApiError('proteus/getProteusGalleryItemsSaga', response, PROTEUS_GALLERY_ITEMS_API_ERROR_MESSAGES)))
+    }
+  } 
+  catch(e) {
+    yield put(getGalleryItemsFailure(generateApiError('proteus/getProteusGalleryItemsSaga', undefined, PROTEUS_GALLERY_ITEMS_API_ERROR_MESSAGES)))
   }
 }
 
@@ -172,4 +208,12 @@ export function* setGamepadReadySagaWatcher(){
 
 export function* setMappingModeSagaWatcher(){
   yield takeLatest(PROTEUS_SET_MAPPING_MODE_REQUEST, setMappingModeSaga)
+}
+
+export function* getProteusGalleryItemsSagaWatcher(){
+  yield takeLatest(PROTEUS_GET_GALLERY_ITEMS_REQUEST, getProteusGalleryItemsSaga)
+}
+
+export function* appendGalleryItemSagaWatcher(){
+  yield takeLatest(PROTEUS_APPEND_GALLERY_ITEM_REQUEST, appendGalleryItemSaga)
 }

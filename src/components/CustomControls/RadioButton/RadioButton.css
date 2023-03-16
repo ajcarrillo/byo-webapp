@@ -11,7 +11,7 @@
   height: 18px;
   min-width: 18px;
   min-height: 18px;
-  border: 2px solid rgb(88,102,223);
+  border: 2px solid var(--byowave-custom-control-border-colour);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -23,12 +23,12 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: rgb(194,136,45);
+  background-color: var(--byowave-custom-control-inner-colour);
   transition: all 0.1s linear;
 }
 
 .RadioButton-unselected__small {
-  border: 2px solid #666;
+  border: 2px solid var(--byowave-custom-control-bg-colour);
 }
 
 .RadioButton-unselected-circle__small {
@@ -37,7 +37,7 @@
 }
 
 .RadioButton-label__small {
-  color: #666;
+  color: var(--byowave-custom-control-text-colour);
   padding-right: 8px;
   margin-left: 8px;
   font-size: .9rem;
@@ -58,8 +58,8 @@
   height: 26px;
   min-width: 26px;
   min-height: 26px;
-  border: 3px solid rgb(88,102,223);
-  background-color: rgb(58,56,81);
+  border: 3px solid var(--byowave-custom-control-border-colour);
+  background-color: var(--byowave-custom-control-bg-colour);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -68,15 +68,15 @@
 }
 
 .RadioButton-inner-circle__big {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background-color: rgb(135,146,247);
+  background-color: var(--byowave-custom-control-inner-colour);
   transition: all 0.1s linear;
 }
 
 .RadioButton-unselected__big {
-  border: 3px solid rgb(88,102,223);
+  border: 3px solid var(--byowave-custom-control-border-colour);
 }
 
 .RadioButton-unselected-circle__big {
@@ -85,7 +85,7 @@
 }
 
 .RadioButton-label__big {
-  color: rgb(161,170,242);
+  color: var(--byowave-custom-control-text-colour);
   padding-right: 8px;
   margin-left: 12px;
   font-size: 1.3rem;

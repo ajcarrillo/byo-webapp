@@ -24,6 +24,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
   const { proteus } = props
   const UNITY_GAME_OBJECT = 'ProteusInterface'
   const [activeWorkspace, setActiveWorkspace] = useState('home')
+  const [navigationDisabled, setNavigationDisabled] = useState(true)
 
   /**
    * Generate the Unity Provider and interface objects for the Unity WebGL
@@ -52,7 +53,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
       failIfMajorPerformanceCaveat: true,
       powerPreference: proteus.settings?.gpuHighPerformance ? 'high-performance' : 'low-power',
       premultipliedAlpha: true,
-      preserveDrawingBuffer: false,
+      preserveDrawingBuffer: true,
       stencil: proteus.settings?.multipass,
       desynchronized: false,
       xrCompatible: true,
@@ -65,13 +66,14 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
    * @param worksapce 
    */
   const handleClickWorkspace = (worksapce: string) => {
-    setActiveWorkspace(worksapce)
-
-    sendMessage(
-      UNITY_GAME_OBJECT, 
-      'WorkspaceChange', 
-      worksapce
-    )
+    if(!navigationDisabled){
+      setActiveWorkspace(worksapce)
+      sendMessage(
+        UNITY_GAME_OBJECT, 
+        'WorkspaceChange', 
+        worksapce
+      )      
+    }
   }
 
   /**
@@ -105,7 +107,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
   }
 
   /**
-   * Handles a Unity event emitted from the ProteusEventHandler component
+   * Handles events emitted from the ProteusEventHandler component
    * @param eventtName 
    * @param payload 
    */
@@ -126,6 +128,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
         'WorkspaceChange', 
         activeWorkspace
       )
+      setNavigationDisabled(false)
       break
     // User used a button/joystick on the controller
     case'buttonPress':
@@ -215,25 +218,25 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
               ) : (<div></div>)}
               <div>
                 <button 
-                  className={activeWorkspace === 'home' ? 'Proteus-toolbar-button__selected' : 'Proteus-toolbar-button'}
+                  className={navigationDisabled ? 'Proteus-toolbar-button__disabled' : activeWorkspace === 'home' ? 'Proteus-toolbar-button__selected' : 'Proteus-toolbar-button'}
                   onClick={() => handleClickWorkspace('home')}
                 >
                   <i className='fa-solid fa-mask'></i>
                 </button>
                 <button 
-                  className={activeWorkspace === 'mapping' ? 'Proteus-toolbar-button__selected' : 'Proteus-toolbar-button'} 
+                  className={navigationDisabled ? 'Proteus-toolbar-button__disabled' : activeWorkspace === 'mapping' ? 'Proteus-toolbar-button__selected' : 'Proteus-toolbar-button'} 
                   onClick={() => handleClickWorkspace('mapping')}
                 >
                   <i className='fa-solid fa-gamepad'></i>
                 </button>
                 <button 
-                  className={activeWorkspace === 'gallery' ? 'Proteus-toolbar-button__selected' : 'Proteus-toolbar-button'} 
+                  className={navigationDisabled ? 'Proteus-toolbar-button__disabled' : activeWorkspace === 'gallery' ? 'Proteus-toolbar-button__selected' : 'Proteus-toolbar-button'} 
                   onClick={() => handleClickWorkspace('gallery')}
                 >
                   <i className='fa-solid fa-image'></i>
                 </button>
                 <button 
-                  className={activeWorkspace === 'settings' ? 'Proteus-toolbar-button__selected' : 'Proteus-toolbar-button'} 
+                  className={navigationDisabled ? 'Proteus-toolbar-button__disabled' : activeWorkspace === 'settings' ? 'Proteus-toolbar-button__selected' : 'Proteus-toolbar-button'} 
                   onClick={() => handleClickWorkspace('settings')}
                 >
                   <i className='fa-solid fa-gear'></i>
@@ -265,6 +268,12 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
                 language={'en'}
               />
               <ProteusGallery 
+                //key={Date.now()}
+                gallery={proteus.gallery}
+                galleryLoading={proteus.galleryLoading}
+                takeScreenshot={takeScreenshot}
+                setNavigationDisabled={setNavigationDisabled}
+                controllerConfig={JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules)}
                 workspace={activeWorkspace}
                 language={'en'}
               />

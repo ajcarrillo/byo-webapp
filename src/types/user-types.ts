@@ -8,6 +8,7 @@ export type User = {
   firstName: string,
   lastName: string,
   languageCode: string,
+  hasDisabilities: boolean,
 }
 
 export type UserContact = {

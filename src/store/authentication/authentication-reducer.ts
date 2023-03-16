@@ -77,6 +77,9 @@ export const authenticationReducer = (state: IAuthenticationState = initialState
   case Constants.AUTH_PASSWORD_CHANGE_FAILURE:
     return { ...state, apiError: action.payload, authenticationLoading: false, passwordChanged: false }
 
+  case Constants.AUTH_RESET_API_ERROR:
+    return { ...state, apiError: null }
+
   default:
     return state
   }

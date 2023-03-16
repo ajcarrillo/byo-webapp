@@ -150,6 +150,8 @@ export function* signUpSaga(action: any){
         email: action.credentials.get('email'),
         password: action.credentials.get('password'),
         accountType: action.credentials.get('accountType'),
+        profileName: action.credentials.get('profileName'),
+        locale: action.credentials.get('locale'),
       },
       'json'
     )

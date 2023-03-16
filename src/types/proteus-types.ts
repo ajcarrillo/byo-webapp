@@ -37,7 +37,7 @@ export interface IProteusState {
   firmwareVersion: string | undefined,
   modules: Module[] | null,
   mapping: ProteusMappingConfig | null,
-  gallery: Controller[] | null,
+  gallery: {personal: Controller[], community: Controller[]} | null,
   settings: ProteusSettings | null,
   controllerConnectionError: string | null,
   connectedController: ConnectedController | null,

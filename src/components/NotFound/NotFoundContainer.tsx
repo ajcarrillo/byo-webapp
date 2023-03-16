@@ -11,7 +11,7 @@ const NotFoundContainer: React.FC = () => {
       <div className='NotFound-rightCol'>
         <h1>Whoops!</h1>
         <h3 style={{marginTop: '1rem'}}>Terribly sorry, but that page isn&apos;t available.</h3>
-        <p>Try clicking your browser&apos;s back button, and have another go.</p>
+        <p style={{marginTop: '2rem'}}>Try clicking your browser&apos;s back button, and have another go.</p>
       </div>
     </div>
   )

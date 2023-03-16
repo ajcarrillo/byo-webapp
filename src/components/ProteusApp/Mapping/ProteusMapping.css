@@ -23,10 +23,9 @@
   color: rgb(102,115,228);
   font-size: 1.1rem;
   font-weight: bold;
-  height: 10%;
 }
 
-.Proteus-mapping-initialise-text {
+.Proteus-mapping-text {
   color: rgb(161,170,242);
   line-height: 1.6rem;
   padding-top: 1rem
@@ -43,7 +42,7 @@
 }
 
 .Proteus-mapping-inner-container {
-  padding: 1rem 2rem;
+  padding: .6rem 1.6rem;
 }
 
 .Proteus-mapping-radio-spacer {

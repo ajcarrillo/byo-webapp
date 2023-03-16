@@ -20,7 +20,9 @@ import {
   getControllerConfigSagaWatcher,
   setUnityReadySagaWatcher,
   setGamepadReadySagaWatcher,
-  setMappingModeSagaWatcher
+  setMappingModeSagaWatcher,
+  getProteusGalleryItemsSagaWatcher,
+  appendGalleryItemSagaWatcher
 } from './proteus/proteus-sagas'
 
 export function* rootSaga(){
@@ -39,4 +41,6 @@ export function* rootSaga(){
   yield fork(setUnityReadySagaWatcher)
   yield fork(setGamepadReadySagaWatcher)
   yield fork(setMappingModeSagaWatcher)
+  yield fork(getProteusGalleryItemsSagaWatcher)
+  yield fork(appendGalleryItemSagaWatcher)
 }

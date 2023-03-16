@@ -30,6 +30,18 @@ export const proteusReducer = (state: IProteusState = initialState, action: any)
   case Constants.PROTEUS_GET_MODULES_FAILURE:
     return { ...state, apiError: action.payload, modulesLoading: false, version: undefined, firmwareVersion: undefined, modules: null }
 
+  case Constants.PROTEUS_GET_GALLERY_ITEMS_REQUEST:
+    return { ...state, apiError: null, galleryLoading: true, gallery: null }
+  case Constants.PROTEUS_GET_GALLERY_ITEMS_SUCCESS:
+    return { ...state, apiError: null, galleryLoading: false, gallery: action.payload.gallery }
+  case Constants.PROTEUS_GET_GALLERY_ITEMS_FAILURE:
+    return { ...state, apiError: action.payload, galleryLoading: false, gallery: null }
+
+  case Constants.PROTEUS_APPEND_GALLERY_ITEM_REQUEST:
+    return { ...state }
+  case Constants.PROTEUS_APPEND_GALLERY_ITEM_SUCCESS:
+    return { ...state, gallery: {community: state.gallery?.community || [], personal: [action.payload, ...state.gallery?.personal || []]} }
+
   case Constants.PROTEUS_GET_APP_SETTINGS_REQUEST:
     return { ...state, apiError: null, settingsLoading: true, settings: null }
   case Constants.PROTEUS_GET_APP_SETTINGS_SUCCESS:

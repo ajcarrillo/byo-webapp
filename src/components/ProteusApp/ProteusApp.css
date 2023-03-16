@@ -209,6 +209,22 @@
   margin-right: 7px;
 }
 
+.Proteus-toolbar-button__disabled {
+  height: 44px;
+  width: 44px;
+  background: none;
+  border: 1px solid rgb(38, 37, 51);
+  background-color: rgb(36, 35, 46);
+  color:rgb(149, 149, 149);
+  outline: none;
+  margin-right: 7px;
+}
+
+.Proteus-toolbar-button__disabled i {
+  font-size: 26px;
+  color: rgb(52, 49, 62);
+}
+
 .Proteus-toolbar-button__selected i {
   font-size: 26px;
   color: rgb(161,170,242);

@@ -1,8 +1,7 @@
 import { 
   ControllerConfiguration, 
   IModule, 
-  Module,
-  ModuleButton
+  Module
 } from '../types/controller-types'
 import { ConnectedController } from '../types/proteus-types'
 import { getXBoxButtonParamFromString, transformModuleListFromHardware } from '../transformers/controller-transformers'
@@ -89,7 +88,7 @@ const requestHardwareCofiguration = async (
       buttons: [
         {defaultMapping: 'leftAnalog', mappedTo: 'leftAnalog'},
         {defaultMapping: 'leftAnalogPress', mappedTo: 'leftAnalogPress'},
-        {defaultMapping: 'analogYStandard', mappedTo: 'analogYStandard'},
+        {defaultMapping: 'leftAnalogYStandard', mappedTo: 'leftAnalogYStandard'},
       ],
       rotation: 0,
       connectsToId: 0,
@@ -101,7 +100,7 @@ const requestHardwareCofiguration = async (
       buttons: [
         {defaultMapping: 'rightAnalog', mappedTo: 'rightAnalog'},
         {defaultMapping: 'rightAnalogPress', mappedTo: 'rightAnalogPress'},
-        {defaultMapping: 'analogYStandard', mappedTo: 'analogYInverted'},
+        {defaultMapping: 'rightAnalogYStandard', mappedTo: 'rightAnalogYInverted'},
       ],
       rotation: 0,
       connectsToId: 0,
@@ -164,8 +163,9 @@ const requestHardwareCofiguration = async (
     const config: ControllerConfiguration = {
       controller: {
         userAddress: getStoredUserAddress() || '',
+        userProfileName: '',
         controllerAddress: '',
-        imageAddress: '',
+        image: '',
         name: '',
         rating: 0,
       },

@@ -36,7 +36,7 @@ export const ScrollPanel = React.forwardRef<Scrollbars, IScrollPanelProps>((prop
       bottom: '2px',
       top: '2px',
       borderRadius: '3px',
-      backgroundColor: 'rgb(11,15,20)',
+      backgroundColor: 'rgb(23,24,32)',
     }
 
     return (

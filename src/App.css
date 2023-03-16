@@ -1,5 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@400;600;800;900&display=swap');
+
+:root {
+  --byowave-cta-colour: rgb(95, 106, 219);
+  --byowave-cta-hover-colour: rgb(142, 151, 249);
+  --byowave-cta-disabled-colour: rgb(78, 68, 53);
+  --byowave-alert-colour: rgb(124,15,208);
+  --byowave-alert-text-colour: rgb(216, 175, 248);
+  --byowave-cta-text-colour: rgb(220, 220, 220);
+  --byowave-cta-disabled-text-colour: rgb(126, 126, 126);
+  --byowave-paragraph-text-colour: rgb(178, 181, 212);
+  --byowave-heading-text-colour: rg(178, 181, 212);
+  --byowave-panel-bg-colour: rgb(38,40,56);
+  --byowave-panel-text-colour: rgb(102, 104, 128);
+  --byowave-panel-text-light-colour: rgb(103,106,133);
+  --byowave-inputfield-bg-colour: rgb(25, 26, 34);
+  --byowave-inputfield-text-colour: rgb(134, 139, 180);
+  --byowave-inputfield-text-disabled-colour: rgb(121, 121, 121);
+  --byowave-inputfield-placeholder-text-colour: rgb(63, 65, 82);
+  --byowave-custom-control-border-colour: rgb(88,102,223);
+  --byowave-custom-control-bg-colour: rgb(58,56,81);
+  --byowave-custom-control-inner-colour: rgb(135,146,247);
+  --byowave-custom-control-text-colour: rgb(132,136,168);
+}
+
+.Colour-orange-bright { color: rgb(194, 136, 45) }
+.Colour-white-bright { color: rgb(234, 234, 234) }
+.Colour-blue-bright { color: rgb(81,111,248) }
+
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +38,7 @@
 html {
   font-size: 14px;
   font-family: 'Ropa Sans', sans-serif;
-  background-color: rgb(26,27,36);
+  background-color: rgb(29,30,41);
   color: rgb(178,178,178);
 }
 
@@ -21,22 +49,33 @@ body {
 
 ul {
   list-style-type: none;
-  line-height: 1.4rem;
+  line-height: 1.6rem;
+  color: rgb(178, 181, 212)
+}
+
+li::before {
+  padding-right: 10px;
+  font-size: 20px;
+  content: '\2022';
+  color: var(--byowave-cta-colour);
 }
 
 a {
-  color: rgb(194, 136, 45);
+  color: var(--byowave-cta-colour);
   text-decoration: none;
 }
 
 a:hover {
-  color: rgb(218, 158, 62);
+  color: var(--byowave-cta-hover-colour);
   text-decoration: none ;
 }
 
-p { margin: 1rem 0; line-height: 1.3rem; }
+p { 
+  line-height: 1.6rem; 
+  color: var(--byowave-paragraph-text-colour);
+}
 
-h1, h2, h3 { color: rgb(220,220,220) }
+h1, h2, h3 { color: var(--byowave-heading-text-colour) }
 
 .App-container {
   width: 100%;
@@ -83,164 +122,78 @@ h1, h2, h3 { color: rgb(220,220,220) }
   transition: all 250ms linear 2s;
 }
 
-.Button-text {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  outline: none;
-  font-size: 1rem;
-  color: rgb(128,92,36);
-}
-
-.Button-text:hover {
-  color: rgb(172, 119, 34);
-}
-
-.Button-text-selected {
-  background: none;
-  border: none;
-  padding: 0;
-  outline: none;
-  font-size: 1rem;
-  color: rgb(172, 119, 34);
-  text-decoration: underline;
-}
-
-.Button-icon {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  outline: none;
-  font-size: .9rem;
-}
-
-.Button-icon i {
-  font-size: 1.6rem;
-  color: rgb(128,92,36);
-}
-
-.Button-icon i:hover {
-  color: rgb(172, 119, 34);
-}
-
-.Button-icon-small {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  outline: none;
-  font-size: .9rem;
-}
-
-.Button-icon-small i {
-  font-size: 1.2rem;
-  color: rgb(128,92,36);
-}
-
-.Button-icon-small i:hover {
-  color: rgb(172, 119, 34);
-}
-
-.Button-icon-small-selected {
-  background: none;
-  border: none;
-  padding: 0;
-  outline: none;
-  font-size: .9rem;
-}
-
-.Button-small {
-  background-color: rgb(128,92,36);
-  border: none;
-  border-radius: .3rem;
-  padding: .4rem .8rem;
-  color:rgb(212, 212, 212);
-  cursor: pointer;
-  outline: none;
-  font-size: .9rem;
-}
-
-.Button-small:hover {
-  background-color: rgb(172, 119, 34);
-}
-
 .Button-standard {
-  background-color: rgb(128,92,36);
+  background-color: var(--byowave-cta-colour);
   border: none;
   border-radius: .5rem;
-  padding: .5rem 1rem;
-  color:rgb(212, 212, 212);
+  padding: .6rem 1.2rem;
+  color:var(--byowave-cta-text-colour);
   cursor: pointer;
   outline: none;
+  font-weight: 600;
 }
 
 .Button-standard:hover {
-  background-color: rgb(172, 119, 34);
+  background-color: var(--byowave-cta-hover-colour);
 }
 
 .Button-standard-disabled {
-  background-color: rgb(78, 68, 53);
+  background-color: var(--byowave-cta-disabled-colour);
   border: none;
   border-radius: .5rem;
   padding: .5rem 1rem;
-  color:rgb(126, 126, 126);
+  color: var(--byowave-cta-disabled-text-colour);
   outline: none;
 }
 
-.Button-animated {
-  background-color: rgb(18,11,1);
-  border: 3px solid rgb(154, 90, 7);
-  border-radius: .5rem;
-  padding: .5rem 1rem;
-  color:rgb(204, 126, 0);
-  cursor: pointer;
-  outline: none;
-  transition: all 0.1s ease-in-out 0s
+::placeholder {
+  color: var(--byowave-inputfield-placeholder-text-colour);
+  padding: 0.6rem 0.5rem;
+  font-size: 1rem;
 }
-
-.Button-large:hover {
-  color:rgb(232, 153, 28);
-  transform: scale(1.03);
-  box-shadow: 0 0 1rem -0.8rem rgba(0, 0, 0, 0.8);
-}
-
-.Colour-orange-bright { color: rgb(194, 136, 45) }
-.Colour-white-bright { color: rgb(248, 248, 248) }
-.Colour-blue-bright { color: rgb(81,111,248) }
 
 .Textfield-dark {
-  background-color: rgb(33, 33, 33);
-  color: rgb(184, 184, 184);
+  background-color: var(--byowave-inputfield-bg-colour);
+  color: var(--byowave-inputfield-text-colour);
   border-radius: .4rem;
   border: none;
   outline: none;
-  padding: .5rem;
+  padding: 0.6rem 0.5rem;
+  font-size: 1rem;
 }
 
-.Textfield-dark-disabled { color: rgb(121, 121, 121)}
+.Textfield-dark-disabled { 
+  color: var(--byowave-inputfield-text-disabled-colour)
+}
 
 .PanelLabel {
-  background-color: rgb(47,47,47);
-  padding: .6rem;
-  font-size: .8rem;
-  color: rgb(140,140,140);
-  line-height: 1.2rem;
+  background-color: var(--byowave-panel-bg-colour);
+  padding: .8rem;
+  font-size: .9rem;
+  color: var(--byowave-panel-text-colour);
+  line-height: 1.4rem;
+  border-radius: 6px
+}
+
+.PanelInfo {
+  background: var(--byowave-panel-bg-colour);
+  color: var(--byowave-panel-text-light-colour);
+  border: 1px solid var(--byowave-alert-colour);
+  border-radius: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 1.2rem;
+  box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 5px;
 }
 
 .Formfield-error-inline {
-  background-color: rgb(50,50,50);
+  background-color: var(--byowave-alert-colour);
   padding: .4rem;
-  color: rgb(194, 105, 45);
+  color: var(--byowave-alert-text-colour);
   font-size: .9rem;
-}
-
-.Formfield-help-inline {
-  background-color: rgb(50,50,50);
-  padding: .4rem;
-  color: rgb(167, 167, 167);
-  font-size: .9rem;
+  border-radius: .4rem;
+  margin-top: 2px;
 }
 
 .Tab-item-off {
@@ -262,11 +215,6 @@ h1, h2, h3 { color: rgb(220,220,220) }
   padding: 0.5rem 1rem;
   border-radius: 6px 6px 0 0;
   background-image: linear-gradient(rgb(70,70,70), rgb(42,42,42));
-}
-
-::placeholder {
-  color: rgb(82, 82, 82);
-  padding: 0.5rem;
 }
 
 form {
@@ -373,7 +321,5 @@ input[type=range]::-moz-range-thumb:active {
 }
 
 @media screen and (max-width: 480px) {
-  html {
-    background-color: rgb(42,42,42);
-  }
+
 }

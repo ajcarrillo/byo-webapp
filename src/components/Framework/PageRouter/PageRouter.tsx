@@ -15,7 +15,7 @@ import HomePage from '../Pages/Home'
 import SignInPage from '../Pages/SignIn'
 import SignUpPage from '../Pages/SignUp'
 import SignOutPage from '../Pages/SignOut'
-// import PasswordResetPage from '../Pages/PasswordReset'
+import PasswordResetPage from '../Pages/PasswordReset'
 import ProteusAppPage from '../Pages/ProteusApp'
 
 import { IStoreState } from '../../../types/store-types'
@@ -96,11 +96,12 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
           <Route exact path="/" render={(p: any) => <HomePage {...p} />} />
           <Route path="/home" component={HomePage} />
           <Route path="/sign-in" render={(p) => <SignInPage {...p} tokenIsValid={tokenIsValid} />} />
-          <Route path="/sign-up" render={(p) => <SignUpPage {...p} />} />
+          <Route path="/sign-up" render={(p) => <SignUpPage {...p} locale={toolsHeaderConfig.device.locale} />} />
+          <Route path="/pass-reset" render={(p) => <PasswordResetPage {...p} />} />
           <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-          {/* <Route path="/pass-reset" render={(p) => <PasswordResetPage {...p} />} />
-          <Route path="/marketplace" render={(p) => <MarketplacePage {...p} />} />
+          
+          {/* <Route path="/marketplace" render={(p) => <MarketplacePage {...p} />} />
           <PrivateRoute path="/profile/:address" component={UserProfilePage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/dashboard" component={DashboardPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/checkout" component={CheckoutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
