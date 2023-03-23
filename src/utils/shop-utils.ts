@@ -1,56 +1,47 @@
-import { apiCall } from './api-utils'
-import { getStoredAccessToken, updateStoredAccessToken } from './user-utils'
 import { shoppingBasketObservable } from './events'
-import { ShoppingBasketItem } from '../types/shop-types'
+import { ShopBasketItem } from '../types/shop-types'
 
-export const updateBasket = async (item: ShoppingBasketItem) => {
+export const updateBasket = async (item: ShopBasketItem) => {
   // Stop observable from posting with initial empty object values
-  if(!item.itemAddress) return
-
-  const token = getStoredAccessToken().accesToken
-  const response = await apiCall(
-    `${process.env.REACT_APP_API_BASE_URL}/shop/basket/items/update`,
-    'POST',
-    token,
-    item,
-    'json'
-  )
-
-  if(response.status === 200){
-    shoppingBasketObservable.next(response.data.basketItems)
-    updateStoredBasketItems(response.data.basketItems)
+  if(!item.item.productAddress) return
+  
+  const basketItems = getStoredBasketItems()
+  let newBasket: ShopBasketItem[] = []
+  if(basketItems.length > 0){
+    if(item.amount === 0){
+      // remove it
+      newBasket = basketItems.filter(b => b.item.productAddress !== item.item.productAddress)
+    }else{
+      // update the amount
+      newBasket = basketItems.map(b => {
+        if(b.item.productAddress === item.item.productAddress){
+          b.amount = item.amount
+        }
+        return b
+      })
+    }
+  }else{
+    // add it
+    if(item.amount > 0)
+      newBasket = [...basketItems, item]
+    else
+      newBasket = basketItems
   }
-  else 
-  {
-    if(response.status === 401) updateStoredAccessToken('', false)
-    console.log(response)
-  }
+
+  updateStoredBasketItems(newBasket)  // Local Storage
+  shoppingBasketObservable.next(newBasket) // Observable
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-export const isItemInLocalBasket = (
-  item: {
-    category: string,
-    subCategory: string,
-    address: string
-  }
-) => {
-  const basketItems = getStoredBasketItems()
-
-  return basketItems.some((i: ShoppingBasketItem) => {
-    return i.itemCategory === item.category && i.itemSubCategory === item.subCategory && i.itemAddress === item.address
-  })
-}
-
-const updateStoredBasketItems = (items?: ShoppingBasketItem[]) => {
+const updateStoredBasketItems = (items?: ShopBasketItem[]) => {
   if(items)
     window.localStorage.setItem('shop.basketItems', btoa(JSON.stringify(items)))
   else
     window.localStorage.removeItem('shop.basketItems')
 }
   
-export const getStoredBasketItems = (): ShoppingBasketItem[] => {
+export const getStoredBasketItems = (): ShopBasketItem[] => {
   if(window.localStorage.getItem('shop.basketItems') === null){
     return []
   } else {

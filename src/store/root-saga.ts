@@ -1,5 +1,4 @@
 /* istanbul ignore file */
-
 import { fork } from '@redux-saga/core/effects'
 
 import { 
@@ -12,7 +11,6 @@ import {
   rquestPasswordResetSagaWatcher,
   changePasswordSagaWatcher
 } from './authentication/authentication-sagas'
-
 import { 
   getProteusModulesSagaWatcher,
   connectControllerSagaWatcher,
@@ -24,6 +22,10 @@ import {
   getProteusGalleryItemsSagaWatcher,
   appendGalleryItemSagaWatcher
 } from './proteus/proteus-sagas'
+import { 
+  getShopCustomerDetailsSagaWatcher, 
+  getShopProductsSagaWatcher 
+} from './shop/shop-sagas'
 
 export function* rootSaga(){
   yield fork(getUserSagaWatcher)
@@ -43,4 +45,6 @@ export function* rootSaga(){
   yield fork(setMappingModeSagaWatcher)
   yield fork(getProteusGalleryItemsSagaWatcher)
   yield fork(appendGalleryItemSagaWatcher)
+  yield fork(getShopProductsSagaWatcher)
+  yield fork(getShopCustomerDetailsSagaWatcher)
 }

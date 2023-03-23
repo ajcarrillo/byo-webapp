@@ -6,12 +6,9 @@ import { generateApiError } from '../../utils/error-utils'
 import { 
   getStoredAccessToken, 
   updateStoredAccessToken, 
-  updateStoredOnboardingSummary, 
   updateStoredUserAddress,
-  updateStoredUserEntitlements,
   updateStoredUserLocalisation,
-  updateStoredUserName,
-  updateStoredUserProfileType
+  updateStoredUserName
 } from '../../utils/user-utils'
 import { 
   AUTH_GET_USER_REQUEST,

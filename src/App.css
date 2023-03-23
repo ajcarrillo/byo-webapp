@@ -10,8 +10,9 @@
   --byowave-cta-text-colour: rgb(220, 220, 220);
   --byowave-cta-disabled-text-colour: rgb(126, 126, 126);
   --byowave-paragraph-text-colour: rgb(178, 181, 212);
-  --byowave-heading-text-colour: rg(178, 181, 212);
+  --byowave-heading-text-colour: rgb(178, 181, 212);
   --byowave-panel-bg-colour: rgb(38,40,56);
+  --byowave-panel-hover-bg-colour: rgb(51, 54, 75);
   --byowave-panel-text-colour: rgb(102, 104, 128);
   --byowave-panel-text-light-colour: rgb(103,106,133);
   --byowave-inputfield-bg-colour: rgb(25, 26, 34);
@@ -22,6 +23,7 @@
   --byowave-custom-control-bg-colour: rgb(58,56,81);
   --byowave-custom-control-inner-colour: rgb(135,146,247);
   --byowave-custom-control-text-colour: rgb(132,136,168);
+  --byowave-image-border-colour: rgb(81, 83, 103);
 }
 
 .Colour-orange-bright { color: rgb(194, 136, 45) }
