@@ -9,6 +9,7 @@ import { updateShoppingBasketObservable } from '../../utils/events'
 import ImageSlider from '../ImageSlider'
 import Spinner from '../Spinner'
 import './Shop.css'
+import BasketButton from '../CustomControls/BasketButton/BasketButton'
 
 export type ProductAddress = {
   address: string,
@@ -25,10 +26,16 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
 
   const { address } = useParams<ProductAddress>()
   const [selectedProduct, setSelectedProduct] = useState<ShopProduct>()
-
+  const [initAmount,setinitAmount] = useState(0)
   const selectProductFromStore = useCallback((pAddress: string) => {
     const product = shop.products?.find(p => p.productAddress === pAddress)
     if(product){
+      const basketItemsIndex = shop.products?.indexOf(product)
+      if(basketItemsIndex != null && shop.basketItems != null){
+        if(shop.basketItems[basketItemsIndex]?.amount !== undefined){
+          setinitAmount(shop.basketItems[basketItemsIndex]?.amount)
+        }
+      }
       setSelectedProduct(product)
     }
   }, [shop.products])
@@ -51,7 +58,7 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
     return <Redirect to='/404' />
   }
 
-  const doBasketThing = (amount: number) => {
+  const updateBasketCount = (amount: number) => {
     if(selectedProduct){
       const item: ShopBasketItem = {
         item: selectedProduct,
@@ -76,10 +83,7 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
           height='200px' 
           carouselClass='ShopProduct-image-carousel'
         />
-
-        <button onClick={() => doBasketThing(1)}>add 1</button>
-        <button onClick={() => doBasketThing(0)}>remove</button>
-        <button onClick={() => doBasketThing(2)}>add 2</button>
+        <BasketButton size={'big'} basketItems={initAmount} onChange={updateBasketCount}/>
       </div>
     </>
   )

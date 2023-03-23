@@ -1,0 +1,137 @@
+.BasketButton-container{
+    margin: 1rem 0 1rem 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.BasketButton-count-div{
+    background-color:rgb(58,56,81);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 0.6rem;
+}
+.BasketButton-count-span__small{
+    margin: 0 2.0rem 0 2.0rem;
+    font-size: 16px;
+}
+
+.BasketButton-count-span__big{
+    margin: 0 2.0rem 0 2.0rem;
+    font-size: 32px;
+}
+
+.BasketButton-standard__small{
+    background-color: rgb(95, 106, 219);;
+    border: none;
+    border-radius: .5rem;
+    padding: .6rem 1.2rem;
+    color:rgb(220, 220, 220);;
+    cursor: pointer;
+    outline: none;
+    font-weight: 100;
+    font-size: 16px;
+}
+
+.BasketButton-standard-left__small{
+    background-color: rgb(95, 106, 219);;
+    border: none;
+    border-radius: .5rem;
+    padding: .6rem 1.2rem;
+    color:rgb(220, 220, 220);;
+    cursor: pointer;
+    outline: none;
+    font-weight: 100;
+    font-size: 16px;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border-top-right-radius: 0.0rem;
+    border-bottom-right-radius: 0.0rem;
+}
+
+.BasketButton-standard-right__small{
+    background-color: rgb(95, 106, 219);;
+    border: none;
+    border-radius: .5rem;
+    padding: .6rem 1.2rem;
+    color:rgb(220, 220, 220);;
+    cursor: pointer;
+    outline: none;
+    font-weight: 100;
+    font-size: 16px;
+    border-top-left-radius: 0.0rem;
+    border-bottom-left-radius: 0.0rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.BasketButton-standard__small:hover {
+    background-color: rgb(142, 151, 249);
+}
+
+.BasketButton-standard-left__small:hover {
+    background-color: rgb(142, 151, 249);
+}
+
+.BasketButton-standard-right__small:hover {
+    background-color: rgb(142, 151, 249);
+}
+
+.BasketButton-standard__big{
+    background-color: rgb(95, 106, 219);;
+    border: none;
+    border-radius: .5rem;
+    padding: .6rem 1.2rem;
+    color:rgb(220, 220, 220);;
+    cursor: pointer;
+    outline: none;
+    font-weight: 100;
+    font-size: 32px;
+}
+
+.BasketButton-standard-left__big{
+    background-color: rgb(95, 106, 219);;
+    border: none;
+    border-radius: .5rem;
+    padding: .6rem 1.2rem;
+    color:rgb(220, 220, 220);;
+    cursor: pointer;
+    outline: none;
+    font-weight: 100;
+    font-size: 32px;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border-top-right-radius: 0.0rem;
+    border-bottom-right-radius: 0.0rem;
+}
+
+.BasketButton-standard-right__big{
+    background-color: rgb(95, 106, 219);;
+    border: none;
+    border-radius: .5rem;
+    padding: .6rem 1.2rem;
+    color:rgb(220, 220, 220);;
+    cursor: pointer;
+    outline: none;
+    font-weight: 100;
+    font-size: 32px;
+    border-top-left-radius: 0.0rem;
+    border-bottom-left-radius: 0.0rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.BasketButton-standard__big:hover {
+    background-color: rgb(142, 151, 249);
+  }
+
+.BasketButton-standard-left__big:hover {
+    background-color: rgb(142, 151, 249);
+}
+
+.BasketButton-standard-right__big:hover {
+    background-color: rgb(142, 151, 249);
+}
+
