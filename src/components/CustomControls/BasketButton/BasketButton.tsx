@@ -1,58 +1,44 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { ShopBasketItem, ShopProduct } from '../../../types/shop-types'
+import { updateShoppingBasketObservable } from '../../../utils/events'
 import './BasketButton.css'
 
 interface IBasketButtonProps {
-    size: string;
-    basketItems: number;
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    onChange: Function;
+    selectedProduct: ShopProduct | undefined;
+    basketItemCount: number;
   }
 
 export const BasketButton: React.FC<IBasketButtonProps> = (props: IBasketButtonProps) =>{
-  const { size,basketItems,onChange } = props
-  const [itemCount,setItemCount] = useState(basketItems)
-  const [showIncrementer,setIncrementer] = useState(false)
-  const transformButton = (): void => {
-    setIncrementer(true)
-  }
+  const { basketItemCount, selectedProduct } = props
 
-  useEffect(()=>{
-    if(itemCount <= 0){
-      setIncrementer(false)
+  /**
+   * Handles button clicks to update the basket amount
+   * @param amount The amount of items that should be in the basket
+   */
+  const handleClickUpdateBasket = (amount: number) => {
+    if(selectedProduct){
+      const item: ShopBasketItem = {
+        item: selectedProduct,
+        amount: amount < 0 ? 0 : amount,
+      }
+      updateShoppingBasketObservable.next(item)      
     }
-    onChange(itemCount)
-  },[itemCount])
-
-  useEffect(()=>{
-    if(props.basketItems > itemCount){
-      setItemCount(props.basketItems)
-      setIncrementer(true)
-    }
-  },[props.basketItems])
-
-  const addToCount = (): void => {
-    setItemCount(itemCount + 1)
-  }
-
-  const subtractFromCount = (): void => {
-    setItemCount(itemCount - 1)
   }
     
   return (
-    <div className='BasketButton-container'>
-      {showIncrementer ?(
-        <div className = 'BasketButton-count-div'>
-          <button className={`BasketButton-standard-left__${size}`} onClick={() => subtractFromCount()}>-</button>
-          <span className={`BasketButton-count-span__${size}`}>{itemCount}</span>
-          <button className={`BasketButton-standard-right__${size}`} onClick={() => addToCount()}>+</button>
+    <>
+      {basketItemCount > 0 ? (
+        <div className = 'BasketButton-container'>
+          <button className='Button-standard BasketButton-decrement' onClick={() => handleClickUpdateBasket(basketItemCount - 1)}>-</button>
+          <div className='BasketButton-amount'>{basketItemCount}</div>
+          <button className='Button-standard BasketButton-increment' onClick={() => handleClickUpdateBasket(basketItemCount + 1)}>+</button>
         </div>
-      )
-        :(
-          <button className={`BasketButton-standard__${size}`} onClick={() => transformButton()}>
-            Add to basket
-          </button>
-        )}
-    </div>
+      ) : (
+        <button className='Button-standard' onClick={() => handleClickUpdateBasket(1)}>
+          Add to basket
+        </button>
+      )}
+    </>
   )
 }
 

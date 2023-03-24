@@ -129,7 +129,7 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
   border: none;
   border-radius: .5rem;
   padding: .6rem 1.2rem;
-  color:var(--byowave-cta-text-colour);
+  color: var(--byowave-cta-text-colour);
   cursor: pointer;
   outline: none;
   font-weight: 600;
