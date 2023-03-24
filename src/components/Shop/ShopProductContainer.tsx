@@ -7,6 +7,7 @@ import { IStoreState } from '../../types/store-types'
 import { ShopBasketItem, ShopProduct } from '../../types/shop-types'
 import { updateShoppingBasketObservable } from '../../utils/events'
 import ImageSlider from '../ImageSlider'
+import BasketButton from '../CustomControls/BasketButton/BasketButton'
 import Spinner from '../Spinner'
 import './Shop.css'
 
@@ -25,18 +26,29 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
 
   const { address } = useParams<ProductAddress>()
   const [selectedProduct, setSelectedProduct] = useState<ShopProduct>()
+  const [selectedProductBasketAmount, setSelectedProductBasketAmount] = useState(0)
 
+  /**
+   * Grabs the requested product and basket item from the store
+   */
   const selectProductFromStore = useCallback((pAddress: string) => {
     const product = shop.products?.find(p => p.productAddress === pAddress)
-    if(product){
-      setSelectedProduct(product)
+    if(product) setSelectedProduct(product)
+    const basketProduct = shop.basketItems?.find(p => p.item.productAddress === pAddress)
+    if(basketProduct){
+      setSelectedProductBasketAmount(basketProduct.amount)
+    }else{
+      setSelectedProductBasketAmount(0)
     }
-  }, [shop.products])
+  }, [shop.basketItems, shop.products])
 
   useEffect(() => {
     selectProductFromStore(address)
   }, [address, selectProductFromStore])
 
+  /**
+   * Loads the shop products if they are not in the store
+   */
   const loadShopProducts = useCallback(() => {
     dispatch(getShopProductsRequest())
   }, [dispatch])
@@ -47,20 +59,13 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
     }
   }, [loadShopProducts, shop.products])
 
+  /**
+   * If product does not exist - redirect away
+   */
   if(shop.products && !shop.products.some(p => p.productAddress === address)){
     return <Redirect to='/404' />
   }
-
-  const doBasketThing = (amount: number) => {
-    if(selectedProduct){
-      const item: ShopBasketItem = {
-        item: selectedProduct,
-        amount,
-      }
-      updateShoppingBasketObservable.next(item)      
-    }
-  }
-
+  console.log(shop)
   return (
     <>
       {(shop.productsLoading) && (
@@ -77,9 +82,11 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
           carouselClass='ShopProduct-image-carousel'
         />
 
-        <button onClick={() => doBasketThing(1)}>add 1</button>
-        <button onClick={() => doBasketThing(0)}>remove</button>
-        <button onClick={() => doBasketThing(2)}>add 2</button>
+        <BasketButton 
+          basketItemCount={selectedProductBasketAmount} 
+          selectedProduct={selectedProduct}
+        />
+
       </div>
     </>
   )

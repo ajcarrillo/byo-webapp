@@ -1,0 +1,17 @@
+.BasketButton-container {
+    display: flex;
+    align-items: center;
+}
+
+.BasketButton-amount {
+    background-color: var(--byowave-custom-control-bg-colour);
+    padding: .6rem 1.2rem;
+}
+
+.BasketButton-decrement {
+    border-radius: .5rem 0 0 .5rem !important;
+}
+
+.BasketButton-increment {
+    border-radius: 0 .5rem .5rem 0 !important;
+}
