@@ -3,6 +3,15 @@
   margin: 3rem auto;
 }
 
+.Shop-breadcrumb-back {
+  margin-top: 1.4rem
+}
+
+.Shop-breadcrumb-back i {
+  color: var(--byowave-alert-colour);
+  padding-right: .6rem;
+}
+
 .ShopProductSummary-container {
   background-color: var(--byowave-panel-bg-colour);
   padding: 1rem;
@@ -58,6 +67,61 @@
 .ShopProductSummary-text-price-tax {
   color: var(--byowave-panel-text-colour);
   font-size: 1rem;
+}
+
+.ShopProduct-container {
+  display: flex;
+  margin: 2rem 0
+}
+
+.ShopProduct-container-leftCol {
+  width: 50%;
+}
+
+.ShopProduct-container-leftCol h3 {
+  font-weight: normal;
+  font-size: 1.4rem;
+  color: var(--byowave-heading-text-colour);
+}
+
+.ShopProduct-container-leftCol p:nth-of-type(1) {
+  color: var(--byowave-panel-text-colour);
+  font-size: .8rem;
+  padding-top: .2rem
+}
+
+.ShopProduct-container-leftCol p:nth-of-type(2) {
+  color: var(--byowave-paragraph-text-colour);
+  padding-top: 1rem
+}
+
+.ShopProduct-container-rightCol {
+  width: 50%;
+  padding-left: 2rem;
+}
+
+.ShopProduct-price-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ShopProduct-price-container h3 {
+  color: var(--byowave-cta-colour);
+  font-weight: 500;
+  font-size: 1.7rem;
+}
+
+.ShopProduct-price-container h3 > p {
+  color: var(--byowave-cta-dark-colour);
+  display: inline;
+  font-size: 1.2rem;
+  font-weight: lighter;
+}
+
+.ShopProduct-price-container p {
+  color: var(--byowave-panel-text-colour);
+  font-size: .8rem;
+  padding-top: .2rem
 }
 
 .ShopProduct-image-carousel {

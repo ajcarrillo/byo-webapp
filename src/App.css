@@ -3,14 +3,15 @@
 
 :root {
   --byowave-cta-colour: rgb(95, 106, 219);
+  --byowave-cta-dark-colour: rgb(71, 76, 133);
   --byowave-cta-hover-colour: rgb(142, 151, 249);
   --byowave-cta-disabled-colour: rgb(78, 68, 53);
+  --byowave-cta-text-colour: rgb(220, 220, 220);
+  --byowave-cta-disabled-text-colour: rgb(126, 126, 126);  
   --byowave-alert-colour: rgb(124,15,208);
   --byowave-alert-text-colour: rgb(216, 175, 248);
-  --byowave-cta-text-colour: rgb(220, 220, 220);
-  --byowave-cta-disabled-text-colour: rgb(126, 126, 126);
   --byowave-paragraph-text-colour: rgb(178, 181, 212);
-  --byowave-heading-text-colour: rgb(178, 181, 212);
+  --byowave-heading-text-colour: rgb(201, 204, 232);
   --byowave-panel-bg-colour: rgb(38,40,56);
   --byowave-panel-hover-bg-colour: rgb(51, 54, 75);
   --byowave-panel-text-colour: rgb(102, 104, 128);

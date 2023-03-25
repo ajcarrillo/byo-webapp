@@ -24,7 +24,7 @@ export const reactSelectCustomStyles = {
   }),
   indicatorsContainer: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: 'rgb(95,106,219)',
+    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-colour'),
     cursor: 'pointer',
     borderRadius: '0 6px 6px 0',
     padding: '0 4px'
@@ -80,7 +80,7 @@ export const reactSelectCustomStyles = {
   }),
   placeholder: (provided: any, state: any) => ({
     ...provided,
-    color: 'rgb(63, 65, 82)',
+    color: getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-placeholder-text-colour'),
     padding: '0.6rem 0.5rem',
   }),
   singleValue: (provided: any, state: any) => {

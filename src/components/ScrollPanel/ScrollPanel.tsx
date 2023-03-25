@@ -64,7 +64,7 @@ export const ScrollPanel = React.forwardRef<Scrollbars, IScrollPanelProps>((prop
     const viewStyle = {
       width: '6px',
       marginLeft: '3px',
-      backgroundColor: 'rgb(81,111,248)',
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-colour'),
       borderRadius: '3px'
     }
 

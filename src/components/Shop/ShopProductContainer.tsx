@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import parse from 'html-react-parser'
 
 import { getShopProductsRequest } from '../../store/shop/shop-actions'
 import { IStoreState } from '../../types/store-types'
-import { ShopBasketItem, ShopProduct } from '../../types/shop-types'
-import { updateShoppingBasketObservable } from '../../utils/events'
+import { ShopProduct } from '../../types/shop-types'
 import ImageSlider from '../ImageSlider'
 import BasketButton from '../CustomControls/BasketButton/BasketButton'
 import Spinner from '../Spinner'
@@ -75,17 +75,38 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
       <div className='Shop-container'>
         <h1><span className="Colour-blue-bright">Shop</span></h1>
 
-        <ImageSlider 
-          images={selectedProduct?.productImages || []} 
-          width='300px' 
-          height='200px' 
-          carouselClass='ShopProduct-image-carousel'
-        />
+        <div className='Shop-breadcrumb-back'>
+          <i className="fa-solid fa-circle-arrow-left"></i>
+          <a href='/shop' title='Back to products'>Back to products</a>
+        </div>
 
-        <BasketButton 
-          basketItemCount={selectedProductBasketAmount} 
-          selectedProduct={selectedProduct}
-        />
+        <div className='ShopProduct-container'>
+          <div className='ShopProduct-container-leftCol'>
+            <h3>{selectedProduct?.productName}</h3>
+            <p>Product code: {selectedProduct?.productCode}</p>
+            <p>{parse(selectedProduct?.productDescription || '')}</p>
+          </div>
+          <div className='ShopProduct-container-rightCol'>
+            <ImageSlider 
+              images={selectedProduct?.productImages || []} 
+              width='300px' 
+              height='200px' 
+              carouselClass='ShopProduct-image-carousel'
+            />
+            <div className='ShopProduct-price-container'>
+              <div>
+                <h3>{parse(`&#163;${selectedProduct?.productPrice}`)} <p>(excl VAT)</p></h3>
+                <p>Usually dispatched in {selectedProduct?.productDispatchTime}</p>
+              </div>
+              <div>
+                <BasketButton 
+                  basketItemCount={selectedProductBasketAmount} 
+                  selectedProduct={selectedProduct}
+                />
+              </div> 
+            </div>
+          </div>
+        </div>
 
       </div>
     </>

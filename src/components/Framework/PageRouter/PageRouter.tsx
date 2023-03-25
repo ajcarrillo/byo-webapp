@@ -14,6 +14,7 @@ import SignUpPage from '../Pages/SignUp'
 import SignOutPage from '../Pages/SignOut'
 import PasswordResetPage from '../Pages/PasswordReset'
 import ProteusAppPage from '../Pages/ProteusApp'
+import AccessibilityPage from '../Pages/Accessibility'
 import ShopPage from '../Pages/Shop'
 import ProductPage from '../Pages/Product'
 // import CheckoutPage from '../Pages/Checkout'
@@ -106,6 +107,7 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
           <Route path="/pass-reset" render={(p) => <PasswordResetPage {...p} />} />
           <Route path="/shop" render={(p) => <ShopPage {...p} />} />
           <Route path="/product/:address" render={(p) => <ProductPage {...p} />} />
+          <Route path="/accessibility" render={(p) => <AccessibilityPage {...p} />} />
           <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <Route path="/404" component={(p: any) => <NotFoundPage {...p} />} />

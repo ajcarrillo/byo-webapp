@@ -1,0 +1,44 @@
+.Accessibility-container {
+  width: 80%; 
+  margin: 3rem auto;
+}
+
+.Accessibility-colours-container {
+  display: flex; 
+  padding-top: 2rem
+}
+
+.Accessibility-colours-leftCol {
+  width: 50%
+}
+
+.Accessibility-colours-rightCol {
+  width: 50%;
+  padding-left: 3rem;
+  margin-left: 3rem;
+  border-left: 2px solid rgb(41, 41, 65);
+}
+
+.Accessibility-picker-container {
+  margin-top: 1.4rem;
+  padding: 1rem;
+  background-color: rgb(23, 22, 31);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.Accessibility-button-container {
+  margin-top: 1.4rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Accessibility-save-panel {
+  padding: 1rem; 
+  margin-top: 1rem; 
+  background-color: var(--byowave-panel-bg-colour);
+  border-radius: 5px; 
+  font-weight: bold;
+   text-align: center
+}
