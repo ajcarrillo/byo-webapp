@@ -55,16 +55,34 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
           </div>
         </Link>
 
+        <Link to="/shop" title="Shop">
+          <button className='Button-header'>
+            <span className="App-header-icon">
+              <i className={'fa-solid fa-cart-shopping'}></i>
+              <span>Shop</span>
+            </span>
+          </button>
+        </Link>
+
+        <Link to="/accessibility" title="Accessibility">
+          <button className='Button-header'>
+            <span className="App-header-icon">
+              <i className={'fa-solid fa-palette'}></i>
+              <span>Accessibility</span>
+            </span>
+          </button>
+        </Link>
+
         {!tokenIsValid && (
           <>
-            {/* <Link to="/sign-up" title="Sign Up">
+            <Link to="/sign-up" title="Sign Up">
               <button className='Button-header'>
                 <span className="App-header-icon">
-                  <i className={'fa-solid fa-arrow-up-from-bracket'}></i>
+                  <i className={'fa-solid fa-user'}></i>
                   <span>Sign Up</span>
                 </span>
               </button>
-            </Link> */}
+            </Link>
 
             <Link to="/sign-in" title="Sign In">
               <button className='Button-header'>
@@ -108,16 +126,6 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
 
             {moduleIcons}
 
-            <Link to="/checkout" title="Shopping Basket">
-              <button className='Button-header'>
-                <span className="App-header-icon">
-                  <i className={'fa-solid fa-basket-shopping'}></i>
-                  <span>Basket</span>
-                </span>
-              </button>
-              {/* {props.basketItemCount > 0 && <div className="App-header-basket-icon-badge">{props.basketItemCount}</div>} */}
-            </Link>
-
             <Link to="/sign-out" title="Sign Out">
               <button className='Button-header'>
                 <span className="App-header-icon">
@@ -128,6 +136,18 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
             </Link>
           </>
         )}
+
+        <Link to="/checkout" title="Shopping Basket">
+          <div style={{position: 'relative'}}>
+            <button className='Button-header'>
+              <span className="App-header-icon">
+                <i className={'fa-solid fa-basket-shopping'}></i>
+                <span>Basket</span>
+              </span>
+            </button>
+            {props.basketItemCount > 0 && <div className="App-header-basket-icon-badge">{props.basketItemCount}</div>}            
+          </div>
+        </Link>
       </div>
     </header>
   )

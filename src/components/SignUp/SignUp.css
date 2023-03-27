@@ -53,8 +53,8 @@
 }
 
 .SignUp-help-container {
-  background: rgb(38, 40, 56);
-  color: rgb(103,106,133);
+  background: var(--byowave-panel-bg-colour);
+  color: var(--byowave-panel-text-colour);
   border: 1px solid var(--byowave-alert-colour);
   border-radius: 10px;
   width: 100%;
@@ -69,7 +69,7 @@
 }
 
 .SignUp-help-container h3 {
-  color: rgb(134, 138, 173);
+  color: var(--byowave-heading-text-colour);
   margin-bottom: .6rem;
 }
 

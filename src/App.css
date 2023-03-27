@@ -25,11 +25,12 @@
   --byowave-custom-control-inner-colour: rgb(135,146,247);
   --byowave-custom-control-text-colour: rgb(132,136,168);
   --byowave-image-border-colour: rgb(81, 83, 103);
+  --byowave-scrollbar-bg-colour: rgb(11,15,32);
+  --byowave-scrollbar-handle-colour: rgb(81,111,248);
 }
 
-.Colour-orange-bright { color: rgb(194, 136, 45) }
-.Colour-white-bright { color: rgb(234, 234, 234) }
-.Colour-blue-bright { color: rgb(81,111,248) }
+.Colour-white-bright { color: var(--byowave-heading-text-colour) }
+.Colour-blue-bright { color: var(--byowave-cta-colour) }
 
 * {
   margin: 0;
@@ -297,7 +298,7 @@ input[type=range]::-moz-range-thumb:active {
 /* Works on Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgb(81,111,248) rgb(11,15,32);
+  scrollbar-color: var(--byowave-scrollbar-handle-colour) var(--byowave-scrollbar-bg-colour);
 }
 
 /* Works on Chrome, Edge, and Safari */
@@ -306,13 +307,13 @@ input[type=range]::-moz-range-thumb:active {
 }
 
 *::-webkit-scrollbar-track {
-  background: rgb(11,15,32);
+  background: var(--byowave-scrollbar-bg-colour);
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgb(81,111,248);
+  background-color: var(--byowave-scrollbar-handle-colour);
   border-radius: 20px;
-  border: 3px solid rgb(11,15,32);
+  border: 3px solid var(--byowave-scrollbar-bg-colour);
 }
 
 @media screen and (max-width: 1024px) {

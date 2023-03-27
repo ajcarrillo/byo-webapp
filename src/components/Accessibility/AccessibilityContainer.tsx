@@ -3,13 +3,19 @@ import { RgbColorPicker } from 'react-colorful'
 import Select, { SingleValue } from 'react-select'
 
 import { AccessibilitySiteColour } from '../../types/disability-types'
-import { applyDefaultColours, getSiteColourList, updateStoredAccessibilityColours } from '../../utils/accessibility-utils'
+import { 
+  applyDefaultColours, 
+  getSiteColourList, 
+  applySiteColourTemplate, 
+  getSiteColourTemplateList, 
+  updateStoredAccessibilityColours 
+} from '../../utils/accessibility-utils'
 import { Checkbox } from '../CustomControls'
 import { reactSelectCustomStyles } from '../CustomControls/SelectDropdown/custom-styles'
 import { ReactSelectInput } from '../CustomControls/SelectDropdown/ReactSelectInput'
 import './Accessibility.css'
 
-type ColourType = {
+type SelectType = {
   readonly value: string,
   readonly label: string,
 }
@@ -21,10 +27,17 @@ type RGBColour = {
 }
 
 const AccessibilityContainer: React.FC = () => {
+  const [selectedTab, setSelectedTab] = useState('template')
+
   const [defaultColours, setDefaultColours] = useState<AccessibilitySiteColour[]>()
-  const [colourSelectionList, setColourSelectionList] = useState<ColourType[]>([])
-  const [selectedColourName, setSelectedColourName] = useState<ColourType | null>(null)
+
+  const [colourSelectionList, setColourSelectionList] = useState<SelectType[]>([])
+  const [selectedColourName, setSelectedColourName] = useState<SelectType | null>(null)
   const [selectedColour, setSelectedColour] = useState<RGBColour>({r: 255, g: 255, b: 255})
+
+  const [templateSelectionList, setTemplateSelectionList] = useState<SelectType[]>([])
+  const [selectedTemplateName, setSelectedTemplateName] = useState<SelectType | null>(null)
+
   const [saveComplete, setSaveComplete] = useState(false)
   const [dummyCheckbox, setDummyCheckbox] = useState('no')
 
@@ -43,11 +56,25 @@ const AccessibilityContainer: React.FC = () => {
   }
 
   /**
+   * Generates a list of templates to select from
+   */
+  const generateTemplateSelectList = useCallback(() => {
+    const templates = getSiteColourTemplateList()
+    const list: SelectType[] = templates.map(t => {
+      return {
+        value: t.value,
+        label: t.label,
+      }
+    })    
+    setTemplateSelectionList(list)
+  }, [])
+
+  /**
    * Generates a list of colours to select from
    */
   const generateColourSelectList = useCallback(() => {
     if(defaultColours){
-      const list: ColourType[] = defaultColours.map(c => {
+      const list: SelectType[] = defaultColours.map(c => {
         return {
           value: c.name,
           label: c.desc,
@@ -68,19 +95,11 @@ const AccessibilityContainer: React.FC = () => {
     setDefaultColours(defaultColourList)
   }
 
-  useEffect(() => {
-    if(!defaultColours) getSiteDefaultColours()
-  }, [defaultColours])
-
-  useEffect(() => {
-    if(defaultColours && colourSelectionList.length === 0) generateColourSelectList()
-  }, [colourSelectionList, defaultColours, generateColourSelectList])
-
   /**
    * Handles the colour selection
    * @param value 
    */
-  const handleColourSelectionChange = (value: SingleValue<ColourType>) => {
+  const handleColourSelectionChange = (value: SingleValue<SelectType>) => {
     setSelectedColourName(value)
     setSelectedColour(getSelectedColour(value?.value || ''))
   }
@@ -91,6 +110,15 @@ const AccessibilityContainer: React.FC = () => {
    */
   const handleColourChange = (value: RGBColour) => {
     document.documentElement.style.setProperty(`--${selectedColourName?.value}`, `rgb(${value.r},${value.g},${value.b})`)
+  }
+
+  /**
+   * Handles the colour selection
+   * @param value 
+   */
+  const handleTemplateSelectionChange = (value: SingleValue<SelectType>) => {
+    setSelectedTemplateName(value)
+    applySiteColourTemplate(value?.value || '')
   }
 
   /**
@@ -110,12 +138,14 @@ const AccessibilityContainer: React.FC = () => {
         setSaveComplete(true)
         setSelectedColourName(null)
         setSelectedColour(getSelectedColour(''))
+        setSelectedTemplateName(null)
       }      
     }else{
       updateStoredAccessibilityColours()
       applyDefaultColours()
       setSelectedColourName(null)
       setSelectedColour(getSelectedColour(''))
+      setSelectedTemplateName(null)
     }
   }
 
@@ -126,6 +156,26 @@ const AccessibilityContainer: React.FC = () => {
   const handleClickDummyCheckbox = (value: string) => {
     setDummyCheckbox(value)
   }
+
+  /**
+   * Switches gallery tabs
+   * @param tab 
+   */
+  const handleClickTab = (tab: string) => {
+    if(selectedTab !== tab) setSelectedTab(tab)
+  }
+
+  useEffect(() => {
+    if(!defaultColours) getSiteDefaultColours()
+  }, [defaultColours])
+
+  useEffect(() => {
+    if(defaultColours && colourSelectionList.length === 0) generateColourSelectList()
+  }, [colourSelectionList, defaultColours, generateColourSelectList])
+
+  useEffect(() => {
+    if(templateSelectionList.length === 0) generateTemplateSelectList()
+  }, [generateTemplateSelectList, templateSelectionList.length])
 
   return (
     <div className={'App-container'}>
@@ -186,41 +236,79 @@ const AccessibilityContainer: React.FC = () => {
           </div>
 
           <div className='Accessibility-colours-rightCol'>
-            <div style={{zIndex: '20', position: 'relative'}}>
-              <Select 
-                key={Date.now()}
-                styles={reactSelectCustomStyles} 
-                options={colourSelectionList} 
-                value={selectedColourName} 
-                onChange={(opt) => handleColourSelectionChange(opt)} 
-                placeholder='Select a colour to change' 
-                components={{ Input: ReactSelectInput }} 
-              />              
-            </div>
-            <div className='Accessibility-picker-container'>
-              <RgbColorPicker color={selectedColour} onChange={handleColourChange} />
-            </div>
-            <div className='Accessibility-button-container'>
-              <button 
-                className='Button-standard' 
-                onClick={() => handleClickSaveColours(true)}
+            <div className='Accessibility-tabs-container'>
+              <div 
+                className={`Accessibility-tab${selectedTab === 'template' ? '__selected' : ''}`} 
+                style={{marginRight: '3px'}} 
+                onClick={() => handleClickTab('template')}
               >
-                Save new colours
-              </button>
-              <button 
-                className='Button-standard' 
-                onClick={() => handleClickSaveColours(false)}
+                Template
+              </div>
+              <div 
+                className={`Accessibility-tab${selectedTab === 'custom' ? '__selected' : ''}`} 
+                onClick={() => handleClickTab('custom')}
               >
-                Restore default colours
-              </button>
+                Custom
+              </div>
             </div>
 
-            <div 
-              className={`Accessibility-save-panel ${saveComplete ? 'AlertShow' : 'AlertHide'}`} 
-              onTransitionEnd={() => setSaveComplete(false)}
-            >
-              New Colours Saved
+            <div className='Accessibility-colours-rightCol-inner'>
+              {selectedTab === 'template' ? (
+                <div>
+                  <div style={{zIndex: '20', position: 'relative'}}>
+                    <Select 
+                      key={Date.now()}
+                      styles={reactSelectCustomStyles} 
+                      options={templateSelectionList} 
+                      value={selectedTemplateName} 
+                      onChange={(opt) => handleTemplateSelectionChange(opt)} 
+                      placeholder='Select a colour template' 
+                      components={{ Input: ReactSelectInput }} 
+                    />              
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div style={{zIndex: '20', position: 'relative'}}>
+                    <Select 
+                      key={Date.now()}
+                      styles={reactSelectCustomStyles} 
+                      options={colourSelectionList} 
+                      value={selectedColourName} 
+                      onChange={(opt) => handleColourSelectionChange(opt)} 
+                      placeholder='Select a colour to change' 
+                      components={{ Input: ReactSelectInput }} 
+                    />              
+                  </div>
+                  <div className='Accessibility-picker-container'>
+                    <RgbColorPicker color={selectedColour} onChange={handleColourChange} />
+                  </div>
+                </div>
+              )}
+
+              <div className='Accessibility-button-container'>
+                <button 
+                  className='Button-standard' 
+                  onClick={() => handleClickSaveColours(false)}
+                >
+                  Restore default colours
+                </button>
+                <button 
+                  className='Button-standard' 
+                  onClick={() => handleClickSaveColours(true)}
+                >
+                  Save
+                </button>
+              </div>
+
+              <div 
+                className={`Accessibility-save-panel ${saveComplete ? 'AlertShow' : 'AlertHide'}`} 
+                onTransitionEnd={() => setSaveComplete(false)}
+              >
+                New Colours Saved
+              </div>
             </div>
+
           </div>
         </div>
 

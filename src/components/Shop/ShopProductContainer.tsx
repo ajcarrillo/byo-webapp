@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useParams, Redirect } from 'react-router-dom'
+import { useParams, Redirect, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import parse from 'html-react-parser'
 
@@ -65,7 +65,7 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
   if(shop.products && !shop.products.some(p => p.productAddress === address)){
     return <Redirect to='/404' />
   }
-  console.log(shop)
+
   return (
     <>
       {(shop.productsLoading) && (
@@ -77,7 +77,7 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
 
         <div className='Shop-breadcrumb-back'>
           <i className="fa-solid fa-circle-arrow-left"></i>
-          <a href='/shop' title='Back to products'>Back to products</a>
+          <Link to='/shop' title='Back to products'>Back to products</Link>
         </div>
 
         <div className='ShopProduct-container'>

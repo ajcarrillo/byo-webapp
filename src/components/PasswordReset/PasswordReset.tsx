@@ -125,7 +125,7 @@ export const PasswordReset: React.FC = () => {
           {passwordChanged ? (
             <div className="PasswordReset-container">
               <div className="PasswordReset-leftCol">
-                <h1><span className="Colour-blue-bright">Pass</span><span className="Colour-white-bright">word</span> Reset</h1>
+                <h1><span className="Colour-blue-bright">Password</span>Reset</h1>
                 <p style={{marginTop: '2rem'}}>That&apos;s all done for you. You can now <Link to="/sign-in" title='Sign In'>sign in</Link> with your new password.</p>
               </div>
             </div>
@@ -133,7 +133,7 @@ export const PasswordReset: React.FC = () => {
             <div className="PasswordReset-container">
               <div className="PasswordReset-leftCol">
                 <form onSubmit={(e) => e.preventDefault()} autoComplete='off'>
-                  <h1><span className="Colour-blue-bright">Pass</span><span className="Colour-white-bright">word</span> Reset</h1>
+                  <h1><span className="Colour-blue-bright">Password</span>Reset</h1>
                   <div className="PanelLabel" style={{marginTop: '1.4rem', marginBottom: '.8rem'}}>Please enter your new password, which must contain the following:</div>
                   <div className="PanelInfo" style={{marginBottom: '.2rem', boxShadow: 'none'}}>{passwordDescription().join(', ')}</div>
                   
@@ -201,7 +201,7 @@ export const PasswordReset: React.FC = () => {
           {passwordResetRequested ? (
             <div className="PasswordReset-container">
               <div className="PasswordReset-leftCol">
-                <h1><span className="Colour-blue-bright">Pass</span><span className="Colour-white-bright">word</span> Reset</h1>
+                <h1><span className="Colour-blue-bright">Password</span>Reset</h1>
                 <p style={{marginTop: '2rem'}}>We just emailed you with instructions to reset your password.</p>
                 <p style={{marginTop: '1rem'}}>If you didn&apos;t receive our email, please try the following:</p>
                 <ul style={{marginTop: '1rem'}}>
@@ -213,7 +213,7 @@ export const PasswordReset: React.FC = () => {
           ) : (
             <div className="PasswordReset-container">
               <div className="PasswordReset-leftCol">
-                <h1><span className="Colour-blue-bright">Pass</span><span className="Colour-white-bright">word</span> Reset</h1>
+                <h1><span className="Colour-blue-bright">Password</span>Reset</h1>
                 <div className="PanelLabel" style={{marginTop: '1.4rem', marginBottom: '.8rem'}}>To reset your password, please submit the email address connected to your account.</div>
                 
                 <input

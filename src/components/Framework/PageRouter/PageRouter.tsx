@@ -89,7 +89,7 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
     profileType: userProfileType,
     userAddress: address,
     entitlements: userEntitlements,
-    basketItemCount: basketItems.length,
+    basketItemCount: basketItems.length > 0 ? basketItems.map(item => item.amount).reduce((prev, next) => prev + next) : 0,
     device,
   }
 

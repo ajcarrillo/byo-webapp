@@ -1,6 +1,6 @@
 .Accessibility-container {
   width: 80%; 
-  margin: 3rem auto;
+  margin: 2rem auto;
 }
 
 .Accessibility-colours-container {
@@ -17,6 +17,11 @@
   padding-left: 3rem;
   margin-left: 3rem;
   border-left: 2px solid rgb(41, 41, 65);
+}
+
+.Accessibility-colours-rightCol-inner {
+  padding: 1rem;
+  background-color: rgb(34,33,51); 
 }
 
 .Accessibility-picker-container {
@@ -41,4 +46,34 @@
   border-radius: 5px; 
   font-weight: bold;
    text-align: center
+}
+
+.Accessibility-tabs-container {
+  width: 100%;
+  display: flex;
+}
+
+.Accessibility-tab {
+  border-radius: 20px 20px 0 0;
+  background-color: rgb(42,41,62);
+  color: rgb(99,102,147);
+  width: 121px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer
+}
+
+.Accessibility-tab:hover {
+  color: rgb(114,118,169);
+  font-weight: bold;
+}
+
+.Accessibility-tab__selected {
+  border-radius: 20px 20px 0 0;
+  background-color: rgb(34,33,51);
+  color: rgb(114,118,169);
+  width: 121px;
+  padding: 1rem;
+  font-weight: bold;
+  text-align: center;
 }

@@ -7,7 +7,7 @@ export const reactSelectCustomStyles = {
   }),
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: 'rgb(25,26,34)',
+    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-bg-colour'),
     border: 'none', 
     outline: 0,
     minHeight: '10px',
@@ -47,7 +47,7 @@ export const reactSelectCustomStyles = {
   menu: (provided: any, state: any) => ({
     ...provided,
     width: '100%',
-    backgroundColor: 'rgb(38,40,56)',
+    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-panel-bg-colour'),
     padding: 5,
   }),
   multiValue: (provided: any, state: any) => ({
@@ -72,10 +72,10 @@ export const reactSelectCustomStyles = {
     cursor: state.isDisabled ? 'default' : 'pointer',
     backgroundColor: 'none',
     borderBottom: '1px dotted rgb(50,50,50)',
-    color: state.isDisabled ? 'rgb(80, 80, 80)' : 'rgb(134, 139, 180)',
+    color: state.isDisabled ? 'rgb(80, 80, 80)' : getComputedStyle(document.documentElement).getPropertyValue('--byowave-panel-text-colour'),
     padding: '.5rem',
     '&:hover': {
-      backgroundColor: state.isDisabled ? 'none' : 'rgb(54, 56, 77)',
+      backgroundColor: state.isDisabled ? 'none' : getComputedStyle(document.documentElement).getPropertyValue('--byowave-panel-hover-bg-colour'),
     },
   }),
   placeholder: (provided: any, state: any) => ({
@@ -86,7 +86,7 @@ export const reactSelectCustomStyles = {
   singleValue: (provided: any, state: any) => {
     const opacity = state.isDisabled ? 0.5 : 1
     // const transition = 'opacity 300ms';
-    const color = 'rgb(134, 139, 180)'
+    const color = getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-text-colour')
     const padding = '0.6rem 0.5rem'
 
     // return { ...provided, opacity, transition, color };
