@@ -1,0 +1,46 @@
+.HeaderHamburgerMenu-container {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  z-index: 50;
+  background-color: var(--byowave-panel-bg-colour);
+  border-top: 1px solid rgb(12, 12, 14);
+  border-radius: 0 0 0 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) -5px 0px 5px;
+}
+
+.HeaderHamburgerMenu-item {
+  padding: 0 1.6rem;
+}
+
+.HeaderHamburgerMenu-item:hover {
+  background-color: var(--byowave-panel-hover-bg-colour);
+}
+
+.HeaderHamburgerMenu-item-button {
+  height: 34px;
+  background: none;
+  border: none;
+  color: var(--byowave-cta-colour);
+  cursor: pointer;
+  outline: none;
+  transition: .3s;
+}
+
+.HeaderHamburgerMenu-item-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  color: var(--byowave-cta-colour);
+}
+
+.HeaderHamburgerMenu-item-icon span {
+  font-size: 1rem;
+  padding-left: 6px;
+}
+
+.HeaderHamburgerMenu-item-icon i {
+  font-size: 14px;
+  color: var(--byowave-cta-colour);
+}

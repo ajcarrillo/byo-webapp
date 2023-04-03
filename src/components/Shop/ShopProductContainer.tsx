@@ -7,7 +7,7 @@ import { getShopProductsRequest } from '../../store/shop/shop-actions'
 import { IStoreState } from '../../types/store-types'
 import { ShopProduct } from '../../types/shop-types'
 import ImageSlider from '../ImageSlider'
-import BasketButton from '../CustomControls/BasketButton/BasketButton'
+import { BasketButton } from '../CustomControls'
 import Spinner from '../Spinner'
 import './Shop.css'
 
@@ -89,19 +89,18 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
           <div className='ShopProduct-container-rightCol'>
             <ImageSlider 
               images={selectedProduct?.productImages || []} 
-              width='300px' 
-              height='200px' 
               carouselClass='ShopProduct-image-carousel'
             />
             <div className='ShopProduct-price-container'>
               <div>
-                <h3>{parse(`&#163;${selectedProduct?.productPrice}`)} <p>(excl VAT)</p></h3>
+                <h3>{parse(`&euro;${selectedProduct?.productPrice}`)}</h3>
                 <p>Usually dispatched in {selectedProduct?.productDispatchTime}</p>
               </div>
               <div>
                 <BasketButton 
+                  size='standard'
                   basketItemCount={selectedProductBasketAmount} 
-                  selectedProduct={selectedProduct}
+                  product={selectedProduct}
                 />
               </div> 
             </div>

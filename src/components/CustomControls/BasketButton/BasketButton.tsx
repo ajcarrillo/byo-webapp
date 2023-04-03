@@ -1,24 +1,26 @@
 import React from 'react'
+
 import { ShopBasketItem, ShopProduct } from '../../../types/shop-types'
 import { updateShoppingBasketObservable } from '../../../utils/events'
 import './BasketButton.css'
 
 interface IBasketButtonProps {
-    selectedProduct: ShopProduct | undefined;
+    size: string,
+    product: ShopProduct | undefined;
     basketItemCount: number;
   }
 
 export const BasketButton: React.FC<IBasketButtonProps> = (props: IBasketButtonProps) =>{
-  const { basketItemCount, selectedProduct } = props
+  const { basketItemCount, product, size } = props
 
   /**
    * Handles button clicks to update the basket amount
    * @param amount The amount of items that should be in the basket
    */
   const handleClickUpdateBasket = (amount: number) => {
-    if(selectedProduct){
+    if(product){
       const item: ShopBasketItem = {
-        item: selectedProduct,
+        item: product,
         amount: amount < 0 ? 0 : amount,
       }
       updateShoppingBasketObservable.next(item)      
@@ -29,9 +31,9 @@ export const BasketButton: React.FC<IBasketButtonProps> = (props: IBasketButtonP
     <>
       {basketItemCount > 0 ? (
         <div className = 'BasketButton-container'>
-          <button className='Button-standard BasketButton-decrement' onClick={() => handleClickUpdateBasket(basketItemCount - 1)}>-</button>
-          <div className='BasketButton-amount'>{basketItemCount}</div>
-          <button className='Button-standard BasketButton-increment' onClick={() => handleClickUpdateBasket(basketItemCount + 1)}>+</button>
+          <button className={`Button-standard BasketButton-decrement__${size}`} onClick={() => handleClickUpdateBasket(basketItemCount - 1)}>-</button>
+          <div className={`BasketButton-amount__${size}`}>{basketItemCount}</div>
+          <button className={`Button-standard BasketButton-increment__${size}`} onClick={() => handleClickUpdateBasket(basketItemCount + 1)}>+</button>
         </div>
       ) : (
         <button className='Button-standard' onClick={() => handleClickUpdateBasket(1)}>

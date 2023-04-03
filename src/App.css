@@ -5,9 +5,9 @@
   --byowave-cta-colour: rgb(95, 106, 219);
   --byowave-cta-dark-colour: rgb(71, 76, 133);
   --byowave-cta-hover-colour: rgb(142, 151, 249);
-  --byowave-cta-disabled-colour: rgb(78, 68, 53);
+  --byowave-cta-disabled-colour: rgb(45, 43, 53);
   --byowave-cta-text-colour: rgb(220, 220, 220);
-  --byowave-cta-disabled-text-colour: rgb(126, 126, 126);  
+  --byowave-cta-disabled-text-colour: rgb(68, 64, 84);  
   --byowave-alert-colour: rgb(124,15,208);
   --byowave-alert-text-colour: rgb(216, 175, 248);
   --byowave-paragraph-text-colour: rgb(178, 181, 212);
@@ -55,13 +55,6 @@ ul {
   list-style-type: none;
   line-height: 1.6rem;
   color: rgb(178, 181, 212)
-}
-
-li::before {
-  padding-right: 10px;
-  font-size: 20px;
-  content: '\2022';
-  color: var(--byowave-cta-colour);
 }
 
 a {
@@ -179,7 +172,7 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
   border-radius: 6px
 }
 
-.PanelInfo {
+.PanelAlert {
   background: var(--byowave-panel-bg-colour);
   color: var(--byowave-panel-text-light-colour);
   border: 1px solid var(--byowave-alert-colour);
@@ -188,6 +181,7 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
   display: flex;
   align-items: center;
   padding: 1.2rem;
+  line-height: 1.4rem;
   box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 5px;
 }
 

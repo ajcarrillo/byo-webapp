@@ -1,3 +1,7 @@
 export { default as ShopContainer } from './ShopContainer'
 export { default as ShopProductSummary } from './ShopProductSummary'
 export { default as ShopProductContainer } from './ShopProductContainer'
+export { default as ShopBasketContainer } from './ShopBasketContainer'
+export { default as ShopCheckoutContainer } from './ShopCheckoutContainer'
+export { default as ShopBasketProduct } from './ShopBasketProduct'
+export { default as ShopCustomerContactForm } from './ShopCustomerContactForm'

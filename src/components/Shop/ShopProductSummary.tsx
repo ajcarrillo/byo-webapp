@@ -1,8 +1,8 @@
 import React from 'react'
 import parse from 'html-react-parser'
+import { Link } from 'react-router-dom'
 
 import './Shop.css'
-import { Link } from 'react-router-dom'
 
 interface IShopProductSummaryProps {
   name: string,
@@ -21,7 +21,7 @@ const ShopProductSummary: React.FC<IShopProductSummaryProps> = (props: IShopProd
         <div className='ShopProductSummary-text-container'>
           <h3>{name}</h3>
           <p>{parse(desc)}</p>
-          <div className='ShopProductSummary-text-price'>{parse(`&#163;${price}`)} <span className='ShopProductSummary-text-price-tax'>(excl VAT)</span></div>
+          <div className='ShopProductSummary-text-price'>{parse(`&euro;${price}`)}</div>
         </div>
       </div>
     </Link>

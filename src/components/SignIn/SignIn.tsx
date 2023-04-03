@@ -16,13 +16,13 @@ const initialErrors = {
 
 interface ISignInProps {
   redirectTo: string;
+  tokenIsValid: boolean;
 }
 
 export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
   const dispatch = useDispatch()
   const { 
     authentication: {
-      accessTokenValid,
       authenticationLoading,
       apiError
     }
@@ -33,6 +33,7 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
     password: '',
   })
   const [errors, setErrors] = useState(initialErrors)
+  const [redirectOverride, setRedirectOverride] = useState<string>()
 
   const doLogin = (): void => {
     const e: any = {}
@@ -75,8 +76,17 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
     }
   }, [dispatch])
 
-  if (accessTokenValid) {
-    return <Redirect to={props.redirectTo} />
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const redAft = url.searchParams.get('redirectAfter')
+    if(redAft){
+      setRedirectOverride(redAft)
+    }
+  }, [])
+
+  if (props.tokenIsValid) {
+    const redirection = redirectOverride ? redirectOverride : props.redirectTo
+    return <Redirect to={redirection} />
   }
 
   return (

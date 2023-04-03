@@ -39,6 +39,7 @@ export const SAVE_USER_API_ERROR_MESSAGES = {
 export const SIGNIN_API_ERROR_MESSAGES = {
   'OOPS': 'Sign In failed.',
   'ACCOUNT_NOT_FOUND': 'Sorry, sign in failed.',
+  'NOT_AUTHORISED': 'Sorry, sign in failed.',
   'EMAIL_NOT_CONFIRMED': 'Please confirm your email address first.'
 }
 

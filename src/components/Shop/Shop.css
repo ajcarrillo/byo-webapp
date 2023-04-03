@@ -1,6 +1,9 @@
+/*
+  Shop Container
+*/
 .Shop-container {
   width: 80%; 
-  margin: 3rem auto;
+  margin: 2rem auto;
 }
 
 .Shop-breadcrumb-back {
@@ -12,6 +15,9 @@
   padding-right: .6rem;
 }
 
+/*
+  Shop Product Summary
+*/
 .ShopProductSummary-container {
   background-color: var(--byowave-panel-bg-colour);
   padding: 1rem;
@@ -69,6 +75,9 @@
   font-size: 1rem;
 }
 
+/*
+  Shop Product
+*/
 .ShopProduct-container {
   display: flex;
   margin: 2rem 0
@@ -103,6 +112,7 @@
 .ShopProduct-price-container {
   display: flex;
   justify-content: space-between;
+  margin-top: 1.6rem;
 }
 
 .ShopProduct-price-container h3 {
@@ -125,6 +135,196 @@
 }
 
 .ShopProduct-image-carousel {
+ border: 3px solid var(--byowave-custom-control-bg-colour);
+ border-radius: 10px;
+}
+
+/*
+  Shop Basket Product
+*/
+.ShopBasketProduct-container {
+  background-color: var(--byowave-panel-bg-colour);
+  padding: 1rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.ShopBasketProduct-image-container {
+  width: 70px;
+  height: 70px;
+  border: 2px solid var(--byowave-image-border-colour);
+  border-radius: 4px;
+}
+
+.ShopBasketProduct-image-container img {
   width: 100%;
   height: 100%
+}
+
+.ShopBasketProduct-text-container {
+  padding-left: 1rem;
+  width: calc(100% - 70px)
+}
+
+.ShopBasketProduct-text-container p:nth-of-type(1) {
+  color: var(--byowave-panel-text-colour);
+  font-size: .8rem;
+}
+
+.ShopBasketProduct-price-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%
+}
+
+.ShopBasketProduct-price-container p:nth-of-type(1) {
+  color: var(--byowave-paragraph-text-colour);
+  font-size: 1rem;
+}
+
+/*
+  Shop Checkout
+*/
+.ShopCheckout-container {
+  display: flex;
+  margin: 2rem 0
+}
+
+.ShopCheckout-container-leftCol {
+  width: 50%;
+  padding-right: 2rem;
+}
+
+.ShopCheckout-container-rightCol {
+  width: 50%;
+  padding-left: 2rem;
+}
+
+.ShopCheckout-help-container {
+  background: var(--byowave-panel-bg-colour);
+  color: var(--byowave-panel-text-colour);
+  border: 1px solid var(--byowave-alert-colour);
+  border-radius: 10px;
+  width: 100%;
+  padding: 1.2rem;
+  margin-top: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 5px;
+}
+
+.ShopCheckout-empty-container {
+  width: 80%; 
+  margin: auto;
+  display: flex; 
+  margin-top: 4rem;
+}
+
+.ShopCheckout-empty-leftCol {
+  flex-basis: 0;
+  flex-grow: 2;
+  background-color: var(--byowave-alert-colour);
+  border-radius: .6rem 0 0 .6rem;
+  padding: 4rem;
+  text-align: center;
+}
+
+.ShopCheckout-empty-rightCol {
+  flex-basis: 0;
+  flex-grow: 3;
+  background-color: var(--byowave-panel-bg-colour);
+  border-radius: 0 .6rem .6rem 0;
+  padding: 4rem;
+}
+
+.ShopCheckout-empty-leftCol i {
+  font-size: 12rem;
+  color: rgb(235, 235, 235);
+}
+
+.ShopCheckout-summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 .6rem;
+}
+
+.ShopCheckout-breadcrumb-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ShopCheckout-breadcrumb-container i {
+  padding: 0 1rem;
+  color: var(--byowave-cta-dark-colour)
+}
+
+.ShopCheckout-breadcrumb-link {
+  color: var(--byowave-cta-colour);
+  cursor: pointer
+}
+
+.ShopCheckout-breadcrumb-link:hover {
+  color: var(--byowave-cta-hover-colour);
+}
+
+.ShopCheckout-breadcrumb-link__active {
+  color: var(--byowave-heading-text-colour);
+}
+
+.ShopCheckout-breadcrumb-link__inactive {
+  color: var(--byowave-cta-dark-colour);
+}
+
+/*
+  Shop Basket
+*/
+.ShopBasket-container {
+  display: flex;
+  margin: 2rem 0
+}
+
+.ShopBasket-container-leftCol {
+  width: 50%;
+  padding-right: 2rem;
+}
+
+.ShopBasket-container-rightCol {
+  width: 50%;
+}
+
+.ShopBasket-summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 .6rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .ShopCheckout-empty-container{
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ShopCheckout-empty-container {
+    width: 90%;
+  }
+
+  .ShopCheckout-empty-leftCol i {
+    font-size: 8rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .ShopCheckout-empty-container {
+    flex-direction: column; 
+    margin-top: 6rem
+  }
+
+  .ShopCheckout-empty-leftCol {
+    display: none;
+  }
 }

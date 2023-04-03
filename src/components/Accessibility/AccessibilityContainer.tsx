@@ -300,15 +300,14 @@ const AccessibilityContainer: React.FC = () => {
                   Save
                 </button>
               </div>
-
-              <div 
-                className={`Accessibility-save-panel ${saveComplete ? 'AlertShow' : 'AlertHide'}`} 
-                onTransitionEnd={() => setSaveComplete(false)}
-              >
-                New Colours Saved
-              </div>
             </div>
 
+            <div 
+              className={`Accessibility-save-panel ${saveComplete ? 'AlertShow' : 'AlertHide'}`} 
+              onTransitionEnd={() => setSaveComplete(false)}
+            >
+              New Colours Saved
+            </div>
           </div>
         </div>
 

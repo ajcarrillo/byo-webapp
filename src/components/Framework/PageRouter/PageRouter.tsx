@@ -17,7 +17,8 @@ import ProteusAppPage from '../Pages/ProteusApp'
 import AccessibilityPage from '../Pages/Accessibility'
 import ShopPage from '../Pages/Shop'
 import ProductPage from '../Pages/Product'
-// import CheckoutPage from '../Pages/Checkout'
+import CheckoutPage from '../Pages/Checkout'
+import BasketPage from '../Pages/Basket'
 
 import { IStoreState } from '../../../types/store-types'
 import { ShopBasketItem } from '../../../types/shop-types'
@@ -106,6 +107,8 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
           <Route path="/sign-up" render={(p) => <SignUpPage {...p} locale={toolsHeaderConfig.device.locale} />} />
           <Route path="/pass-reset" render={(p) => <PasswordResetPage {...p} />} />
           <Route path="/shop" render={(p) => <ShopPage {...p} />} />
+          <Route path="/basket" render={(p) => <BasketPage {...p} tokenIsValid={tokenIsValid} />} />
+          <Route path="/checkout" render={(p) => <CheckoutPage {...p} tokenIsValid={tokenIsValid} />} />
           <Route path="/product/:address" render={(p) => <ProductPage {...p} />} />
           <Route path="/accessibility" render={(p) => <AccessibilityPage {...p} />} />
           <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 

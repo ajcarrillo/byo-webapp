@@ -135,7 +135,7 @@ export const PasswordReset: React.FC = () => {
                 <form onSubmit={(e) => e.preventDefault()} autoComplete='off'>
                   <h1><span className="Colour-blue-bright">Password</span>Reset</h1>
                   <div className="PanelLabel" style={{marginTop: '1.4rem', marginBottom: '.8rem'}}>Please enter your new password, which must contain the following:</div>
-                  <div className="PanelInfo" style={{marginBottom: '.2rem', boxShadow: 'none'}}>{passwordDescription().join(', ')}</div>
+                  <div className="PanelAlert" style={{marginBottom: '.2rem', boxShadow: 'none'}}>{passwordDescription().join(', ')}</div>
                   
                   <input
                     className="Textfield-dark"
