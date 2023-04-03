@@ -24,6 +24,8 @@ export const AUTH_PASSWORD_CHANGE_REQUEST = 'AUTH_PASSWORD_CHANGE_REQUEST'
 export const AUTH_PASSWORD_CHANGE_SUCCESS = 'AUTH_PASSWORD_CHANGE_SUCCESS'
 export const AUTH_PASSWORD_CHANGE_FAILURE = 'AUTH_PASSWORD_CHANGE_FAILURE'
 
+export const AUTH_RESET_API_ERROR = 'AUTH_RESET_API_ERROR'
+
 export const GET_USER_API_ERROR_MESSAGES = {
   'OOPS': 'Get user failed.'
 }
@@ -36,6 +38,8 @@ export const SAVE_USER_API_ERROR_MESSAGES = {
 
 export const SIGNIN_API_ERROR_MESSAGES = {
   'OOPS': 'Sign In failed.',
+  'ACCOUNT_NOT_FOUND': 'Sorry, sign in failed.',
+  'NOT_AUTHORISED': 'Sorry, sign in failed.',
   'EMAIL_NOT_CONFIRMED': 'Please confirm your email address first.'
 }
 
@@ -52,7 +56,8 @@ export const CONFIRM_EMAIL_API_ERROR_MESSAGES = {
 }
 
 export const RESET_PASSWORD_API_ERROR_MESSAGES = {
-  'OOPS': 'Password reset failed.'
+  'OOPS': 'Password reset failed.',
+  'EMAIL_NOT_FOUND': 'Sorry, that email address is not registered.'
 }
 
 export const PASSWORD_CHANGE_API_ERROR_MESSAGES = {

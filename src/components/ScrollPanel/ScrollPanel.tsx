@@ -17,7 +17,7 @@ export const ScrollPanel = React.forwardRef<Scrollbars, IScrollPanelProps>((prop
 
   const renderView: React.FunctionComponent<any> | undefined = ({ style, ...props }) => {
     const viewStyle = {
-      paddingRight: '18px',
+      marginBottom: '-20px'
     }
 
     return (
@@ -36,7 +36,7 @@ export const ScrollPanel = React.forwardRef<Scrollbars, IScrollPanelProps>((prop
       bottom: '2px',
       top: '2px',
       borderRadius: '3px',
-      backgroundColor: 'rgb(33,33,33)',
+      backgroundColor: 'rgb(23,24,32)',
     }
 
     return (
@@ -64,7 +64,7 @@ export const ScrollPanel = React.forwardRef<Scrollbars, IScrollPanelProps>((prop
     const viewStyle = {
       width: '6px',
       marginLeft: '3px',
-      backgroundColor: 'rgb(128,92,36)',
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-colour'),
       borderRadius: '3px'
     }
 

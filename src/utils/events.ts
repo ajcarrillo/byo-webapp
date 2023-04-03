@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs'
 
-import { ShoppingBasketItem } from '../types/shop-types'
+import { ShopBasketItem } from '../types/shop-types'
 import { getStoredBasketItems } from './shop-utils'
 
 export const filesUploadProgress = new BehaviorSubject<any>({
@@ -8,21 +8,19 @@ export const filesUploadProgress = new BehaviorSubject<any>({
   progress: 0,
 })
 
-export const shoppingBasketObservable = new BehaviorSubject<ShoppingBasketItem[]>(
+export const shoppingBasketObservable = new BehaviorSubject<ShopBasketItem[]>(
   getStoredBasketItems()
 )
 
-export const updateShoppingBasketObservable = new BehaviorSubject<ShoppingBasketItem>({
-  sellerAddress: '',
-  itemCategory: '',
-  itemSubCategory: '',
-  itemParentAddress: '',
-  itemAddress: '',
-  itemName: '',
-  itemImage: '',
-  itemPriceCurrency: '',
-  itemPriceMoney: '0',
-  itemPriceYango: '0',
-  amount: '0',
-  payWith: ''
+export const updateShoppingBasketObservable = new BehaviorSubject<ShopBasketItem>({
+  item: {
+    productAddress: '',
+    productCode: '',
+    productName: '',
+    productDescription: '',
+    productPrice: '',
+    productImages: [], 
+    productDispatchTime: '',
+  },
+  amount: 0
 })

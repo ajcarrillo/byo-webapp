@@ -1,13 +1,13 @@
 import { APIError } from './api-types'
 import { IUserProfileState, User } from './user-types'
-import { IProteusState } from './controller-types'
+import { IProteusState } from './proteus-types'
+import { IShopState } from './shop-types'
 
 export interface IStoreState {
   authentication: IAuthenticationState,
   userProfile: IUserProfileState,
   proteus: IProteusState,
-  //site: ISiteState,
-  //shop: IShopState,
+  shop: IShopState,
 }
 
 export interface IAuthenticationState {

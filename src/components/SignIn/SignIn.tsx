@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { IStoreState } from '../../types/store-types'
-//import SimpleScrollPane from "../ScrollPane/SimpleScrollPane";
 import { isEmail, isEmpty, isPassword } from '../../utils/validation-utils'
 import Spinner from '../Spinner'
 import { signInRequest } from '../../store/authentication/authentication-actions'
-import LogoImage from '../../assets/images/byowave-logo-header.png'
+import GooBenderImage from '../../assets/images/goo-bender.png'
 import './SignIn.css'
 
 const initialErrors = {
@@ -17,13 +16,13 @@ const initialErrors = {
 
 interface ISignInProps {
   redirectTo: string;
+  tokenIsValid: boolean;
 }
 
 export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
   const dispatch = useDispatch()
   const { 
     authentication: {
-      accessTokenValid,
       authenticationLoading,
       apiError
     }
@@ -34,6 +33,7 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
     password: '',
   })
   const [errors, setErrors] = useState(initialErrors)
+  const [redirectOverride, setRedirectOverride] = useState<string>()
 
   const doLogin = (): void => {
     const e: any = {}
@@ -49,6 +49,7 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
       postData.append('email', state.email)
       postData.append('password', state.password)
       dispatch(signInRequest(postData))
+      setErrors(initialErrors)
     } else {
       setErrors(e)
     }
@@ -68,8 +69,24 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
     }))
   }
 
-  if (accessTokenValid) {
-    return <Redirect to={props.redirectTo} />
+  useEffect(() => {
+    // Used to reset API errors
+    return () => {
+      dispatch({ type: 'AUTH_RESET_API_ERROR' })
+    }
+  }, [dispatch])
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const redAft = url.searchParams.get('redirectAfter')
+    if(redAft){
+      setRedirectOverride(redAft)
+    }
+  }, [])
+
+  if (props.tokenIsValid) {
+    const redirection = redirectOverride ? redirectOverride : props.redirectTo
+    return <Redirect to={redirection} />
   }
 
   return (
@@ -80,28 +97,32 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
 
       <div className="SignIn-container">
         <div className="SignIn-leftCol">
-          <form onSubmit={(e) => e.preventDefault()}>
-            <h1><span className="Colour-orange-bright">Sign</span><span className="Colour-white-bright">In</span></h1>
-            <div className="PanelLabel" style={{marginTop: '1rem', marginBottom: '.4rem'}}>If you have forgotten your password, please <Link to="/pass-reset">click here</Link> to reset it.</div>
+          <form onSubmit={(e) => e.preventDefault()} autoComplete='off'>
+            <h1><span className="Colour-blue-bright">Sign</span><span className="Colour-white-bright">In</span></h1>
+            <div className="PanelLabel" style={{marginTop: '1.4rem', marginBottom: '.8rem'}}>If you have forgotten your password, please <Link to="/pass-reset">click here</Link> to reset it.</div>
+            
             <input
               className="Textfield-dark"
               onChange={(e) => handleInputEmailChange(e.target.value)}
               value={state.email}
               placeholder="Email address" 
               type="email" 
-              autoComplete="on" 
-              style={{ width: '100%' }}
+              data-lpignore="true"
+              autoComplete='off'
+              style={{ marginTop: '1rem', width: '100%' }}
             />
             {errors.email && (
               <div className="Formfield-error-inline">{errors.email}</div>
             )}
+
             <input
               className="Textfield-dark"
               onChange={(e) => handleInputPasswordChange(e.target.value)}
               value={state.password}
               placeholder="Password"
               type="password" 
-              autoComplete="on" 
+              data-lpignore="true"
+              autoComplete='new-password'
               style={{ marginTop: '1rem', width: '100%' }}
             />
             {errors.password && (
@@ -109,6 +130,7 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
                 {errors.password}
               </div>
             )}
+
             {apiError && (
               <div
                 className="Formfield-error-inline"
@@ -117,9 +139,10 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
                 <div>{apiError.message}</div>
               </div>
             )}
+
             <button
               className="Button-standard"
-              style={{ marginTop: '1rem' }}
+              style={{ marginTop: '1.2rem' }}
               onClick={() => doLogin()}
             >
               Sign In
@@ -129,7 +152,7 @@ export const SignIn: React.FC<ISignInProps> = (props: ISignInProps) => {
 
         <div className="SignIn-rightCol">
           <div className="SignIn-logo-container">
-            <img src={LogoImage} alt="ByoWave Logo" />
+            <img src={GooBenderImage} alt="ByoWave Logo" />
           </div>
         </div>
       </div>

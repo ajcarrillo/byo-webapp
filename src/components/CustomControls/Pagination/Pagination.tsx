@@ -1,51 +1,52 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react'
 
-import './Pagination.css';
+import './Pagination.css'
 
 interface IPaginationProps {
   datasetName: string;
   totalRecords: number;
   itemsPerPage: number;
   pagesPerGroup: number;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   callbackPageLoad: Function;
-};
+}
 
 const Pagination: React.FC<IPaginationProps> = (props: IPaginationProps) => {
-  const { datasetName, totalRecords, itemsPerPage, pagesPerGroup, callbackPageLoad } = props;
+  const { datasetName, totalRecords, itemsPerPage, pagesPerGroup, callbackPageLoad } = props
 
-  const [dataset, setDataset] = useState(datasetName);
-  const [pageButtons, setPageButtons] = useState<any>([]);
-  const [pageGroup, setPageGroup] = useState(0);
-  const [page, setPage] = useState(0);
+  const [dataset, setDataset] = useState(datasetName)
+  const [pageButtons, setPageButtons] = useState<any>([])
+  const [pageGroup, setPageGroup] = useState(0)
+  const [page, setPage] = useState(0)
 
   /**
    * If dataset changes, then reset page to 0
    */
   useEffect(() => {
     if(dataset !== datasetName){
-      setDataset(datasetName);
-      setPage(0);
+      setDataset(datasetName)
+      setPage(0)
       setPageGroup(0)
     }
-  }, [dataset, datasetName]);
+  }, [dataset, datasetName])
 
   /**
    * 
    */
   const selectPage = useCallback((pageNum: number, rowStart: string) => {
-    if(pageNum === page) return;
+    if(pageNum === page) return
     
-    setPage(pageNum);
-    callbackPageLoad(rowStart);
-  }, [callbackPageLoad, page]);
+    setPage(pageNum)
+    callbackPageLoad(rowStart)
+  }, [callbackPageLoad, page])
 
   /**
    * Create all page buttons
    */
   useEffect(() => {
-    const pageCount = Math.ceil(Number(totalRecords) / Number(itemsPerPage));
-    let pages: any = [];
-    let start = 0;
+    const pageCount = Math.ceil(Number(totalRecords) / Number(itemsPerPage))
+    const pages: any = []
+    let start = 0
     for(let c = 0; c < pageCount; c++){
       pages[c] = <span className="Pagination-page-button" key={`pagination-page-${start}`}>
         <button 
@@ -57,26 +58,26 @@ const Pagination: React.FC<IPaginationProps> = (props: IPaginationProps) => {
         >
           {c + 1}
         </button>
-      </span>;
-      start += Number(itemsPerPage);
+      </span>
+      start += Number(itemsPerPage)
     }
-    setPageButtons(pages);
-  },[itemsPerPage, page, selectPage, totalRecords]);
+    setPageButtons(pages)
+  },[itemsPerPage, page, selectPage, totalRecords])
 
   /**
    * 
    * @param direction 
    */
   const changePageGroup = (direction: string) => {
-    let group;
+    let group
     if(direction === 'next'){
-      group = pageGroup + pagesPerGroup;
-      if(group >= pageButtons.length) group = pageGroup;
+      group = pageGroup + pagesPerGroup
+      if(group >= pageButtons.length) group = pageGroup
     }else{
-      group = pageGroup - pagesPerGroup;
-      if(group < 0) group = 0;
+      group = pageGroup - pagesPerGroup
+      if(group < 0) group = 0
     }
-    setPageGroup(group);
+    setPageGroup(group)
   }
 
   return (
@@ -89,7 +90,7 @@ const Pagination: React.FC<IPaginationProps> = (props: IPaginationProps) => {
         <div style={{marginLeft: '.6rem'}}><button title="Next page group" className="Button-icon-small" onClick={() => changePageGroup('next')}><i className="fa-solid fa-angles-right"></i></button></div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Pagination;
+export default Pagination

@@ -4,8 +4,9 @@ import { Transition } from 'react-transition-group'
 import { defaultTransitionStyle, transitionStyles, transitionDuration } from '../../transition-styles'
 import SignUp from '../../../SignUp'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface ISignInPageProps {}
+interface ISignInPageProps {
+  locale: string
+}
 
 export const SignUpPage: React.FC<ISignInPageProps> = (props: ISignInPageProps) => {
   const nodeRef = useRef<HTMLDivElement>(null)
@@ -21,7 +22,7 @@ export const SignUpPage: React.FC<ISignInPageProps> = (props: ISignInPageProps) 
             }}
             ref={nodeRef}
           >
-            <SignUp />
+            <SignUp locale={props.locale} />
           </div>
         )}
       </Transition>

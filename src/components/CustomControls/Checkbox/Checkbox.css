@@ -1,4 +1,4 @@
-.Checkbox-container {
+.Checkbox-container__small {
   margin: 0 .4rem 0 0;
   display: flex;
   align-items: center;
@@ -6,12 +6,14 @@
   user-select: none;
 }
 
-.Checkbox-outer-square {
+.Checkbox-outer-square__small {
   width: 18px;
   height: 18px;
   min-width: 18px;
   min-height: 18px;
-  border: 2px solid rgb(128,93,36);
+  border: 2px solid var(--byowave-custom-control-border-colour);
+  background-color: var(--byowave-custom-control-bg-colour);
+  border-radius: 3px;;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,24 +21,70 @@
   transition: all 0.1s linear;
 }
 
-.Checkbox-inner-square {
+.Checkbox-inner-square__small {
   width: 8px;
   height: 8px;
-  background-color: rgb(194,136,45);
+  background-color: var(--byowave-custom-control-inner-colour);
   transition: all 0.1s linear;
 }
 
-.Checkbox-unselected {
-  border: 2px solid #666;
+.Checkbox-unselected__small {
+  border: 2px solid var(--byowave-custom-control-border-colour);
 }
 
-.Checkbox-unselected-square {
+.Checkbox-unselected-square__small {
   width: 0;
   height: 0;
 }
 
-.Checkbox-label {
-  color: rgb(112, 112, 112);
+.Checkbox-label__small {
+  color: var(--byowave-custom-control-text-colour);
   padding-right: 8px;
   font-size: .9rem;
+}
+
+/* LARGE VERSION */
+
+.Checkbox-container__big {
+  margin: 0 .4rem 0 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.Checkbox-outer-square__big {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  min-height: 26px;
+  border: 3px solid var(--byowave-custom-control-border-colour);
+  background-color: var(--byowave-custom-control-bg-colour);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.1s linear;
+}
+
+.Checkbox-inner-square__big {
+  width: 12px;
+  height: 12px;
+  background-color: var(--byowave-custom-control-inner-colour);
+  transition: all 0.1s linear;
+}
+
+.Checkbox-unselected__big {
+  border: 3px solid var(--byowave-custom-control-border-colour);
+}
+
+.Checkbox-unselected-square__big {
+  width: 0;
+  height: 0;
+}
+
+.Checkbox-label__big {
+  color: var(--byowave-custom-control-text-colour);
+  padding-right: 8px;
+  margin-left: 12px;
+  font-size: 1.3rem;
 }

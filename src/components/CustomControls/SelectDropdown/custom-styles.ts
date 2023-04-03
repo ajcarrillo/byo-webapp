@@ -7,7 +7,7 @@ export const reactSelectCustomStyles = {
   }),
   control: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: 'rgb(33,33,33)',
+    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-bg-colour'),
     border: 'none', 
     outline: 0,
     minHeight: '10px',
@@ -24,10 +24,10 @@ export const reactSelectCustomStyles = {
   }),
   indicatorsContainer: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: 'rgb(128,92,36)',
+    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-colour'),
     cursor: 'pointer',
-    borderRadius: '4px',
-    padding: 0,
+    borderRadius: '0 6px 6px 0',
+    padding: '0 4px'
   }),
   indicatorSeparator: (provided: any, state: any) => ({
     ...provided,
@@ -47,7 +47,7 @@ export const reactSelectCustomStyles = {
   menu: (provided: any, state: any) => ({
     ...provided,
     width: '100%',
-    backgroundColor: 'rgb(33,33,33)',
+    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-panel-bg-colour'),
     padding: 5,
   }),
   multiValue: (provided: any, state: any) => ({
@@ -72,22 +72,22 @@ export const reactSelectCustomStyles = {
     cursor: state.isDisabled ? 'default' : 'pointer',
     backgroundColor: 'none',
     borderBottom: '1px dotted rgb(50,50,50)',
-    color: state.isDisabled ? 'rgb(80, 80, 80)' : 'rgb(184, 184, 184)',
+    color: state.isDisabled ? 'rgb(80, 80, 80)' : getComputedStyle(document.documentElement).getPropertyValue('--byowave-panel-text-colour'),
     padding: '.5rem',
     '&:hover': {
-      backgroundColor: state.isDisabled ? 'none' : 'rgb(50, 50, 50)',
+      backgroundColor: state.isDisabled ? 'none' : getComputedStyle(document.documentElement).getPropertyValue('--byowave-panel-hover-bg-colour'),
     },
   }),
   placeholder: (provided: any, state: any) => ({
     ...provided,
-    color: 'rgb(82, 82, 82)',
-    padding: '0.5rem',
+    color: getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-placeholder-text-colour'),
+    padding: '0.6rem 0.5rem',
   }),
   singleValue: (provided: any, state: any) => {
     const opacity = state.isDisabled ? 0.5 : 1
     // const transition = 'opacity 300ms';
-    const color = 'rgb(184, 184, 184)'
-    const padding = '0.5rem'
+    const color = getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-text-colour')
+    const padding = '0.6rem 0.5rem'
 
     // return { ...provided, opacity, transition, color };
     return { ...provided, color, opacity, padding }

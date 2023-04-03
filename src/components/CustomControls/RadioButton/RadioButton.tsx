@@ -3,6 +3,7 @@ import React from 'react'
 import './RadioButton.css'
 
 interface IRadioButtonProps {
+  size: string;
   text: string;
   // eslint-disable-next-line @typescript-eslint/ban-types
   onChange: Function;
@@ -11,13 +12,13 @@ interface IRadioButtonProps {
 }
 
 const RadioButton: React.FC<IRadioButtonProps> = (props: IRadioButtonProps) => {
-  const { selected, onChange, text, value } = props
+  const { selected, onChange, size, text, value } = props
   return (
-    <div className="RadioButton-container" onClick={() => onChange(value)}>
-      <div className={`RadioButton-outer-circle ${value !== selected && 'RadioButton-unselected'}`}>
-        <div className={`RadioButton-inner-circle ${value !== selected && 'RadioButton-unselected-circle'}`}/>
+    <div className={`RadioButton-container__${size}`} onClick={() => onChange(value)}>
+      <div className={`RadioButton-outer-circle__${size} ${value !== selected && 'RadioButton-unselected__'+size}`}>
+        <div className={`RadioButton-inner-circle__${size} ${value !== selected && 'RadioButton-unselected-circle__'+size}`}/>
       </div>
-      {text && <div className="RadioButton-label">{text}</div>}
+      {text && <div className={`RadioButton-label__${size}`}>{text}</div>}
     </div>
   )
 }

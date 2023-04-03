@@ -1,41 +1,57 @@
+import { SingleValue } from 'react-select'
+
 import { APIError } from './api-types'
+import { User, UserContact } from './user-types'
 
 export interface IShopState {
-  loading: boolean;
-  apiError: APIError | null;
-  exchangeRates: ExchangeRate[] | null;
-  productCategoryDescriptions: ProductCategoryDescriptor[] | null;
-  basketItems: ShoppingBasketItem[] | null;
-  userCredits: any | null;
-  paymentDetails: any | null;
+  apiError: APIError | null,
+  productsLoading: boolean,
+  customerDetailaLoading: boolean,
+  countriesLoading: boolean,
+  countries: ShopCountry[] | null,
+  products: ShopProduct[] | null,
+  customerDetails: ShopCustomer | null,
+  basketItems: ShopBasketItem[] | null,
 }
 
-export type ProductCategoryDescriptor = {
-  category: string,
-  subCategory: string,
-  productType: string,
-  paymentType: string,
-  deliveryMethod: string,
-}
-
-export type ExchangeRate = {
-  isBase: boolean,
+export type ShopCountry = {
+  phonePrefix: string,
+  code: string,
+  name: string,
+  currenySymbol: string,
   currency: string,
-  price: string,
-  timestamp: string,
+  iso: string,
+  supported: boolean
 }
 
-export type ShoppingBasketItem = {
-  sellerAddress: string,
-  itemCategory: string,
-  itemSubCategory: string,
-  itemParentAddress?: string,
-  itemAddress: string,
-  itemName: string,
-  itemImage: string,
-  itemPriceCurrency?: string,
-  itemPriceMoney?: string,
-  itemPriceYango?: string,
-  amount: string,
-  payWith: string,
+export type ShopCustomer = {
+  user: User,
+  contacts: UserContact[],
+}
+
+export type ShopProduct = {
+  productAddress: string,
+  productCode: string,
+  productName: string,
+  productDescription: string,
+  productPrice: string,
+  productImages: string[], 
+  productDispatchTime: string,
+}
+
+export type ShopBasketItem = {
+  item: ShopProduct,
+  amount: number,
+}
+
+export type ShopCheckoutSummary = {
+  sub: string,
+  tax: string,
+  shipping: string,
+  total: string,
+}
+
+type SelectType = {
+  readonly label: string,
+  readonly value: string,
 }

@@ -6,12 +6,9 @@ import { generateApiError } from '../../utils/error-utils'
 import { 
   getStoredAccessToken, 
   updateStoredAccessToken, 
-  updateStoredOnboardingSummary, 
   updateStoredUserAddress,
-  updateStoredUserEntitlements,
   updateStoredUserLocalisation,
-  updateStoredUserName,
-  updateStoredUserProfileType
+  updateStoredUserName
 } from '../../utils/user-utils'
 import { 
   AUTH_GET_USER_REQUEST,
@@ -124,9 +121,6 @@ export function* signInSaga(action: any){
     if(response.status === 200){
       updateStoredAccessToken(response.data.token, true)
       updateStoredUserAddress(response.data.address)
-      updateStoredUserEntitlements(response.data.entitlements)
-      updateStoredUserProfileType(response.data.profileType)
-      updateStoredOnboardingSummary(response.data.onboardingSummary)
       updateStoredUserLocalisation(response.data.localisation)
       updateStoredUserName(response.data.userName)
       yield put(signInSuccess(response.data))
@@ -153,6 +147,8 @@ export function* signUpSaga(action: any){
         email: action.credentials.get('email'),
         password: action.credentials.get('password'),
         accountType: action.credentials.get('accountType'),
+        profileName: action.credentials.get('profileName'),
+        locale: action.credentials.get('locale'),
       },
       'json'
     )

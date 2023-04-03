@@ -1,12 +1,9 @@
 .SignUp-container {
-  width: 60%; 
-  margin: auto;
+  width: 70%; 
+  margin: 4rem auto;
   display: flex; 
   flex-direction: row; 
   justify-content: center; 
-  background-color: rgb(42,42,42);
-  border-radius: .6rem;
-  padding: 3rem 2rem;
 }
 
 .SignUp-leftCol {
@@ -18,9 +15,8 @@
 
 .SignUp-rightCol {
   flex-basis: 0;
-  flex-grow: 3;
+  flex-grow: 2;
   order: 2;
-  border-left: 2px solid rgb(59, 58, 57);
   padding-left: 1rem
 }
 
@@ -34,7 +30,7 @@
 }
 
 .SignUp-logo-container img {
-  max-width: 100%;
+  max-width: 60%;
 }
 
 .SignUp-fade-container {
@@ -46,8 +42,8 @@
 .SignUp-fade-element {
   position: absolute;
   width: 100%;
-  height: 100%;
   z-index: 10;
+  top: 40%;
   opacity: 0;
   transition: opacity 0.5s;
 }
@@ -57,20 +53,24 @@
 }
 
 .SignUp-help-container {
-  background: rgb(35, 32, 30);
-  border: 2px dashed rgb(194, 136, 45);
-  border-radius: 2%;
+  background: var(--byowave-panel-bg-colour);
+  color: var(--byowave-panel-text-colour);
+  border: 1px solid var(--byowave-alert-colour);
+  border-radius: 10px;
   width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
-  padding: 1.8rem
+  padding: 1.2rem;
+  box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 5px;
 }
 
-.SignUp-help-container i {
-  font-size: 3.5rem;
-  color: rgb(194, 136, 45);
-  padding-right: 1rem;
+.SignUp-help-container p {
+  margin: 0
+}
+
+.SignUp-help-container h3 {
+  color: var(--byowave-heading-text-colour);
+  margin-bottom: .6rem;
 }
 
 @media screen and (max-width: 1024px) {
@@ -87,11 +87,8 @@
 
 @media screen and (max-width: 480px) {
   .SignUp-container {
-    height: calc(100vh - 5rem); 
-    width: 100%;
     flex-direction: column; 
-    border-radius: 0;
-    padding: 1rem;
+    margin-top: 6rem
   }
 
   .SignUp-leftCol {
@@ -101,18 +98,6 @@
   }
   
   .SignUp-rightCol {
-    flex-grow: 2;
-    order: 1;
-    border-left: none;
-    padding: 0;
-    margin-bottom: 1rem;
-  }
-
-  .SignUp-fade-container {
-    height: 100%;
-  }
-
-  .SignUp-logo-container img {
-    max-width: 80%;
+    display: none;
   }
 }

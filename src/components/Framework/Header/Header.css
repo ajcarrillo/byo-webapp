@@ -22,7 +22,7 @@
   background: none;
   border: 1px solid rgb(40, 49, 93);
   padding: 0 1rem;
-  color:rgb(58, 76, 156);
+  color:var(--byowave-cta-colour);
   cursor: pointer;
   outline: none;
   transition: .3s;
@@ -38,7 +38,7 @@
   justify-content: center;
   align-items: center;
   height: 24px;
-  color: rgb(81,111,248);
+  color: varrgb(--byowave-cta-colour);
 }
 
 .App-header-icon span {
@@ -48,7 +48,7 @@
 
 .App-header-icon i {
   font-size: 14px;
-  color: rgb(46, 59, 114);
+  color: var(--byowave-cta-colour);
 }
 
 .App-header-logo-container {
@@ -62,13 +62,14 @@
 
 .App-header-basket-icon-badge {
   position: absolute;
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 20px;
+  height: 20px;
   border-radius: 40%;
   font-size: .7rem;
-  background-color: rgb(36,36,36);
-  top: 1.6rem;
-  left: .4rem;
+  background-color: var(--byowave-cta-colour);
+  color: var(--byowave-cta-text-colour);
+  top: 7px;
+  left: 25px;
   display: flex;
   justify-content: center;
   align-items: center;

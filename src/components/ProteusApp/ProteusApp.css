@@ -1,6 +1,8 @@
 .Proteus-container {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 30px);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .Proteus-splashscreen-container {
@@ -60,4 +62,182 @@
 .Button-proteus-icon i {
   font-size: 20px;
   color: rgb(46, 59, 114);
+}
+
+.Proteus-connect-error-panel {
+  display: flex;
+  align-items: center;
+  background-color: rgb(33 33 37);
+  color: rgb(200,200,200);
+  border-radius: 3px;
+  padding: .8rem;
+  border: 1px dashed rgb(123, 61, 40);
+}
+
+.Proteus-connect-error-panel i {
+  color: rgb(194, 77, 45);
+}
+
+.Proteus-shell-error-panel {
+  display: flex;
+  align-items: center;
+  background-color: rgb(33 33 37);
+  color: rgb(200,200,200);
+  border-radius: 3px;
+  padding: .5rem;
+  border: 1px dashed rgb(123, 61, 40);
+  margin-left: 10px;
+}
+
+.Proteus-shell-error-panel i {
+  color: rgb(194, 77, 45);
+}
+
+.Proteus-shell {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(29,30,41);
+}
+
+.Proteus-shell-header {
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(23,24,32);
+  border-bottom: 1px solid rgb(9,9,9);
+}
+
+.Proteus-shell-header-logo-container {
+  width: 33%;
+}
+
+.Proteus-shell-header-logo {
+  display: flex; 
+  flex-direction: column;
+  width: 180px;
+  justify-content: center; 
+  align-items: center;
+  margin-left: 16px
+}
+
+.Proteus-shell-header-version {
+  text-align: center;
+  height: 100%;
+  width: 34%;
+  padding-top: 10px;
+  color: rgb(129,160,177)
+}
+
+.Proteus-shell-header-avatar {
+  text-align: right;
+  height: 100%;
+  width: 33%;
+}
+
+.Proteus-shell-footer {
+  height: 30px;
+  background-color: rgb(23,24,32);
+  border-top: 1px solid rgb(42, 44, 58);
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  display: flex; 
+  justify-content: flex-end; 
+  align-items: center;
+}
+
+.Proteus-shell-footer-connected {
+  color: rgb(108,110,136);
+  font-size: .8rem;
+  display: flex; 
+  align-items: center;
+}
+
+.Proteus-shell-workspace {
+  height: calc(100% - 100px);
+  padding: 20px;
+}
+
+.Proteus-shell-workspace-inner {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(32, 33, 44);
+  border-radius: 10px;
+}
+
+.Proteus-shell-workspace-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  background-color: rgb(23, 24, 32);
+  border-bottom: 1px solid rgb(11, 12, 16);
+  border-radius: 10px 10px 0 0;
+}
+
+.Proteus-toolbar-button {
+  height: 44px;
+  width: 44px;
+  background: none;
+  border: 1px solid rgb(40, 49, 93);
+  color:rgb(58, 76, 156);
+  cursor: pointer;
+  outline: none;
+  transition: .3s;
+  margin-right: 7px;
+}
+
+.Proteus-toolbar-button:hover {
+  background-color: rgb(39, 37, 60);
+}
+
+.Proteus-toolbar-button i {
+  font-size: 26px;
+  color: rgb(81,111,248);
+}
+
+.Proteus-toolbar-button__selected {
+  height: 44px;
+  width: 44px;
+  background: none;
+  border: 1px solid rgb(40, 49, 93);
+  background-color: rgb(39, 37, 60);
+  color:rgb(58, 76, 156);
+  outline: none;
+  margin-right: 7px;
+}
+
+.Proteus-toolbar-button__disabled {
+  height: 44px;
+  width: 44px;
+  background: none;
+  border: 1px solid rgb(38, 37, 51);
+  background-color: rgb(36, 35, 46);
+  color:rgb(149, 149, 149);
+  outline: none;
+  margin-right: 7px;
+}
+
+.Proteus-toolbar-button__disabled i {
+  font-size: 26px;
+  color: rgb(52, 49, 62);
+}
+
+.Proteus-toolbar-button__selected i {
+  font-size: 26px;
+  color: rgb(161,170,242);
+}
+
+.Proteus-shell-workspace-unity {
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.Proteus-webgl-canvas {
+  width: 100%;
+  height: calc(100vh - 230px);
+  border-radius: 0 0 10px 10px;
 }

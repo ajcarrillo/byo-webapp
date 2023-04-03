@@ -27,7 +27,7 @@ export const SignInPage: React.FC<ISignInPageProps> = (props: ISignInPageProps) 
             }}
             ref={nodeRef}
           >
-            <SignIn redirectTo={redirectTo} />
+            <SignIn tokenIsValid={props.tokenIsValid} redirectTo={redirectTo} />
           </div>
         )}
       </Transition>    

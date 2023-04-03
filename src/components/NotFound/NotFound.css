@@ -1,14 +1,14 @@
 .NotFound-container {
-  width: 50%; 
+  width: 60%; 
   margin: auto;
   display: flex; 
-  /* align-items: center; */
+  margin-top: 4rem;
 }
 
 .NotFound-leftCol {
   flex-basis: 0;
   flex-grow: 2;
-  background-color: rgb(194,136,45);
+  background-color: var(--byowave-alert-colour);
   border-radius: .6rem 0 0 .6rem;
   padding: 4rem;
   text-align: center;
@@ -17,7 +17,7 @@
 .NotFound-rightCol {
   flex-basis: 0;
   flex-grow: 3;
-  background-color: rgb(65, 64, 61);
+  background-color: var(--byowave-panel-bg-colour);
   border-radius: 0 .6rem .6rem 0;
   padding: 4rem;
 }
@@ -25,4 +25,31 @@
 .NotFound-leftCol i {
   font-size: 12rem;
   color: rgb(235, 235, 235);
+}
+
+@media screen and (max-width: 1024px) {
+  .NotFound-container{
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .NotFound-container {
+    width: 90%;
+  }
+
+  .NotFound-leftCol i {
+    font-size: 8rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .NotFound-container {
+    flex-direction: column; 
+    margin-top: 6rem
+  }
+
+  .NotFound-leftCol {
+    display: none;
+  }
 }

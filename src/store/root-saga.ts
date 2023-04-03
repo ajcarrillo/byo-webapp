@@ -1,5 +1,4 @@
 /* istanbul ignore file */
-
 import { fork } from '@redux-saga/core/effects'
 
 import { 
@@ -12,10 +11,23 @@ import {
   rquestPasswordResetSagaWatcher,
   changePasswordSagaWatcher
 } from './authentication/authentication-sagas'
-
 import { 
-  getProteusModulesSagaWatcher
+  getProteusModulesSagaWatcher,
+  connectControllerSagaWatcher,
+  getProteusSettingsSagaWatcher,
+  getControllerConfigSagaWatcher,
+  setUnityReadySagaWatcher,
+  setGamepadReadySagaWatcher,
+  setMappingModeSagaWatcher,
+  getProteusGalleryItemsSagaWatcher,
+  appendGalleryItemSagaWatcher
 } from './proteus/proteus-sagas'
+import { 
+  getShopCountryListSagaWatcher,
+  getShopCustomerDetailsSagaWatcher, 
+  getShopProductsSagaWatcher, 
+  saveShopCustomerDetailsSagaWatcher
+} from './shop/shop-sagas'
 
 export function* rootSaga(){
   yield fork(getUserSagaWatcher)
@@ -27,4 +39,16 @@ export function* rootSaga(){
   yield fork(rquestPasswordResetSagaWatcher)
   yield fork(changePasswordSagaWatcher)
   yield fork(getProteusModulesSagaWatcher)
+  yield fork(connectControllerSagaWatcher)
+  yield fork(getProteusSettingsSagaWatcher)
+  yield fork(getControllerConfigSagaWatcher)
+  yield fork(setUnityReadySagaWatcher)
+  yield fork(setGamepadReadySagaWatcher)
+  yield fork(setMappingModeSagaWatcher)
+  yield fork(getProteusGalleryItemsSagaWatcher)
+  yield fork(appendGalleryItemSagaWatcher)
+  yield fork(getShopProductsSagaWatcher)
+  yield fork(getShopCustomerDetailsSagaWatcher)
+  yield fork(getShopCountryListSagaWatcher)
+  yield fork(saveShopCustomerDetailsSagaWatcher)
 }
