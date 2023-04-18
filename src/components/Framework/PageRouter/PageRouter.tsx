@@ -19,6 +19,7 @@ import ShopPage from '../Pages/Shop'
 import ProductPage from '../Pages/Product'
 import CheckoutPage from '../Pages/Checkout'
 import BasketPage from '../Pages/Basket'
+import OrdersPage from '../Pages/Orders'
 
 import { IStoreState } from '../../../types/store-types'
 import { ShopBasketItem } from '../../../types/shop-types'
@@ -112,7 +113,8 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
           <Route path="/product/:address" render={(p) => <ProductPage {...p} />} />
           <Route path="/accessibility" render={(p) => <AccessibilityPage {...p} />} />
           <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-          <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} />
+          <PrivateRoute path="/orders" component={OrdersPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <Route path="/404" component={(p: any) => <NotFoundPage {...p} />} />
           <Redirect from='*' to='/404' />
         </Switch>

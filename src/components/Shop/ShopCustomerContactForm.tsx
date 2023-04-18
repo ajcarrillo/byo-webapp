@@ -17,10 +17,12 @@ const initialErrors = {
   regionCounty: '',
   zipPostcode: '',
   countryCodeSelect: '',
+  americaStateCodeSelect: '',
   telephone: '',
 }
 
 interface IShopCustomerContactFormProps {
+  americanStates: readonly SelectType[],
   countries: readonly SelectType[],
   formName: string,
   formData: UserContactExtended | null,
@@ -28,7 +30,7 @@ interface IShopCustomerContactFormProps {
 }
 
 const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((props, ref) => {
-  const { countries, formName, formData, excludes } = props
+  const { americanStates, countries, formName, formData, excludes } = props
 
   const [state, setState] = useState<UserContactExtended>({
     address: '',
@@ -42,6 +44,7 @@ const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((
     zipPostcode: '',
     countryCode: '',
     countryCodeSelect: null,
+    americaStateCodeSelect: null,
     telephone: '',
   })
 
@@ -79,8 +82,15 @@ const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((
     if (isEmpty(state.townCity || '') || !isPunctuatedText(state.townCity || ''))
       e.townCity = 'Please enter your town / city.'
 
-    if (isEmpty(state.regionCounty || '') || !isPunctuatedText(state.regionCounty || ''))
-      e.regionCounty = 'Please enter your region / county.'
+    if(state.countryCodeSelect && state.countryCodeSelect.value !== 'USA'){
+      if (isEmpty(state.regionCounty || '') || !isPunctuatedText(state.regionCounty || ''))
+        e.regionCounty = 'Please enter your region / county.'
+    }
+
+    if(state.countryCodeSelect && state.countryCodeSelect.value === 'USA'){
+      if (!state.americaStateCodeSelect)
+        e.americaStateCodeSelect = 'Please select your state.'
+    }
 
     if (isEmpty(state.zipPostcode || '') || !isPunctuatedText(state.zipPostcode || ''))
       e.zipPostcode = 'Please enter your zip / postcode.'
@@ -95,7 +105,11 @@ const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((
 
     if (Object.keys(e).length === 0) {
       setErrors(initialErrors)
-      return {...state, countryCode: state.countryCodeSelect?.value}
+      return {
+        ...state, 
+        countryCode: state.countryCodeSelect?.value,
+        ...(state.countryCodeSelect?.value === 'USA' && {regionCounty: state.americaStateCodeSelect?.label})
+      }
     } else {
       setErrors(e)
       return null
@@ -126,15 +140,19 @@ const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((
     }))
   }
 
+  /**
+   * Pre-populates the form if data is available
+   */
   useEffect(() => {
     if(formData){
       setState((prev) => ({
         ...prev,
         ...formData, 
         countryCodeSelect: countries.find(c => c.value === formData.countryCode) || null,
+        ...(formData.countryCode === 'USA' && {americaStateCodeSelect: americanStates.find(s => s.label === formData.regionCounty) || null})
       }))
     }
-  }, [countries, formData])
+  }, [americanStates, countries, formData])
 
   return (
     <>
@@ -171,6 +189,40 @@ const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((
           <div className="Formfield-error-inline">{errors.lastName}</div>
         )}
       </div>)}
+
+      <div style={{marginBottom: '1rem'}}>
+        <Select  
+          styles={reactSelectCustomStyles} 
+          options={countries} 
+          value={state.countryCodeSelect} 
+          onChange={(opt) => handleSelectChange('countryCodeSelect', opt)} 
+          placeholder='Country' 
+          components={{ Input: ReactSelectInput }} 
+          maxMenuHeight={200}
+        />
+        {errors.countryCodeSelect && (
+          <div className="Formfield-error-inline">{errors.countryCodeSelect}</div>
+        )}
+      </div>
+
+      <div style={{marginBottom: '1rem'}}>
+        {state.countryCodeSelect?.value === 'USA' && (
+          <>
+            <Select  
+              styles={reactSelectCustomStyles} 
+              options={americanStates} 
+              value={state.americaStateCodeSelect} 
+              onChange={(opt) => handleSelectChange('americaStateCodeSelect', opt)} 
+              placeholder='State' 
+              components={{ Input: ReactSelectInput }} 
+              maxMenuHeight={200}
+            />
+            {errors.americaStateCodeSelect && (
+              <div className="Formfield-error-inline">{errors.americaStateCodeSelect}</div>
+            )}
+          </>
+        )}
+      </div>
 
       <div style={{marginBottom: '1rem'}}>
         <input
@@ -221,18 +273,22 @@ const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((
       </div>
       
       <div style={{marginBottom: '1rem'}}>
-        <input
-          className="Textfield-dark" 
-          type='text' 
-          onChange={(e) => handleInputChange('regionCounty', e.target.value)} 
-          value={state.regionCounty}
-          placeholder="Region / County" 
-          style={{ width: '100%' }}
-          data-lpignore="true"
-          autoComplete='off'
-        />
-        {errors.regionCounty && (
-          <div className="Formfield-error-inline">{errors.regionCounty}</div>
+        {state.countryCodeSelect?.value !== 'USA' && (
+          <>
+            <input
+              className="Textfield-dark" 
+              type='text' 
+              onChange={(e) => handleInputChange('regionCounty', e.target.value)} 
+              value={state.regionCounty}
+              placeholder="Region / County" 
+              style={{ width: '100%' }}
+              data-lpignore="true"
+              autoComplete='off'
+            />
+            {errors.regionCounty && (
+              <div className="Formfield-error-inline">{errors.regionCounty}</div>
+            )}
+          </>
         )}
       </div>
 
@@ -249,21 +305,6 @@ const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((
         />
         {errors.zipPostcode && (
           <div className="Formfield-error-inline">{errors.zipPostcode}</div>
-        )}
-      </div>
-
-      <div style={{marginBottom: '1rem'}}>
-        <Select  
-          styles={reactSelectCustomStyles} 
-          options={countries} 
-          value={state.countryCodeSelect} 
-          onChange={(opt) => handleSelectChange('countryCodeSelect', opt)} 
-          placeholder='Country' 
-          components={{ Input: ReactSelectInput }} 
-          maxMenuHeight={100}
-        />
-        {errors.countryCodeSelect && (
-          <div className="Formfield-error-inline">{errors.countryCodeSelect}</div>
         )}
       </div>
 

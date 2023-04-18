@@ -28,7 +28,8 @@ export type UserContact = {
 export type UserContactExtended = Modify<UserContact, {
   firstName?: string, 
   lastName?: string,
-  countryCodeSelect?: SingleValue<SelectType>
+  countryCodeSelect?: SingleValue<SelectType>,
+  americaStateCodeSelect?: SingleValue<SelectType>
 }>
 
 export type UserProfile = {

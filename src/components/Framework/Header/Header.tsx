@@ -59,6 +59,7 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
     const items: MenuItem[] = [
       {url: `/profile/${userAddress}`, title: 'Profile', icon: 'fa-solid fa-user'},
       {url: '/profile-settings', title: 'Profile Settings', icon: 'fa-solid fa-user-gear'},
+      {url: '/orders', title: 'Orders', icon: 'fa-solid fa-truck-fast'},
       {url: '/sign-out', title: 'Sign Out', icon: 'fa-solid fa-arrow-right-to-bracket'}
     ]
     setBurgerMenuItems(items)

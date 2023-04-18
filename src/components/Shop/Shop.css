@@ -185,6 +185,11 @@
   font-size: 1rem;
 }
 
+.ShopBasketProduct-price-container p:nth-of-type(2) {
+  color: var(--byowave-panel-text-colour);
+  font-size: .9rem;
+}
+
 /*
   Shop Checkout
 */
@@ -250,6 +255,21 @@
   padding: 0 .6rem;
 }
 
+.ShopCheckout-summary-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .7rem;
+}
+
+.ShopCheckout-summary-spinner i {
+  font-size: 5rem;
+  color: var(--byowave-panel-text-colour);
+  -webkit-animation:spin 1.5s linear infinite;
+  -moz-animation:spin 1.5s linear infinite;
+  animation:spin 1.5s linear infinite;
+}
+
 .ShopCheckout-breadcrumb-container {
   display: flex;
   align-items: center;
@@ -258,6 +278,7 @@
 
 .ShopCheckout-breadcrumb-container i {
   padding: 0 1rem;
+  font-size: 1.4rem;
   color: var(--byowave-cta-dark-colour)
 }
 
@@ -276,6 +297,71 @@
 
 .ShopCheckout-breadcrumb-link__inactive {
   color: var(--byowave-cta-dark-colour);
+}
+
+/*
+  Shop Payment
+*/
+.ShopPayment-stripelogo-container {
+  width: 50%;
+  margin-top: 2rem
+}
+
+.ShopPayment-stripelogo-container img {
+  width: 100%
+}
+
+.ShopPayment-error {
+  display: flex;
+  align-items: center;
+  padding: .7rem !important;
+  margin-top: 1rem;
+}
+
+.ShopPayment-error i {
+  color: var(--byowave-alert-colour);
+  font-size: 1.8rem;
+  margin-right: .6rem;
+}
+
+.ShopPayment-goobender-bounce-container {
+  display: flex;
+  height: 200px;
+  width: 100%;
+}
+
+.ShopPayment-goobender-bounce {
+  align-self: flex-end;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  height: 100px;
+  margin: 0 auto 0 auto;
+  transform-origin: bottom;
+  width: 100px;
+}
+
+.ShopPayment-goobender-bounce img {
+  width: 100%
+}
+
+/*
+  Shop Payment Complete
+*/
+.ShopPaymentComplete-container {
+
+}
+
+.ShopPaymentComplete-success-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem !important;
+  margin: 1.4rem 0;
+}
+
+.ShopPaymentComplete-success-container i {
+  color: var(--byowave-alert-colour);
+  font-size: 4rem;
+  margin-right: .6rem;
 }
 
 /*

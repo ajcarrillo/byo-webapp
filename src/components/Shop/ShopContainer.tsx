@@ -1,5 +1,4 @@
 import React, { ReactElement, useCallback, useEffect } from 'react'
-// import { useParams, Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { 
@@ -10,17 +9,11 @@ import { getShopProductsRequest } from '../../store/shop/shop-actions'
 import { IStoreState } from '../../types/store-types'
 import './Shop.css'
 
-// export type ProductAddress = {
-//   address: string,
-// }
-
 const ShopContainer = (): ReactElement => {
   const dispatch = useDispatch()
   const { 
     shop
   } = useSelector<IStoreState, IStoreState>((store) => store)
-
-  // const { address } = useParams<ProductAddress>()
 
   const loadShopProducts = useCallback(() => {
     dispatch(getShopProductsRequest())

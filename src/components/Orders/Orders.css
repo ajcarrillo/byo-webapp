@@ -1,0 +1,112 @@
+/*
+  Orders Container
+*/
+.Orders-container {
+  width: 80%; 
+  margin: 2rem auto;
+}
+
+.OrdersList-container { 
+  margin-top: 2rem
+}
+
+.Orders-empty-container {
+  width: 80%; 
+  margin: auto;
+  display: flex; 
+  margin-top: 4rem;
+}
+
+.Orders-empty-leftCol {
+  flex-basis: 0;
+  flex-grow: 2;
+  background-color: var(--byowave-alert-colour);
+  border-radius: .6rem 0 0 .6rem;
+  padding: 4rem;
+  text-align: center;
+}
+
+.Orders-empty-rightCol {
+  flex-basis: 0;
+  flex-grow: 3;
+  background-color: var(--byowave-panel-bg-colour);
+  border-radius: 0 .6rem .6rem 0;
+  padding: 4rem;
+}
+
+.Orders-empty-leftCol i {
+  font-size: 12rem;
+  color: rgb(235, 235, 235);
+}
+
+/*
+  Orders Item
+*/
+.OrdersItem-container {
+  background-color: var(--byowave-panel-bg-colour);
+  padding: 2rem;
+  border-radius: 5px;
+  display: flex;
+  margin-bottom: .6rem;
+}
+
+.OrdersItem-product-list-container {
+  width: 45%
+}
+
+.OrdersItem-product-container {
+  display: flex;
+  align-items: center;
+}
+
+.OrdersItem-product-image-container {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--byowave-image-border-colour);
+  border-radius: 4px;
+}
+
+.OrdersItem-product-image-container img {
+  width: 100%;
+  height: 100%
+}
+
+.OrdersItem-product-text-container {
+  padding-left: 1rem;
+  width: calc(100% - 60px)
+}
+
+.OrdersItem-product-text-container p:nth-of-type(1) {
+  color: var(--byowave-panel-text-colour);
+  font-size: .8rem;
+}
+
+.OrdersItem-product-text-container p:nth-of-type(2) {
+  font-size: .8rem;
+}
+
+.OrdersItem-summay-container {
+  width: 55%;
+  padding-left: 2rem;
+  border-left: 1px solid var(--byowave-cta-dark-colour);
+}
+
+.OrdersItem-summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 .4rem;
+}
+
+.OrdersItem-summary-item p {
+  line-height: 1.4rem;
+}
+
+.OrdersItem-summary-item p:nth-of-type(1) {
+  color: var(--byowave-panel-text-colour);
+  font-size: .9rem;
+}
+
+.OrdersItem-summary-item p:nth-of-type(2) {
+  font-size: .9rem;
+}

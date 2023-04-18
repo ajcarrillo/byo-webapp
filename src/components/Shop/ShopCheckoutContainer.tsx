@@ -1,20 +1,29 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import parse from 'html-react-parser'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 
-import { getCountryListRequest, getCustomerDetailsRequest, saveCustomerDetailsRequest } from '../../store/shop/shop-actions'
+import { 
+  createSalesTransactionRequest,
+  updateShopSalesTransactionStatusRequest,
+  getAmericaStateListRequest, 
+  getCountryListRequest, 
+  getCustomerDetailsRequest, 
+  saveCustomerDetailsRequest 
+} from '../../store/shop/shop-actions'
 import { IStoreState } from '../../types/store-types'
-import { APIResponse } from '../../types/api-types'
 import { UserContactExtended } from '../../types/user-types'
-import { ShopBasketItem, ShopCheckoutSummary } from '../../types/shop-types'
-import { addFloatValues, multiplyFloatValues } from '../../utils/financial-utils'
-import { getStoredAccessToken, updateStoredAccessToken } from '../../utils/user-utils'
-import { apiCall } from '../../utils/api-utils'
 import ShopBasketProduct from './ShopBasketProduct'
 import ShopCustomerContactForm from './ShopCustomerContactForm'
+import ShopCheckoutProgress from './ShopCheckoutProgress'
+import ShopCheckoutSummaryPanel from './ShopCheckoutSummaryPanel'
+import ShopCheckoutPayment from './ShopCheckoutPayment'
+import ShopCheckoutPaymentComplete from './ShopCheckoutPaymentComplete'
 import { Checkbox } from '../CustomControls'
 import './Shop.css'
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || '')
 
 type SelectType = {
   readonly label: string,
@@ -28,7 +37,8 @@ type CheckoutAddresses = {
 
 type CheckoutProgress = {
   addressCaptured: boolean,
-  shippinAndTaxCalculated: boolean,
+  shippingCalculated: boolean,
+  taxCalculated: boolean,
 }
 
 interface IShopCheckoutContainerProps {
@@ -42,19 +52,58 @@ const ShopCheckoutContainer: React.FC<IShopCheckoutContainerProps> = (props: ISh
   } = useSelector<IStoreState, IStoreState>((store) => store)
 
   const [checkoutStage, setCheckoutStage] = useState('contactDetails')
-  const [checkoutProgress, setCheckoutProgress] = useState<CheckoutProgress>({addressCaptured: false, shippinAndTaxCalculated: false})
-
+  const [checkoutProgress, setCheckoutProgress] = useState<CheckoutProgress>({addressCaptured: false, shippingCalculated: false, taxCalculated: false})
   const [checkoutAddresses, setCheckoutAddresses] = useState<CheckoutAddresses>({billing: null, delivery: null})
-
   const [deliverAlternateAddress, setDeliverAlternateAddress] = useState('no')
-  const [checkoutSummary, setCheckoutSummary] = useState<ShopCheckoutSummary>()
   const [countryList, setCountryList] = useState<readonly SelectType[]>([])
-  const [shippingAndTax, setShippingAndTax] = useState({shipping:'0.00', tax:'0.00'})
-
+  const [americaStateList, setAmericaStateList] = useState<readonly SelectType[]>([])
   const billingContactForm = useRef<any>(null)
   const deliveryContactForm = useRef<any>(null)
 
+  /**
+   * Used for redirects by Stripe
+   */
+  const [stripeRedirectClientSecret, setStripeRedirectClientSecret] = useState('')
+  const [stripeRedirectTxId, setStripeRedirectTxId] = useState('')
+
+  const stripeAppearance = {
+    variables: {
+      colorPrimary: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-colour'),
+      colorBackground: getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-bg-colour'),
+      colorText: getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-text-colour'),
+      colorDanger: getComputedStyle(document.documentElement).getPropertyValue('--byowave-alert-colour'),
+      fontFamily: 'Ideal Sans, system-ui, sans-serif',
+      spacingUnit: '3px',
+      borderRadius: '4px',
+      spacingGridRow: '18px'
+    },
+    rules: {
+      '.Input::placeholder': {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--byowave-inputfield-placeholder-text-colour'),
+      },
+      '.Input': {
+        outline: 'none',
+        border: 'none',
+        boxShadow: 'none'
+      },
+      '.Input--empty': {
+        outline: 'none',
+        border: 'none',
+        boxShadow: 'none'
+      },
+      '.Input:focus': {
+        outline: 'none',
+        border: 'none',
+        boxShadow: 'none'
+      },
+
+    }
+  }
+  const stripeLoader = 'auto'
+
   const handleClickGoToSummary = () => {
+    if(shop.customerDetailsLoading) return
+
     // Validate the contact forms and get the data
     let delivery: UserContactExtended | null = null
     const billing: UserContactExtended | null = billingContactForm.current?.validateAndSubmit()
@@ -103,8 +152,10 @@ const ShopCheckoutContainer: React.FC<IShopCheckoutContainerProps> = (props: ISh
     setCheckoutStage('summary')
   }
 
-  const continueToPay = () => {
-    //
+  const handleClickGoToPayment = () => {
+    if(!canUpdateCheckoutStage('payment')) return
+
+    setCheckoutStage('payment')
   }
 
   const canUpdateCheckoutStage = (stage: string) => {
@@ -118,11 +169,12 @@ const ShopCheckoutContainer: React.FC<IShopCheckoutContainerProps> = (props: ISh
         canUpdate = checkoutProgress.addressCaptured
         break
       case'payment':
-        canUpdate = checkoutProgress.addressCaptured && checkoutProgress.shippinAndTaxCalculated
+        canUpdate = checkoutProgress.addressCaptured && shop.salesTransaction !== null && shop.salesTransaction.transactionStatus !== 'update'
         break
       }
-
       return canUpdate
+    } else {
+      return false
     }
   }
 
@@ -142,75 +194,46 @@ const ShopCheckoutContainer: React.FC<IShopCheckoutContainerProps> = (props: ISh
   }
 
   /**
-   * Requests shipping and tax costs
+   * Creates a tax calculation, shipping calculation, payment intent, a sales order
+   * Returns a Stripe client secret, and checkout summary
    */
-  const calculateShippingAndTax = useCallback(async () => {
-    const postData = {
-      countryCode: checkoutAddresses.delivery ? checkoutAddresses.delivery.countryCode : checkoutAddresses.billing?.countryCode,
-      zipPostcode: checkoutAddresses.delivery ? checkoutAddresses.delivery.zipPostcode : checkoutAddresses.billing?.zipPostcode,
-      basketItems: shop.basketItems?.map((b) => { 
-        return {productCode: b.item.productCode, productAmount: b.amount.toString()}
-      })
+  const createSalesTransaction = useCallback(() => {
+    if(shop.basketItems && !shop.salesTransactionLoading && !shop.apiError){
+      dispatch(createSalesTransactionRequest(
+        shop.basketItems?.map((b) => { 
+          return {productCode: b.item.productCode, productAmount: b.amount}
+        }), 
+        deliverAlternateAddress === 'yes' ? 'delivery' : 'billing',
+        shop.salesTransaction?.stripeClientSecret
+      ))      
     }
-
-    try {
-      const response: APIResponse = await apiCall(
-        `${process.env.REACT_APP_API_BASE_URL}/shop/shipping-tax`,
-        'POST',
-        getStoredAccessToken().accesToken,
-        postData,
-        'json'
-      )
-  
-      if(response.status === 200){
-        setShippingAndTax(response.data)
-      }
-      else {
-        if(response.status === 401) updateStoredAccessToken('', false)
-        setShippingAndTax({shipping:'0.00', tax:'0.00'})
-      }
-    } 
-    catch(e) {
-      setShippingAndTax({shipping:'0.00', tax:'0.00'})
-    }
-  }, [checkoutAddresses.billing?.countryCode, checkoutAddresses.billing?.zipPostcode, checkoutAddresses.delivery, shop.basketItems])
+  }, [deliverAlternateAddress, dispatch, shop.apiError, shop.basketItems, shop.salesTransaction?.stripeClientSecret, shop.salesTransactionLoading])
 
   useEffect(() => {
-    if(checkoutStage === 'summary'){
-      calculateShippingAndTax()
+    if(checkoutStage === 'summary' && !shop.customerDetailsLoading){
+      if(!shop.salesTransaction || shop.salesTransaction.transactionStatus === 'update'){
+        createSalesTransaction()
+      }
     }
-  }, [calculateShippingAndTax, checkoutStage])
+
+    // Moving away from summary, back to contact details - update transaction status, 
+    // so we request a new transaction when we return to the summary
+    if(checkoutStage === 'contactDetails'){
+      if(shop.salesTransaction && shop.salesTransaction.transactionStatus === 'new'){
+        dispatch(updateShopSalesTransactionStatusRequest('update'))
+      }
+    }
+
+    // Moving away from checkout - update transaction status, 
+    // so we request a new transaction when we return to the summary
+    return () => {
+      if(shop.salesTransaction && shop.salesTransaction.transactionStatus === 'new') 
+        dispatch(updateShopSalesTransactionStatusRequest('update'))
+    }
+  }, [checkoutStage, createSalesTransaction, dispatch, shop.customerDetailsLoading, shop.salesTransaction])
 
   /**
-   * Calculates the basket summary
-   * @param basketItems
-   * @param shipping
-   * @param tax
-   */
-  const calculateBasketSummary = (basketItems: ShopBasketItem[], shipping: string, tax: string) => {
-    const itemCosts: string[] = []
-    basketItems.forEach(b => {
-      itemCosts.push(multiplyFloatValues(b.item.productPrice, b.amount.toString()))
-    })
-
-    const summarySubTotal = addFloatValues(itemCosts)
-    const summaryTotal = addFloatValues([summarySubTotal, shipping, tax])
-    setCheckoutSummary({
-      sub: summarySubTotal,
-      shipping,
-      tax,
-      total: summaryTotal
-    })
-  }
-
-  useEffect(() => {
-    if(shop.basketItems && shop.basketItems?.length > 0 && shippingAndTax.shipping !== '0.00'){
-      calculateBasketSummary(shop.basketItems, shippingAndTax.shipping, shippingAndTax.tax)
-    }
-  }, [shippingAndTax, shop.basketItems])
-
-  /**
-   * Loads any customer contact details we have
+   * Loads any customer contact details we have from the database
    */
   const loadCustomerDetails = useCallback(() => {
     if(props.tokenIsValid){
@@ -225,7 +248,7 @@ const ShopCheckoutContainer: React.FC<IShopCheckoutContainerProps> = (props: ISh
   }, [loadCustomerDetails, shop.basketItems, shop.customerDetails])
 
   /**
-   * Updates the customer contact addresses
+   * Updates the customer contact addresses from the database
    */
   const updateContactAddress = useCallback(() => {
     const billing = shop.customerDetails?.contacts.find(ad => ad.name === 'billing')
@@ -270,161 +293,210 @@ const ShopCheckoutContainer: React.FC<IShopCheckoutContainerProps> = (props: ISh
     }
   }, [countryList.length, shop.countries])
 
+  /**
+   * Loads and generates the america state list
+   */
+  const loadAmericaStates = useCallback(() => {
+    dispatch(getAmericaStateListRequest())
+  }, [dispatch])
+
+  useEffect(() => {
+    if(!shop.americanStates) loadAmericaStates()
+  }, [loadAmericaStates, shop.americanStates])
+  
+  useEffect(() => {
+    if(shop.americanStates && americaStateList.length === 0){
+      const list: readonly SelectType[] = shop.americanStates.map(c => {
+        return {value: c.code, label: c.name}
+      })
+      setAmericaStateList(list)
+    }
+  }, [americaStateList.length, shop.americanStates])
+
+  /**
+   * Used for callback/redirect from Stripe
+   */
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const stripeSecret = url.searchParams.get('payment_intent_client_secret')
+    const tx = url.searchParams.get('txId')
+    const loadModule = url.searchParams.get('mod')
+
+    if(stripeSecret) setStripeRedirectClientSecret(stripeSecret)
+    if(tx) setStripeRedirectTxId(tx)
+    
+    if(loadModule){
+      setCheckoutStage(loadModule)
+      window.history.replaceState({}, '', `${window.location.pathname}`)
+    }
+  }, [checkoutStage])
+  
   return (
     <>
       <div className='Shop-container'>
-        {shop.basketItems?.length === 0 ? (
-          <div className='ShopCheckout-empty-container'>
-            <div className='ShopCheckout-empty-leftCol'>
-              <i className="fa-solid fa-face-sad-tear"></i>
+        <h1><span className="Colour-blue-bright">Checkout</span></h1>
+
+        {!props.tokenIsValid ? (
+          <>
+            <div className='ShopCheckout-help-container'>
+              <h3>Already have an account?</h3>
+              <p style={{marginTop: '.6rem'}}>Please <Link to='/sign-in?redirectAfter=checkout' title='Sign In'>Sign In</Link> before you can checkout your basket items.</p>
+              <h3 style={{marginTop: '2rem'}}>Don&apos;t have an account yet?</h3>
+              <p style={{marginTop: '.6rem'}}>Please head over to our <Link to='/sign-up' title='Sign Up'>Sign Up</Link> page and create your Byowave account. It only takes a minute - promise!</p>
             </div>
-            <div className='ShopCheckout-empty-rightCol'>
-              <h1>Oh no!</h1>
-              <h3 style={{marginTop: '1rem'}}>You haven&apos;t added anything to your basket yet.</h3>
-              <p style={{marginTop: '2rem'}}>Why not visit our shop, load up on goodies, then come back for another go.</p>
-            </div>
-          </div>
+          </>
         ) : (
           <>
-            <h1><span className="Colour-blue-bright">Checkout</span></h1>
-
-            {!props.tokenIsValid ? (
-              <>
-                <div className='ShopCheckout-help-container'>
-                  <h3>Already have an account?</h3>
-                  <p style={{marginTop: '.6rem'}}>Please <Link to='/sign-in?redirectAfter=checkout' title='Sign In'>Sign In</Link> before you can checkout your basket items.</p>
-                  <h3 style={{marginTop: '2rem'}}>Don&apos;t have an account yet?</h3>
-                  <p style={{marginTop: '.6rem'}}>Please head over to our <Link to='/sign-up' title='Sign Up'>Sign Up</Link> page and create your Byowave account. It only takes a minute - promise!</p>
-                </div>
-              </>
+            {checkoutStage === 'complete' ? (
+              <Elements stripe={stripePromise} options={{clientSecret: stripeRedirectClientSecret}}>
+                <ShopCheckoutPaymentComplete 
+                  updateCheckoutStage={setCheckoutStage}  
+                  stripeClientSecret={stripeRedirectClientSecret} 
+                  transactionId={stripeRedirectTxId} 
+                  basketItems={shop.basketItems || []} 
+                  orders={shop.orders} 
+                  ordersLoading={shop.ordersLoading}
+                />
+              </Elements>
             ) : (
-              <form onSubmit={(e) => e.preventDefault()} autoComplete='off'>
-                <div  className='PanelLabel' style={{marginTop: '1.6rem'}}>
-                  <div className='ShopCheckout-breadcrumb-container'>
-                    <Link to='/basket' title='Basket'>Basket</Link>
-                    <i className='fa-solid fa-right-long'></i>
-                    <div 
-                      title='Contact Details'
-                      className={`ShopCheckout-breadcrumb-link${checkoutStage === 'contactDetails' ? '__active' : canUpdateCheckoutStage('contactDetails') ? '' : '__inactive'}`}
-                      onClick={() => updateCheckoutStage('contactDetails')}
-                    >
-                      Contact Details
+              <>
+                {shop.basketItems?.length === 0 ? (
+                  <div className='ShopCheckout-empty-container'>
+                    <div className='ShopCheckout-empty-leftCol'>
+                      <i className="fa-solid fa-face-sad-tear"></i>
                     </div>
-                    <i className='fa-solid fa-right-long'></i>
-                    <div 
-                      title='Summary'
-                      className={`ShopCheckout-breadcrumb-link${checkoutStage === 'summary' ? '__active' : canUpdateCheckoutStage('summary') ? '' : '__inactive'}`}
-                      onClick={() => updateCheckoutStage('summary')}
-                    >
-                      Summary
-                    </div>
-                    <i className='fa-solid fa-right-long'></i>
-                    <div 
-                      title='Payment'
-                      className={`ShopCheckout-breadcrumb-link${checkoutStage === 'payment' ? '__active' : canUpdateCheckoutStage('payment') ? '' : '__inactive'}`}
-                      onClick={() => updateCheckoutStage('payment')}
-                    >
-                      Payment
+                    <div className='ShopCheckout-empty-rightCol'>
+                      <h1>Oh no!</h1>
+                      <h3 style={{marginTop: '1rem'}}>You haven&apos;t added anything to your basket yet.</h3>
+                      <p style={{marginTop: '2rem'}}>Why not visit our shop, load up on goodies, then come back for another go.</p>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    <ShopCheckoutProgress 
+                      checkoutStage={checkoutStage} 
+                      updateCheckoutStage={updateCheckoutStage} 
+                      contactDetailsStageAllowed={canUpdateCheckoutStage('contactDetails')}
+                      summaryStageAllowed={canUpdateCheckoutStage('summary')}
+                      paymentStageAllowed={canUpdateCheckoutStage('payment')}
+                    />
 
-                <div className='ShopCheckout-container'>
-                  <div className='ShopCheckout-container-leftCol'>
+                    {checkoutStage === 'payment' && shop.salesTransaction ? (
+                      <Elements stripe={stripePromise} options={{clientSecret: shop.salesTransaction.stripeClientSecret, appearance: stripeAppearance, loader: stripeLoader}}>
+                        <ShopCheckoutPayment 
+                          customerName={`${checkoutAddresses.billing?.firstName} ${checkoutAddresses.billing?.lastName}`} 
+                          salesTransaction={shop.salesTransaction}
+                        />                    
+                      </Elements>
+                    ) : (
+                      <form onSubmit={(e) => e.preventDefault()} autoComplete='off'>
+                        <div className='ShopCheckout-container'>
+                          <div className='ShopCheckout-container-leftCol'>
+                            {checkoutStage === 'contactDetails' && (
+                              <>
+                                <ShopCustomerContactForm 
+                                  ref={billingContactForm} 
+                                  countries={countryList} 
+                                  americanStates={americaStateList} 
+                                  formName={'Billing Address'} 
+                                  formData={checkoutAddresses.billing} 
+                                />
+                              </>
+                            )}
 
-                    {checkoutStage === 'contactDetails' && (
-                      <>
-                        <ShopCustomerContactForm 
-                          ref={billingContactForm} 
-                          countries={countryList} 
-                          formName={'Billing Address'} 
-                          formData={checkoutAddresses.billing}
-                        />
-                      </>
+                            {checkoutStage === 'summary' && (
+                              <>
+                                <h3>Basket Items</h3>
+                                {shop.basketItems?.map((b, i) => (
+                                  <ShopBasketProduct key={i} basketItem={b} allowQuantityUpdates={false} />
+                                ))}
+                              </>
+                            )}
+                          </div>
+
+                          <div className='ShopCheckout-container-rightCol'>
+                            {checkoutStage === 'contactDetails' && (
+                              <>
+                                <div className="PanelAlert" style={{marginBottom: '1.6rem', display: 'block'}}>
+                                  <p>Would like your items shipped to a different address?</p>
+                                  <div style={{margin: '.8rem 0 00'}}>
+                                    <Checkbox
+                                      size='small' 
+                                      selectedValue="yes" 
+                                      unselectedValue="no"
+                                      value={deliverAlternateAddress}
+                                      text='Yes, please ship my items to an alternative address.'
+                                      onChange={(val: string) => setDeliverAlternateAddress(val)} 
+                                    />                    
+                                  </div>
+                                </div>
+                                {deliverAlternateAddress === 'yes' && (
+                                  <ShopCustomerContactForm 
+                                    ref={deliveryContactForm} 
+                                    excludes={['firstName', 'lastName', 'telephone']} 
+                                    countries={countryList} 
+                                    americanStates={americaStateList} 
+                                    formName={'Delivery Address'} 
+                                    formData={{
+                                      ...checkoutAddresses.delivery,
+                                      firstName: '',
+                                      lastName: '',
+                                    }}
+                                  />
+                                )}
+                                <button 
+                                  className={`Button-standard${shop.customerDetailsLoading ? '-disabled' : ''}`}
+                                  title='Payment Summary'
+                                  onClick={() => handleClickGoToSummary()}
+                                >
+                                  Payment Summary
+                                </button>
+                              </>
+                            )}
+
+                            {checkoutStage === 'summary' && (
+                              <>
+                                {shop.apiError !== null ? (
+                                  <div className="PanelAlert">{shop.apiError.message}</div>
+                                ) : (
+                                  <>
+                                    <h3>Summary</h3>
+                                    <div className="PanelLabel" style={{marginTop: '1rem', marginBottom: '1.6rem'}}>
+                                      {shop.salesTransactionLoading ? (
+                                        <div className="ShopCheckout-summary-spinner">
+                                          <i className="fa-solid fa-spinner"></i>
+                                        </div>
+                                      ) : (
+                                        <div className='FadeInAfterDelay' style={{opacity: 0}} >
+                                          {shop.salesTransaction?.salesAmount && (
+                                            <ShopCheckoutSummaryPanel 
+                                              summary={shop.salesTransaction?.salesAmount} 
+                                            />
+                                          )}
+                                        </div>                    
+                                      )}
+                                    </div>
+                                    {!shop.salesTransactionLoading && (
+                                      <button 
+                                        className={`FadeInAfterDelay Button-standard${shop.salesTransactionLoading ? '-disabled' : ''}`}
+                                        style={{opacity: 0}}
+                                        title={`Pay ${shop.salesTransaction?.salesAmount.total}`} 
+                                        onClick={() => handleClickGoToPayment()}
+                                      >
+                                        {shop.salesTransactionLoading ? 'Please wait...' : 'Continue to Payment'}
+                                      </button>
+                                    )}
+                                  </>
+                                )}
+                              </>
+                            )}      
+                          </div>
+                        </div>                    
+                      </form>
                     )}
-
-                    {checkoutStage === 'summary' && (
-                      <>
-                        <h3>Basket Items</h3>
-                        {shop.basketItems?.map((b, i) => (
-                          <ShopBasketProduct key={i} basketItem={b} allowQuantityUpdates={false} />
-                        ))}
-                      </>
-                    )}
-
-                  </div>
-
-                  <div className='ShopCheckout-container-rightCol'>
-
-                    {checkoutStage === 'contactDetails' && (
-                      <>
-                        <div className="PanelAlert" style={{marginBottom: '1.6rem', display: 'block'}}>
-                          <p>Would like your items shipped to a different address?</p>
-                          <div style={{margin: '.8rem 0 00'}}>
-                            <Checkbox
-                              size='small' 
-                              selectedValue="yes" 
-                              unselectedValue="no"
-                              value={deliverAlternateAddress}
-                              text='Yes, please ship my items to an alternative address.'
-                              onChange={(val: string) => setDeliverAlternateAddress(val)} 
-                            />                    
-                          </div>
-                        </div>
-                        {deliverAlternateAddress === 'yes' && (
-                          <ShopCustomerContactForm 
-                            ref={deliveryContactForm} 
-                            excludes={['firstName', 'lastName', 'telephone']} 
-                            countries={countryList} 
-                            formName={'Delivery Address'} 
-                            formData={{
-                              ...checkoutAddresses.delivery,
-                              firstName: '',
-                              lastName: '',
-                            }}
-                          />
-                        )}
-                        <button 
-                          className='Button-standard'
-                          title='Payment Summary'
-                          onClick={() => handleClickGoToSummary()}
-                        >
-                          Payment Summary
-                        </button>
-                      </>
-                    )}
-
-                    {checkoutStage === 'summary' && (
-                      <>
-                        <h3>Summary</h3>
-                        <div className="PanelLabel" style={{marginTop: '1rem', marginBottom: '1.6rem'}}>
-                          <div className='ShopCheckout-summary-item'>
-                            <p>Subtotal:</p><p>{parse(`&euro;${checkoutSummary?.sub}`)}</p>
-                          </div>
-                          <div className='ShopCheckout-summary-item'>
-                            <p>Shipping:</p><p>{parse(`&euro;${checkoutSummary?.shipping}`)}</p>
-                          </div>
-                          <div className='ShopCheckout-summary-item'>
-                            <p>VAT:</p><p>{parse(`&euro;${checkoutSummary?.tax}`)}</p>
-                          </div>
-                          <div className='ShopCheckout-summary-item'>
-                            <p><strong>Total:</strong></p><p><strong>{parse(`&euro;${checkoutSummary?.total}`)}</strong></p>
-                          </div>
-                        </div>
-
-                        <button 
-                          className='Button-standard'
-                          title={`Pay ${checkoutSummary?.total}`} 
-                          onClick={() => continueToPay()}
-                        >
-                          {parse(`Pay &euro;${checkoutSummary?.total}`)}
-                        </button>
-                      </>
-                    )}
-                                
-                  </div>
-                </div>
-              </form>
+                  </>
+                )}
+              </>              
             )}
           </>
         )}

@@ -6,7 +6,6 @@ import parse from 'html-react-parser'
 import { IStoreState } from '../../types/store-types'
 import { ShopBasketItem, ShopCheckoutSummary } from '../../types/shop-types'
 import { addFloatValues, multiplyFloatValues } from '../../utils/financial-utils'
-import Spinner from '../Spinner'
 import ShopBasketProduct from './ShopBasketProduct'
 import './Shop.css'
 
@@ -51,10 +50,6 @@ const ShopBasketContainer: React.FC<IShopBasketContainerProps> = (props: IShopBa
 
   return (
     <>
-      {(shop.customerDetailaLoading) && (
-        <Spinner />
-      )}
-
       <div className='Shop-container'>
         {shop.basketItems?.length === 0 ? (
           <div className='ShopCheckout-empty-container'>

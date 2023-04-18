@@ -23,8 +23,11 @@ import {
   appendGalleryItemSagaWatcher
 } from './proteus/proteus-sagas'
 import { 
+  createSalesTransactionSagaWatcher,
+  getShopAmericanStateListSagaWatcher,
   getShopCountryListSagaWatcher,
   getShopCustomerDetailsSagaWatcher, 
+  getShopCustomerOrdersSagaWatcher, 
   getShopProductsSagaWatcher, 
   saveShopCustomerDetailsSagaWatcher
 } from './shop/shop-sagas'
@@ -49,6 +52,9 @@ export function* rootSaga(){
   yield fork(appendGalleryItemSagaWatcher)
   yield fork(getShopProductsSagaWatcher)
   yield fork(getShopCustomerDetailsSagaWatcher)
+  yield fork(getShopCustomerOrdersSagaWatcher)
   yield fork(getShopCountryListSagaWatcher)
+  yield fork(getShopAmericanStateListSagaWatcher)
   yield fork(saveShopCustomerDetailsSagaWatcher)
+  yield fork(createSalesTransactionSagaWatcher)
 }

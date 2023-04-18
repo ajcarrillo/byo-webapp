@@ -1,17 +1,27 @@
-import { SingleValue } from 'react-select'
-
 import { APIError } from './api-types'
+import { OrdersItem } from './orders-types'
 import { User, UserContact } from './user-types'
 
 export interface IShopState {
   apiError: APIError | null,
   productsLoading: boolean,
-  customerDetailaLoading: boolean,
+  customerDetailsLoading: boolean,
   countriesLoading: boolean,
+  americanStatesLoading: boolean,
+  salesTransactionLoading: boolean,
+  ordersLoading: boolean,
+  americanStates: ShopAmericanState[] | null,
   countries: ShopCountry[] | null,
   products: ShopProduct[] | null,
   customerDetails: ShopCustomer | null,
   basketItems: ShopBasketItem[] | null,
+  salesTransaction: ShopSalesTransaction | null,
+  orders: OrdersItem[] | null,
+}
+
+export type ShopAmericanState = {
+  code: string,
+  name: string,
 }
 
 export type ShopCountry = {
@@ -44,6 +54,11 @@ export type ShopBasketItem = {
   amount: number,
 }
 
+export type ShopBasketItemLite = {
+  productCode: string,
+  productAmount: number,
+}
+
 export type ShopCheckoutSummary = {
   sub: string,
   tax: string,
@@ -51,7 +66,10 @@ export type ShopCheckoutSummary = {
   total: string,
 }
 
-type SelectType = {
-  readonly label: string,
-  readonly value: string,
+export type ShopSalesTransaction = {
+  stripeClientSecret: string,
+  salesAmount: ShopCheckoutSummary,
+  transactionStatus: 'new' | 'update',
+  transactionId: string,
+  taxAddress: UserContact,
 }
