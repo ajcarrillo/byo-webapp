@@ -41,6 +41,7 @@ import {
   getMobileModel,
   getLocale
 } from '../../../utils/device-utils'
+import { useMediaQuery } from 'react-responsive'
 import { updateBasket } from '../../../utils/shop-utils'
 import { useObservable } from '../../../utils/hooks'
 import { shoppingBasketObservable, updateShoppingBasketObservable } from '../../../utils/events'
@@ -58,6 +59,8 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
     }
   } = useSelector<IStoreState, IStoreState>((state) => state)
 
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 480px)' })
+
   const storedAccessToken = getStoredAccessToken()
   const tokenIsValid = isAccessTokenValid(accessTokenValid, storedAccessToken)
   const address = userAddress || getStoredUserAddress()
@@ -74,7 +77,8 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
     browserVersion: getBrowserVersion(),
     mobileMake: getMobileMake(),
     mobileModel: getMobileModel(),
-    locale: getLocale()
+    locale: getLocale(),
+    isSmallScreen: isSmallScreen,
   }
 
   const [basketItems, setBasketItems] = useState<ShopBasketItem[]>([])

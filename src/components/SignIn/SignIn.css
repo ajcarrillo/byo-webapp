@@ -41,7 +41,11 @@
 
 @media screen and (max-width: 768px) {
   .SignIn-container {
+    flex-direction: column;
     width: 90%;
+  }
+  .SignIn-rightCol {
+    display: none;
   }
 }
 
