@@ -54,7 +54,7 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   /**
    * Creates the burger menu item
    */
-  const updateBurgerMenuItems = useCallback((isMobile: boolean) => {
+  const updateBurgerMenuItems = useCallback(() => {
     const items: MenuItem[] = [
       {url: `/profile/${userAddress}`, title: 'Profile', icon: 'fa-solid fa-user'},
       {url: '/profile-settings', title: 'Profile Settings', icon: 'fa-solid fa-user-gear'},
@@ -66,7 +66,7 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
 
   useEffect(() => {
     if(burgerMenuItems.length === 0)
-      updateBurgerMenuItems(false)
+      updateBurgerMenuItems()
   }, [burgerMenuItems.length, updateBurgerMenuItems])
 
   useEffect(() => {
