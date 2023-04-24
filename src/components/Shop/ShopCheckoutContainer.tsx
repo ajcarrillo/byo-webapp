@@ -254,7 +254,11 @@ const ShopCheckoutContainer: React.FC<IShopCheckoutContainerProps> = (props: ISh
     const billing = shop.customerDetails?.contacts.find(ad => ad.name === 'billing')
     const delivery = shop.customerDetails?.contacts.find(ad => ad.name === 'delivery')
     setCheckoutAddresses({
-      billing: billing ? {...billing, firstName: shop.customerDetails?.user.firstName, lastName: shop.customerDetails?.user.lastName} : null,
+      billing: {
+        ...billing,
+        firstName: shop.customerDetails?.user.firstName,
+        lastName: shop.customerDetails?.user.lastName,
+      },
       delivery: delivery ? delivery : null,
     })
 
