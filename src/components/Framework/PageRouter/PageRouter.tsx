@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route, Redirect, BrowserRouter, withRouter } from 'react-router-dom'
 import { useMobileOrientation } from 'react-device-detect'
+import { useMediaQuery } from 'react-responsive'
 
 import Header from '../Header'
 //import Footer from '../Footer'
@@ -74,7 +75,8 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
     browserVersion: getBrowserVersion(),
     mobileMake: getMobileMake(),
     mobileModel: getMobileModel(),
-    locale: getLocale()
+    locale: getLocale(),
+    isSmallScreen: useMediaQuery({ query: '(max-width: 480px)' }),
   }
 
   const [basketItems, setBasketItems] = useState<ShopBasketItem[]>([])

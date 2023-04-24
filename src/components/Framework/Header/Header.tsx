@@ -25,7 +25,6 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   const { tokenIsValid, userAddress, entitlements, routeProps } = props
   const [burgerOpen, setBurgerOpen] = useState(false)
   const [burgerMenuItems, setBurgerMenuItems] = useState<MenuItem[]>([])
-
   const moduleIcons = entitlements.map(mod => {
     return <Link key={`module-icon-${mod.name}`} to={`/module-${mod.name.toLowerCase()}`} title={mod.name}>
       <span className="App-header-icon">
@@ -55,21 +54,50 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   /**
    * Creates the burger menu item
    */
-  const updateBurgerMenuItems = useCallback((isMobile: boolean) => {
+  const updateBurgerMenuItems = useCallback(() => {
     const items: MenuItem[] = [
       {url: `/profile/${userAddress}`, title: 'Profile', icon: 'fa-solid fa-user'},
       {url: '/profile-settings', title: 'Profile Settings', icon: 'fa-solid fa-user-gear'},
       {url: '/orders', title: 'Orders', icon: 'fa-solid fa-truck-fast'},
-      {url: '/sign-out', title: 'Sign Out', icon: 'fa-solid fa-arrow-right-to-bracket'}
+      {url: '/sign-out', title: 'Sign Out', icon: 'fa-solid fa-arrow-right-to-bracket'},
     ]
     setBurgerMenuItems(items)
   }, [userAddress])
 
   useEffect(() => {
     if(burgerMenuItems.length === 0)
-      updateBurgerMenuItems(false)
+      updateBurgerMenuItems()
   }, [burgerMenuItems.length, updateBurgerMenuItems])
 
+  useEffect(() => {
+    if(props.device.isSmallScreen == true)
+    {
+      let items: MenuItem[]
+      if(tokenIsValid)
+      {
+        items = [
+          {url: '/shop', title: 'Shop', icon: 'fa-solid fa-cart-shopping'},
+          {url: '/accessibility', title: 'Accessibility', icon: 'fa-solid fa-palette'},
+          {url: '/basket', title: 'Basket', icon: 'fa-solid fa-basket-shopping'},
+          {url: `/profile/${userAddress}`, title: 'Profile', icon: 'fa-solid fa-user'},
+          {url: '/profile-settings', title: 'Profile Settings', icon: 'fa-solid fa-user-gear'},
+          {url: '/orders', title: 'Orders', icon: 'fa-solid fa-truck-fast'},
+          {url: '/sign-out', title: 'Sign Out', icon: 'fa-solid fa-arrow-right-to-bracket'},
+        ]
+      }
+      else
+      {
+        items = [
+          {url: '/shop', title: 'Shop', icon: 'fa-solid fa-cart-shopping'},
+          {url: '/accessibility', title: 'Accessibility', icon: 'fa-solid fa-palette'},
+          {url: '/basket', title: 'Basket', icon: 'fa-solid fa-basket-shopping'},
+          {url: '/sign-up', title: 'Sign Up', icon: 'fa-solid fa-user'},
+          {url: '/sign-in', title: 'Sign In', icon: 'fa-solid fa-arrow-right-to-bracket'},
+        ]
+      }
+      setBurgerMenuItems(items)
+    }
+  }, [props.device.isSmallScreen,tokenIsValid,userAddress])
   /**
    * Hide menu from the Proteus app
    */
@@ -80,85 +108,101 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   return (
     <>
       <header className="App-header">
-        <div className="App-header-icon-container">
-          <Link to="/" title="Home">
-            <div className="App-header-logo-container">
-              <img src={ByoWaveLogo} alt="Byowave Logo" style={{width: '100%'}} />
+        {props.device.isSmallScreen ? (
+          <>
+            <div className="App-header-icon-container">
+              <Link to="/" title="Home">
+                <div className="App-header-logo-container">
+                  <img src={ByoWaveLogo} alt="Byowave Logo" style={{width: '100%'}} />
+                </div>
+              </Link>
             </div>
-          </Link>
-
-          <Link to="/shop" title="Shop">
-            <button className='Button-header'>
-              <span className="App-header-icon">
-                <i className={'fa-solid fa-cart-shopping'}></i>
-                <span>Shop</span>
-              </span>
-            </button>
-          </Link>
-
-          <Link to="/accessibility" title="Accessibility">
-            <button className='Button-header'>
-              <span className="App-header-icon">
-                <i className={'fa-solid fa-palette'}></i>
-                <span>Accessibility</span>
-              </span>
-            </button>
-          </Link>
-                  
-          {tokenIsValid && (
-            <>
-              {moduleIcons}
-            </>
-          )}
-        </div>
-
-        <div className="App-header-icon-container">
-          <Link to="/basket" title="Shopping Basket">
-            <div style={{position: 'relative'}}>
-              <button className='Button-header'>
-                <span className="App-header-icon">
-                  <i className={'fa-solid fa-basket-shopping'}></i>
-                  <span>Basket</span>
-                </span>
-              </button>
-              {props.basketItemCount > 0 && <div className="App-header-basket-icon-badge">{props.basketItemCount}</div>}            
-            </div>
-          </Link>
-          
-          {tokenIsValid ? (
             <button 
               className='Button-header' 
-              onClick={() => handleClickBurgerMenu()}
+              onPointerDown ={() => handleClickBurgerMenu()}
               onBlur={() => closeBurgerMenu()}
             >
               <span className="App-header-icon">
                 <i className={'fa-solid fa-bars'}></i>
               </span>
             </button>
-          ) : (
-            <>
-              <Link to="/sign-up" title="Sign Up">
+          </>
+        ):(
+          <>
+            <div className="App-header-icon-container">
+              <Link to="/" title="Home">
+                <div className="App-header-logo-container">
+                  <img src={ByoWaveLogo} alt="Byowave Logo" style={{width: '100%'}} />
+                </div>
+              </Link>
+              <Link to="/shop" title="Shop">
                 <button className='Button-header'>
                   <span className="App-header-icon">
-                    <i className={'fa-solid fa-user'}></i>
-                    <span>Sign Up</span>
+                    <i className={'fa-solid fa-cart-shopping'}></i>
+                    <span>Shop</span>
                   </span>
                 </button>
               </Link>
-
-              <Link to="/sign-in" title="Sign In">
+              <Link to="/accessibility" title="Accessibility">
                 <button className='Button-header'>
                   <span className="App-header-icon">
-                    <i className={'fa-solid fa-arrow-right-to-bracket'}></i>
-                    <span>Sign In</span>
+                    <i className={'fa-solid fa-palette'}></i>
+                    <span>Accessibility</span>
                   </span>
                 </button>
               </Link>
-            </>
-          )}
-        </div>
+              {tokenIsValid && (
+                <>
+                  {moduleIcons}
+                </>
+              )}
+            </div>
+            <div className="App-header-icon-container">
+              <Link to="/basket" title="Shopping Basket">
+                <div style={{position: 'relative'}}>
+                  <button className='Button-header'>
+                    <span className="App-header-icon">
+                      <i className={'fa-solid fa-basket-shopping'}></i>
+                      <span>Basket</span>
+                    </span>
+                  </button>
+                  {props.basketItemCount > 0 && <div className="App-header-basket-icon-badge">{props.basketItemCount}</div>}            
+                </div>
+              </Link>
+              {tokenIsValid ? (
+                <button 
+                  className='Button-header' 
+                  onClick={() => handleClickBurgerMenu()}
+                  onBlur={() => closeBurgerMenu()}
+                >
+                  <span className="App-header-icon">
+                    <i className={'fa-solid fa-bars'}></i>
+                  </span>
+                </button>
+              ) : (
+                <>
+                  <Link to="/sign-up" title="Sign Up">
+                    <button className='Button-header'>
+                      <span className="App-header-icon">
+                        <i className={'fa-solid fa-user'}></i>
+                        <span>Sign Up</span>
+                      </span>
+                    </button>
+                  </Link>
+                  <Link to="/sign-in" title="Sign In">
+                    <button className='Button-header'>
+                      <span className="App-header-icon">
+                        <i className={'fa-solid fa-arrow-right-to-bracket'}></i>
+                        <span>Sign In</span>
+                      </span>
+                    </button>
+                  </Link>
+                </>
+              )}
+            </div>
+          </>
+        )}
       </header>
-
       {burgerOpen && 
         <HeaderHamburgerMenu menuItems={burgerMenuItems} />
       }
