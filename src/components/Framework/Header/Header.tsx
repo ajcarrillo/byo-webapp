@@ -25,7 +25,6 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   const { tokenIsValid, userAddress, entitlements, routeProps } = props
   const [burgerOpen, setBurgerOpen] = useState(false)
   const [burgerMenuItems, setBurgerMenuItems] = useState<MenuItem[]>([])
-  const [isSmallScreen, setIsSmallScreen] = useState(props.device.isSmallScreen)
   const moduleIcons = entitlements.map(mod => {
     return <Link key={`module-icon-${mod.name}`} to={`/module-${mod.name.toLowerCase()}`} title={mod.name}>
       <span className="App-header-icon">
@@ -71,7 +70,6 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   }, [burgerMenuItems.length, updateBurgerMenuItems])
 
   useEffect(() => {
-    setIsSmallScreen(props.device.isSmallScreen)
     if(props.device.isSmallScreen == true)
     {
       if(tokenIsValid)
@@ -110,7 +108,7 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   return (
     <>
       <header className="App-header">
-        {isSmallScreen ? (
+        {props.device.isSmallScreen ? (
           <>
             <div className="App-header-icon-container">
               <Link to="/" title="Home">
