@@ -29,6 +29,7 @@ interface IShopCustomerContactFormProps {
   excludes?: string[],
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((props, ref) => {
   const { americanStates, countries, formName, formData, excludes } = props
 
@@ -64,6 +65,7 @@ const ShopCustomerContactForm = forwardRef<any, IShopCustomerContactFormProps>((
    * @returns The state or null if there are errors
    */
   const validateForm = (): UserContactExtended | null => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const e: any = {}
 
     if (!excludes?.includes('firstName')){
