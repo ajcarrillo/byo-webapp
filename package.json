@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "env-cmd -f config/.env.development react-scripts start",
-    "build": "env-cmd -f config/.env.production react-scripts build",
+    "build": "react-scripts build",
     "lint": "eslint src/**/*.ts src/**/*.tsx",
     "test": "npx cypress open"
   },
