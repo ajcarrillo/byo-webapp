@@ -72,32 +72,32 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   useEffect(() => {
     if(props.device.isSmallScreen == true)
     {
+      let items: MenuItem[]
       if(tokenIsValid)
       {
-        const items: MenuItem[] = [
+        items = [
+          {url: '/shop', title: 'Shop', icon: 'fa-solid fa-cart-shopping'},
+          {url: '/accessibility', title: 'Accessibility', icon: 'fa-solid fa-palette'},
+          {url: '/basket', title: 'Basket', icon: 'fa-solid fa-basket-shopping'},
           {url: `/profile/${userAddress}`, title: 'Profile', icon: 'fa-solid fa-user'},
           {url: '/profile-settings', title: 'Profile Settings', icon: 'fa-solid fa-user-gear'},
           {url: '/orders', title: 'Orders', icon: 'fa-solid fa-truck-fast'},
           {url: '/sign-out', title: 'Sign Out', icon: 'fa-solid fa-arrow-right-to-bracket'},
-          {url: '/shop', title: 'Shop', icon: 'fa-solid fa-cart-shopping'},
-          {url: '/accessibility', title: 'Accessibility', icon: 'fa-solid fa-palette'},
-          {url: '/basket', title: 'Basket', icon: 'fa-solid fa-basket-shopping'},
         ]
-        setBurgerMenuItems(items)
       }
       else
       {
-        const items: MenuItem[] = [
-          {url: '/sign-up', title: 'Sign Up', icon: 'fa-solid fa-user'},
-          {url: '/sign-in', title: 'Sign In', icon: 'fa-solid fa-arrow-right-to-bracket'},
+        items = [
           {url: '/shop', title: 'Shop', icon: 'fa-solid fa-cart-shopping'},
           {url: '/accessibility', title: 'Accessibility', icon: 'fa-solid fa-palette'},
           {url: '/basket', title: 'Basket', icon: 'fa-solid fa-basket-shopping'},
+          {url: '/sign-up', title: 'Sign Up', icon: 'fa-solid fa-user'},
+          {url: '/sign-in', title: 'Sign In', icon: 'fa-solid fa-arrow-right-to-bracket'},
         ]
-        setBurgerMenuItems(items)
       }
+      setBurgerMenuItems(items)
     }
-  }, [props.device.isSmallScreen])
+  }, [props.device.isSmallScreen,tokenIsValid,userAddress])
   /**
    * Hide menu from the Proteus app
    */

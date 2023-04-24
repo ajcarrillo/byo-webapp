@@ -59,8 +59,6 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
     }
   } = useSelector<IStoreState, IStoreState>((state) => state)
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 480px)' })
-
   const storedAccessToken = getStoredAccessToken()
   const tokenIsValid = isAccessTokenValid(accessTokenValid, storedAccessToken)
   const address = userAddress || getStoredUserAddress()
@@ -78,7 +76,7 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
     mobileMake: getMobileMake(),
     mobileModel: getMobileModel(),
     locale: getLocale(),
-    isSmallScreen,
+    isSmallScreen: useMediaQuery({ query: '(max-width: 480px)' }),
   }
 
   const [basketItems, setBasketItems] = useState<ShopBasketItem[]>([])
