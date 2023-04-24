@@ -110,26 +110,33 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   return (
     <>
       <header className="App-header">
-        <div className="App-header-icon-container">
-          <Link to="/" title="Home">
-            <div className="App-header-logo-container">
-              <img src={ByoWaveLogo} alt="Byowave Logo" style={{width: '100%'}} />
-            </div>
-          </Link>
-        </div>
         {isSmallScreen ? (
-          <button 
-            className='Button-header' 
-            onPointerDown ={() => handleClickBurgerMenu()}
-            onBlur={() => closeBurgerMenu()}
-          >
-            <span className="App-header-icon">
-              <i className={'fa-solid fa-bars'}></i>
-            </span>
-          </button>
+          <>
+            <div className="App-header-icon-container">
+              <Link to="/" title="Home">
+                <div className="App-header-logo-container">
+                  <img src={ByoWaveLogo} alt="Byowave Logo" style={{width: '100%'}} />
+                </div>
+              </Link>
+            </div>
+            <button 
+              className='Button-header' 
+              onPointerDown ={() => handleClickBurgerMenu()}
+              onBlur={() => closeBurgerMenu()}
+            >
+              <span className="App-header-icon">
+                <i className={'fa-solid fa-bars'}></i>
+              </span>
+            </button>
+          </>
         ):(
           <>
             <div className="App-header-icon-container">
+              <Link to="/" title="Home">
+                <div className="App-header-logo-container">
+                  <img src={ByoWaveLogo} alt="Byowave Logo" style={{width: '100%'}} />
+                </div>
+              </Link>
               <Link to="/shop" title="Shop">
                 <button className='Button-header'>
                   <span className="App-header-icon">
@@ -138,7 +145,6 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
                   </span>
                 </button>
               </Link>
-
               <Link to="/accessibility" title="Accessibility">
                 <button className='Button-header'>
                   <span className="App-header-icon">
@@ -165,37 +171,37 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
                   {props.basketItemCount > 0 && <div className="App-header-basket-icon-badge">{props.basketItemCount}</div>}            
                 </div>
               </Link>
+              {tokenIsValid ? (
+                <button 
+                  className='Button-header' 
+                  onClick={() => handleClickBurgerMenu()}
+                  onBlur={() => closeBurgerMenu()}
+                >
+                  <span className="App-header-icon">
+                    <i className={'fa-solid fa-bars'}></i>
+                  </span>
+                </button>
+              ) : (
+                <>
+                  <Link to="/sign-up" title="Sign Up">
+                    <button className='Button-header'>
+                      <span className="App-header-icon">
+                        <i className={'fa-solid fa-user'}></i>
+                        <span>Sign Up</span>
+                      </span>
+                    </button>
+                  </Link>
+                  <Link to="/sign-in" title="Sign In">
+                    <button className='Button-header'>
+                      <span className="App-header-icon">
+                        <i className={'fa-solid fa-arrow-right-to-bracket'}></i>
+                        <span>Sign In</span>
+                      </span>
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
-            {tokenIsValid ? (
-              <button 
-                className='Button-header' 
-                onClick={() => handleClickBurgerMenu()}
-                onBlur={() => closeBurgerMenu()}
-              >
-                <span className="App-header-icon">
-                  <i className={'fa-solid fa-bars'}></i>
-                </span>
-              </button>
-            ) : (
-              <>
-                <Link to="/sign-up" title="Sign Up">
-                  <button className='Button-header'>
-                    <span className="App-header-icon">
-                      <i className={'fa-solid fa-user'}></i>
-                      <span>Sign Up</span>
-                    </span>
-                  </button>
-                </Link>
-                <Link to="/sign-in" title="Sign In">
-                  <button className='Button-header'>
-                    <span className="App-header-icon">
-                      <i className={'fa-solid fa-arrow-right-to-bracket'}></i>
-                      <span>Sign In</span>
-                    </span>
-                  </button>
-                </Link>
-              </>
-            )}
           </>
         )}
       </header>
