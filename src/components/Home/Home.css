@@ -163,3 +163,9 @@
 .Home-container-roadmap-tiles ul li:nth-child(even) {
   color: rgb(213, 188, 145)
 }
+
+@media screen and (max-width: 480px) {
+  .Home-container-top{
+    margin-top: 15%;
+  }
+}
