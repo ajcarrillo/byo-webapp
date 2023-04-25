@@ -44,8 +44,10 @@
   "scripts": {
     "start": "env-cmd -f config/.env.development react-scripts start",
     "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "lint": "eslint src/**/*.ts src/**/*.tsx",
-    "test": "npx cypress open"
+    "test:cypress": "npx cypress open"
   },
   "eslintConfig": {
     "extends": [
