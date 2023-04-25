@@ -1,4 +1,4 @@
-text eol=crlf
+* text=auto
 
-*.ts text
-*.tsx text
+*.ts text eol=crlf
+*.tsx text eol=crlf
