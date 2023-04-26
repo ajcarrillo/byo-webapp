@@ -24,7 +24,7 @@ import OrdersPage from '../Pages/Orders'
 
 import { IStoreState } from '../../../types/store-types'
 import { ShopBasketItem } from '../../../types/shop-types'
-
+import { UserDeviceType } from '../../../types/global-types'
 import { 
   getStoredAccessToken, 
   isAccessTokenValid, 
@@ -66,7 +66,7 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
   const userProfileType = tokenIsValid ? getStoredUserProfileType() : ''
 
   const { isLandscape } = useMobileOrientation()
-  const device = {
+  const device: UserDeviceType = {
     type: getDeviceType(),
     orientation: isLandscape ? 'landscape' : 'portrait',
     os: getOS(),

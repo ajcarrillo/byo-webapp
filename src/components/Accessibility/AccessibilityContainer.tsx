@@ -47,8 +47,10 @@ const AccessibilityContainer: React.FC = () => {
    */
   const getSelectedColour = (colourName: string): RGBColour => {
     const col = getComputedStyle(document.documentElement).getPropertyValue(`--${colourName}`).replace(/\s/g,'')
+    console.log(col)
     if(col){
       const rgb = col.substring(4, col.length-1).split(',')
+      console.log(rgb)
       return { r: parseInt(rgb[0].trim()), g: parseInt(rgb[1].trim()), b: parseInt(rgb[2].trim()) }    
     } else {
       return {r: 255, g: 255, b: 255}

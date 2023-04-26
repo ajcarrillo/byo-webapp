@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { UserDeviceType } from '../../../types/global-types'
 import { HeaderHamburgerMenu } from './HeaderHamburgerMenu'
 import ByoWaveLogo from '../../../assets/images/byowave-logo-header.png'
 import './Header.css'
 
 export interface IHeaderProps {
   tokenIsValid: boolean,
-  device: any,
+  device: UserDeviceType,
   userAddress: string | null,
   entitlements: any[],
   profileType: string | null,
@@ -70,18 +71,18 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
   }, [burgerMenuItems.length, updateBurgerMenuItems])
 
   useEffect(() => {
-    if(props.device.isSmallScreen == true)
+    if(props.device.isSmallScreen)
     {
       let items: MenuItem[]
       if(tokenIsValid)
       {
         items = [
-          {url: '/shop', title: 'Shop', icon: 'fa-solid fa-cart-shopping'},
           {url: '/accessibility', title: 'Accessibility', icon: 'fa-solid fa-palette'},
+          {url: '/shop', title: 'Shop', icon: 'fa-solid fa-cart-shopping'},
+          {url: '/orders', title: 'Orders', icon: 'fa-solid fa-truck-fast'},
           {url: '/basket', title: 'Basket', icon: 'fa-solid fa-basket-shopping'},
           {url: `/profile/${userAddress}`, title: 'Profile', icon: 'fa-solid fa-user'},
           {url: '/profile-settings', title: 'Profile Settings', icon: 'fa-solid fa-user-gear'},
-          {url: '/orders', title: 'Orders', icon: 'fa-solid fa-truck-fast'},
           {url: '/sign-out', title: 'Sign Out', icon: 'fa-solid fa-arrow-right-to-bracket'},
         ]
       }
@@ -98,6 +99,7 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
       setBurgerMenuItems(items)
     }
   }, [props.device.isSmallScreen,tokenIsValid,userAddress])
+
   /**
    * Hide menu from the Proteus app
    */
