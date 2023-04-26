@@ -117,6 +117,39 @@ const applyDefaultColours = () => {
   }
 }
 
+interface IIndexable {
+  [key: string]: any
+}
+
+const hex2rgb = (hex: string): string[] => {
+  const rgbChar = ['r', 'g', 'b']
+ 
+  let rgb: any
+  
+  const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i)
+  const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i)
+  if (normal) {
+    rgb = normal.slice(1).reduce((a: IIndexable, e, i) => { 
+      a[rgbChar[i]] = parseInt(e, 16)
+      return a
+    }, {})
+    return [rgb.r.toString(), rgb.g.toString(), rgb.b.toString()]
+  }else if (shorthand) { 
+    rgb = shorthand.slice(1).reduce((a: IIndexable, e, i) => { 
+      a[rgbChar[i]] = 0x11 * parseInt(e, 16)
+      return a
+    }, {})
+    return [rgb.r.toString(), rgb.g.toString(), rgb.b.toString()]
+  }else{
+    return ['255', '255', '255']
+  }
+}
+
+const isHexColour = (hex: string) => {
+  const reg = /^#([0-9a-f]{3}){1,2}$/i
+  return reg.test(hex)
+}
+
 export {
   applyAccessibilityColours,
   applyDefaultColours,
@@ -127,4 +160,6 @@ export {
   saveDefaultSiteColours,
   updateStoredAccessibilityColours,
   updateStoredDefaultColours,
+  hex2rgb,
+  isHexColour,
 }
