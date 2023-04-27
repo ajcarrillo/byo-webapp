@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useUnityContext } from 'react-unity-webgl'
 
 import { IProteusState, ProteusMappingConfig } from '../../types/proteus-types'
+import { resolveControllerMappingMode, resolveControllerModuleFromMapping } from '../../utils/proteus-utils'
 import { getControllerConfigRequest, setGamepadReadyRequest, setMappingModeRequest, setUnityReadyRequest } from '../../store/proteus/proteus-actions'
 import ProteusEventHandler from './EventHandler/ProteusEventHandler'
 import { transformProteusWebGLFileVersion } from '../../transformers/proteus-transformers'
@@ -13,7 +14,6 @@ import ProteusGallery from './Gallery/ProteusGallery'
 import ProteusLogo from '../../assets/images/proteus-header-logo.png'
 import ProteusLightGreen from '../../assets/images/proteus-footer-light-green.png'
 import ProteusLightRed from '../../assets/images/proteus-footer-light-red.png'
-import { resolveControllerMappingMode, resolveControllerModuleFromMapping } from '../../utils/proteus-utils'
 
 interface IProteusShellProps {
   proteus: IProteusState
@@ -42,10 +42,10 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
     takeScreenshot,
     unload,
   } = useUnityContext({
-    codeUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_CODE_URL || '', proteus.version || ''),
-    dataUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_DATA_URL || '', proteus.version || ''),
-    frameworkUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_FRAMEWORK_URL || '', proteus.version || ''),
-    loaderUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_LOADER_URL || '', proteus.version || ''),
+    codeUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_CODE || '', proteus.version || ''),
+    dataUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_DATA || '', proteus.version || ''),
+    frameworkUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_FRAMEWORK || '', proteus.version || ''),
+    loaderUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_LOADER || '', proteus.version || ''),
     webglContextAttributes: {
       alpha: true,
       antialias: proteus.settings?.antialiasing,
