@@ -17,3 +17,13 @@ export type UserDeviceType = {
   locale: string,
   isSmallScreen: boolean,
 }
+
+export type RGBColour = {
+  r: number,
+  g: number,
+  b: number,
+}
+
+export interface IIndexable {
+  [key: string]: any
+}

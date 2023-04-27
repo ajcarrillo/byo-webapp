@@ -1,6 +1,7 @@
 import * as _ from 'lodash'
 
 import { AccessibilitySiteColour } from '../types/disability-types'
+import { IIndexable } from '../types/global-types'
 
 const applySiteColourTemplate = (template: string) => {
   const templates = {
@@ -115,10 +116,6 @@ const applyDefaultColours = () => {
       document.documentElement.style.setProperty(`--${c.name}`, c.colour)
     })
   }
-}
-
-interface IIndexable {
-  [key: string]: any
 }
 
 const hex2rgb = (hex: string): string[] => {

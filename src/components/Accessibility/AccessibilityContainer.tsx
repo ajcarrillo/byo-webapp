@@ -3,6 +3,7 @@ import { RgbColorPicker } from 'react-colorful'
 import Select, { SingleValue } from 'react-select'
 
 import { AccessibilitySiteColour } from '../../types/disability-types'
+import { RGBColour, SelectType } from '../../types/global-types'
 import { 
   applyDefaultColours, 
   getSiteColourList, 
@@ -16,17 +17,6 @@ import { Checkbox } from '../CustomControls'
 import { reactSelectCustomStyles } from '../CustomControls/SelectDropdown/custom-styles'
 import { ReactSelectInput } from '../CustomControls/SelectDropdown/ReactSelectInput'
 import './Accessibility.css'
-
-type SelectType = {
-  readonly value: string,
-  readonly label: string,
-}
-
-type RGBColour = {
-  r: number,
-  g: number,
-  b: number,
-}
 
 const AccessibilityContainer: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('template')
