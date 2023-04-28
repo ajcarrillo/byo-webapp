@@ -3,7 +3,7 @@
   z-index: 10; 
   width: 260px;
   height: 100%;
-  background-color: rgb(24, 26, 39);
+  background-color: var(--byowave-tab-selected-bg-colour);
   top: 0;
   right: 0;
   border-radius: 0 0 10px 0;
@@ -20,7 +20,7 @@
   background-color: rgb(23, 24, 32);
   border-bottom: 1px solid rgb(11, 11, 16);
   padding: 1.2rem;
-  color: rgb(102,115,228);
+  color: var(--byowave-cta-colour);
   font-size: 1.1rem;
   font-weight: bold;
 }
@@ -59,26 +59,26 @@
 
 .Proteus-gallery-camera-button i {
   font-size: 3.5rem;
-  color: rgb(88,102,223);
+  color: var(--byowave-cta-colour);
   box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 2px;
 }
 
 .Proteus-gallery-save-button {
-  background-color: rgb(95,106,219);
+  background-color: var(--byowave-cta-colour);
   border: none;
   padding: .5rem;
   cursor: pointer;
   outline: none;
   border-radius: 0 .4rem .4rem 0;
-  color: rgb(210,211,233);
+  color: var(--byowave-cta-text-colour);
 }
 
 .Proteus-gallery-save-button:hover {
-  background-color: rgb(117, 126, 231);
+  background-color: var(--byowave-cta-hover-colour);
 }
 
 .Proteus-gallery-save-inner {
-  background-color: rgb(56,60,104);
+  background-color: var(--byowave-panel-hover-bg-colour);
   padding: .4rem;
   margin: 5px 10px 0 0;
   border-radius: .6rem;
@@ -88,8 +88,8 @@
 }
 
 .Proteus-gallery-save-textfield {
-  background-color: rgb(39, 42, 73);
-  color: rgb(161,170,242);
+  background-color: var(--byowave-inputfield-bg-colour);
+  color: var(--byowave-inputfield-text-colour);
   border-radius: .4rem 0 0 .4rem;
   border: none;
   outline: none;
@@ -100,8 +100,9 @@
 .Proteus-gallery-error-container {
   display: flex;
   align-items: center;
-  background-color: rgb(33 33 37);
-  color: rgb(160,160,160);
+  background-color: var(--byowave-panel-bg-colour);
+  border: 1px solid var(--byowave-alert-colour);
+  color: var(--byowave-alert-text-colour);
   border-radius: 3px;
   margin: 0 13px 0 13px;
   padding: .5rem;
@@ -110,30 +111,29 @@
 }
 
 .Proteus-gallery-error-container i {
-  color: rgb(194, 77, 45);
+  color: var(--byowave-alert-colour);
 }
 
 .Proteus-gallery-save-progress-container {
-  width: 310px;
+  width: 300px;
   height: 24px
 }
 
 .Proteus-gallery-save-progress-inner {
   width: 0;
   height: 100%;
-  background-color: rgb(88,102,223)
+  background-color: var(--byowave-cta-colour)
 }
 
 .Proteus-gallery-tabs-container {
   width: 100%;
   display: flex;
- 
   background-color: rgb(23,24,32);
 }
 
 .Proteus-gallery-tab {
   border-radius: 20px 20px 0 0;
-  background-color: rgb(35,34,58);
+  background-color: var(--byowave-tab-bg-colour);
   color: rgb(99,102,147);
   width: 121px;
   padding: 1rem;
@@ -142,14 +142,14 @@
 }
 
 .Proteus-gallery-tab:hover {
-  color: rgb(114,118,169);
+  color: var(--byowave-tab-selected-text-colour);
   font-weight: bold;
 }
 
 .Proteus-gallery-tab__selected {
   border-radius: 20px 20px 0 0;
-  background-color: rgb(28,27,49);
-  color: rgb(114,118,169);
+  background-color: var(--byowave-tab-selected-bg-colour);
+  color: var(--byowave-tab-selected-text-colour);
   width: 121px;
   padding: 1rem;
   font-weight: bold;
@@ -159,12 +159,12 @@
 .Proteus-gallery-inner-container {
   padding: .6rem .6rem;
   width: calc(100% - 14px);
-  background-color: rgb(28,27,49);
+  background-color: var(--byowave-tab-selected-bg-colour);
 }
 
 .Proteus-gallery-item-container {
   padding: 10px;
-  background-color: rgb(56,60,104);
+  background-color: var(--byowave-custom-control-bg-colour);
   margin-bottom: .8rem;
 }
 
@@ -185,7 +185,7 @@
   text-overflow: ellipsis;
   width: 96%;
   padding-top: 5px;
-  color: rgb(161,170,242);
+  color: var(--byowave-paragraph-text-colour);
 }
 
 .Proteus-gallery-item-profile {
@@ -193,7 +193,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 60%;
-  color: rgb(88,102,223)
+  color: var(--byowave-cta-colour)
 }
 
 .Proteus-gallery-item-rating {
@@ -204,5 +204,5 @@
 .Proteus-gallery-item-rating i {
   font-size: .8rem;
   padding-left: 2px;
-  color: rgb(88,102,223)
+  color: var(--byowave-cta-colour)
 }

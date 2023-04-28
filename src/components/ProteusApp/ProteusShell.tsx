@@ -268,7 +268,6 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
                 language={'en'}
               />
               <ProteusGallery 
-                //key={Date.now()}
                 gallery={proteus.gallery}
                 galleryLoading={proteus.galleryLoading}
                 takeScreenshot={takeScreenshot}

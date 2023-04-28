@@ -54,6 +54,10 @@ const getSiteColourList = (): AccessibilitySiteColour[] => {
     {name: 'byowave-image-border-colour', desc: 'Image border colour', colour: ''},
     {name: 'byowave-scrollbar-bg-colour', desc: 'Scrollbar background colour', colour: ''},
     {name: 'byowave-scrollbar-handle-colour', desc: 'Scrollbar handle colour', colour: ''},
+    {name: 'byowave-tab-bg-colour', desc: 'Tab background colour', colour: ''},
+    {name: 'byowave-tab-selected-bg-colour', desc: 'Selected tab background colour', colour: ''},
+    {name: 'byowave-tab-text-colour', desc: 'Tab text colour', colour: ''},
+    {name: 'byowave-tab-selected-text-colour', desc: 'Selected tab text colour', colour: ''},
   ]
 }
 
