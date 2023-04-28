@@ -27,15 +27,15 @@
   width: 100%;
   text-align: right;
   padding-right: 24px;
-  color: rgb(103 127 144);
+  color: var(--byowave-panel-text-colour);
 }
 
 .Button-proteus {
   height: 34px;
   background: none;
-  border: 1px solid rgb(40, 49, 93);
+  border: 1px solid var(--byowave-cta-dark-colour);
   padding: 0 1rem;
-  color:rgb(58, 76, 156);
+  color: var(--byowave-cta-text-colour);
   cursor: pointer;
   outline: none;
   transition: .3s;
@@ -43,7 +43,7 @@
 }
 
 .Button-proteus:hover {
-  background-color: rgb(39, 37, 60);
+  background-color: var(--byowave-cta-hover-colour);
 }
 
 .Button-proteus-icon {
@@ -51,46 +51,47 @@
   justify-content: center;
   align-items: center;
   height: 24px;
-  color: rgb(81,111,248);
+  color: var(--byowave-cta-colour);
 }
 
 .Button-proteus-icon span {
   font-size: 1rem;
   padding-left: 6px;
+  color: var(--byowave-cta-text-colour);
 }
 
 .Button-proteus-icon i {
   font-size: 20px;
-  color: rgb(46, 59, 114);
+  color: var(--byowave-cta-dark-colour);
 }
 
 .Proteus-connect-error-panel {
   display: flex;
   align-items: center;
-  background-color: rgb(33 33 37);
-  color: rgb(200,200,200);
+  background-color: var(--byowave-panel-bg-colour);
+  color: var(--byowave-alert-text-colour);
   border-radius: 3px;
   padding: .8rem;
-  border: 1px dashed rgb(123, 61, 40);
+  border: 1px solid var(--byowave-alert-colour);
 }
 
 .Proteus-connect-error-panel i {
-  color: rgb(194, 77, 45);
+  color: var(--byowave-alert-colour);
 }
 
 .Proteus-shell-error-panel {
   display: flex;
   align-items: center;
-  background-color: rgb(33 33 37);
-  color: rgb(200,200,200);
+  background-color: var(--byowave-panel-bg-colour);
+  color: var(--byowave-alert-text-colour);
   border-radius: 3px;
   padding: .5rem;
-  border: 1px dashed rgb(123, 61, 40);
+  border: 1px solid var(--byowave-alert-colour);
   margin-left: 10px;
 }
 
 .Proteus-shell-error-panel i {
-  color: rgb(194, 77, 45);
+  color: var(--byowave-alert-colour);
 }
 
 .Proteus-shell {
@@ -126,7 +127,7 @@
   height: 100%;
   width: 34%;
   padding-top: 10px;
-  color: rgb(129,160,177)
+  color: var(--byowave-panel-text-colour)
 }
 
 .Proteus-shell-header-avatar {
@@ -148,7 +149,7 @@
 }
 
 .Proteus-shell-footer-connected {
-  color: rgb(108,110,136);
+  color: var(--byowave-panel-text-colour);
   font-size: .8rem;
   display: flex; 
   align-items: center;
@@ -181,8 +182,8 @@
   height: 44px;
   width: 44px;
   background: none;
-  border: 1px solid rgb(40, 49, 93);
-  color:rgb(58, 76, 156);
+  border: 1px solid var(--byowave-cta-dark-colour);
+  color: var(--byowave-cta-colour);
   cursor: pointer;
   outline: none;
   transition: .3s;
@@ -190,21 +191,21 @@
 }
 
 .Proteus-toolbar-button:hover {
-  background-color: rgb(39, 37, 60);
+  background-color: var(--byowave-cta-dark-colour);
 }
 
 .Proteus-toolbar-button i {
   font-size: 26px;
-  color: rgb(81,111,248);
+  color: var(--byowave-cta-colour);
 }
 
 .Proteus-toolbar-button__selected {
   height: 44px;
   width: 44px;
   background: none;
-  border: 1px solid rgb(40, 49, 93);
-  background-color: rgb(39, 37, 60);
-  color:rgb(58, 76, 156);
+  border: 1px solid var(--byowave-cta-dark-colour);
+  background-color: var(--byowave-cta-hover-colour);
+  color: var(--byowave-cta-dark-colour);
   outline: none;
   margin-right: 7px;
 }
@@ -213,21 +214,21 @@
   height: 44px;
   width: 44px;
   background: none;
-  border: 1px solid rgb(38, 37, 51);
-  background-color: rgb(36, 35, 46);
-  color:rgb(149, 149, 149);
+  border: 1px solid var(--byowave-cta-disabled-text-colour);
+  background-color: var(--byowave-cta-disabled-colour);
+  color: var(--byowave-cta-disabled-text-colour);
   outline: none;
   margin-right: 7px;
 }
 
 .Proteus-toolbar-button__disabled i {
   font-size: 26px;
-  color: rgb(52, 49, 62);
+  color: var(--byowave-cta-disabled-text-colour);
 }
 
 .Proteus-toolbar-button__selected i {
   font-size: 26px;
-  color: rgb(161,170,242);
+  color: var(--byowave-cta-dark-colour);
 }
 
 .Proteus-shell-workspace-unity {

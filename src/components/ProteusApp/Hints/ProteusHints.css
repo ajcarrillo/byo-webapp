@@ -2,7 +2,7 @@
   position: absolute; 
   z-index: 10; 
   width: 300px;
-  background-color: rgb(28, 30, 46);
+  background-color: var(--byowave-panel-bg-colour);
   top: 0;
   border-radius: 0 0 10px 0;
   transform: translateY(-105%);
@@ -21,12 +21,12 @@
 }
 
 .Proteus-hint-icon i {
-  color: rgb(134, 61, 231);
+  color: var(--byowave-alert-colour);
   font-size: 1.3rem;
 }
 
 .Proteus-hint-title {
-  color: rgb(102,115,228);
+  color: var(--byowave-cta-colour);
   font-size: 1.1rem;
   font-weight: bold;
   margin: .8rem 0 1.4rem 0;
@@ -35,9 +35,8 @@
 .Proteus-hint-body {
   font-size: .9rem;
   line-height: 1.4rem;
-  color: rgb(161,170,242)
+  color: var(--byowave-paragraph-text-colour)
 }
-
 
 .Proteus-hint-button {
   background: none;
@@ -48,10 +47,10 @@
   font-size: 1.2rem;
   text-decoration: underline;
   font-style: italic;
-  color: rgb(88,102,223);
+  color: var(--byowave-cta-colour);
   margin-top: 1.6rem
 }
 
 .Proteus-hint-button:hover {
-  color: rgb(132, 142, 231);
+  color: var(--byowave-cta-hover-colour);
 }

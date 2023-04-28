@@ -23,7 +23,7 @@ interface IProteusGalleryProps {
 
 const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryProps) => {
   const dispatch = useDispatch()
-  const [mappingVisible, setMappingVisible] = useState(false)
+  const [galleryVisible, setGalleryVisible] = useState(false)
   const [newControllerName, setNewControllerName] = useState('')
   const [gallerySaveErrors, setGallerySaveErrors] = useState<string[]>([])
   const [cameraClick, setCameraClick] = useState(false)
@@ -153,11 +153,18 @@ const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryPr
    * Shows the gallery
    */
   useEffect(() => {
-    setMappingVisible(props.workspace === 'gallery')
+    setGalleryVisible(props.workspace === 'gallery')
+
+    return () => {
+      if(props.workspace !== 'gallery') {
+        resetSaveState()
+        setCameraClick(false)
+      }
+    }
   }, [props.workspace])
 
   /**
-   * Load the gallery if it is not in th store
+   * Load the gallery if it is not in the store
    */
   const loadGallery = useCallback(() => {
     dispatch(getGalleryItemsRequest())
@@ -171,7 +178,7 @@ const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryPr
     <>
       {props.workspace === 'gallery' ? (
         <>
-          <div className={`Proteus-gallery-container ${mappingVisible ? 'open' : ''}`}>
+          <div className={`Proteus-gallery-container ${galleryVisible ? 'open' : ''}`}>
             <div className='Proteus-gallery-header'>Controller Gallery</div>
 
             <div className='Proteus-gallery-tabs-container'>
@@ -225,12 +232,12 @@ const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryPr
             />
           </div>
 
-          <div className={`Proteus-gallery-save-wrapper ${mappingVisible ? 'open' : ''}`}>
+          <div className={`Proteus-gallery-save-wrapper ${galleryVisible ? 'open' : ''}`}>
             <div className='Proteus-gallery-save-container'>
               <div className='Proteus-gallery-save-inner' style={{visibility: cameraClick ? 'visible' : 'hidden'}}>
                 {savingController ? (
                   <div className='Proteus-gallery-save-progress-container'>
-                    <div className='Proteus-gallery-save-progress-inner' style={{width: `${savingProgress*100}%`}}></div>
+                    <div className='Proteus-gallery-save-progress-inner' style={{width: `${savingProgress}%`}}></div>
                   </div>
                 ) : (
                   <>
