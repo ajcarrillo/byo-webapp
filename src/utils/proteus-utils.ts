@@ -90,7 +90,7 @@ const requestHardwareCofiguration = async (
         {defaultMapping: 'leftAnalogPress', mappedTo: 'leftAnalogPress'},
         {defaultMapping: 'leftAnalogYStandard', mappedTo: 'leftAnalogYStandard'},
       ],
-      rotation: 180,
+      rotation: 8,
       connectsToId: 0,
       connectsToFace: 'left',
     }
@@ -102,7 +102,7 @@ const requestHardwareCofiguration = async (
         {defaultMapping: 'rightAnalogPress', mappedTo: 'rightAnalogPress'},
         {defaultMapping: 'rightAnalogYStandard', mappedTo: 'rightAnalogYInverted'},
       ],
-      rotation: 180,
+      rotation: 8,
       connectsToId: 0,
       connectsToFace: 'right',
     }
@@ -116,7 +116,7 @@ const requestHardwareCofiguration = async (
         {defaultMapping: 'x', mappedTo: 'x'},
       ],
       rotation: 0,
-      connectsToId: 1,
+      connectsToId: 0,
       connectsToFace: 'front',
     }
     const triggerLeft = {
@@ -126,9 +126,9 @@ const requestHardwareCofiguration = async (
         {defaultMapping: 'leftButton', mappedTo: 'leftButton'},
         {defaultMapping: 'leftTrigger', mappedTo: 'leftTrigger'},
       ],
-      rotation: 0,
+      rotation: 12,
       connectsToId: 1,
-      connectsToFace: 'back',
+      connectsToFace: 'left',
     }
     const triggerRight = {
       id: 5,
@@ -137,27 +137,75 @@ const requestHardwareCofiguration = async (
         {defaultMapping: 'rightButton', mappedTo: 'rightButton'},
         {defaultMapping: 'rightTrigger', mappedTo: 'rightTrigger'},
       ],
-      rotation: 0,
+      rotation: 4,
       connectsToId: 2,
-      connectsToFace: 'back',
+      connectsToFace: 'right',
     }
     const edge = {
       id: 6,
       type: '0x03',
       buttons: [],
-      rotation: 2,
-      connectsToId: 2,
+      rotation: 0,
+      connectsToId: 1,
       connectsToFace: 'right',
     }
     const dPad = {
       id: 7,
       type: '0x07',
       buttons: [],
+      rotation: 4,
+      connectsToId: 6,
+      connectsToFace: 'back',
+    }
+    const xBox = {
+      id: 8,
+      type: '0x13',
+      buttons: [],
+      rotation: 0,
+      connectsToId: 0,
+      connectsToFace: 'back',
+    }
+    const twoButton = {
+      id: 9,
+      type: '0x09',
+      buttons: [],
       rotation: 0,
       connectsToId: 6,
-      connectsToFace: 'top',
+      connectsToFace: 'front',
     }
-    const byteArr = [motherMaster, lAnalog, rAnalog, fourButton, triggerLeft, triggerRight, edge, dPad]
+    const joystick = {
+      id: 10,
+      type: '0x14',
+      buttons: [],
+      rotation: 0,
+      connectsToId: 2,
+      connectsToFace: 'bottom',
+    }
+    const spacer = {
+      id: 11,
+      type: '0x02',
+      buttons: [],
+      rotation: 0,
+      connectsToId: 0,
+      connectsToFace: 'bottom',
+    }
+    const charger = {
+      id: 12,
+      type: '0x04',
+      buttons: [],
+      rotation: 0,
+      connectsToId: 11,
+      connectsToFace: 'bottom',
+    }
+    const oneButton = {
+      id: 13,
+      type: '0x10',
+      buttons: [],
+      rotation: 0,
+      connectsToId: 2,
+      connectsToFace: 'left',
+    }
+    const byteArr = [motherMaster, lAnalog, rAnalog, fourButton, triggerLeft, triggerRight, edge, dPad, xBox, twoButton, joystick, spacer, charger, oneButton]
 
     // Next we transform the byte array into an object of type ControllerConfiguration
     const config: ControllerConfiguration = {
