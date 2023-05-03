@@ -74,7 +74,7 @@ const requestHardwareCofiguration = async (
     await new Promise(r => setTimeout(r, 2000))
     
     // Using the correct interface, we request a byte array containing the hardware configuration
-    const mother = {
+    const motherMaster = {
       id: 0,
       type: '0x00',
       buttons: [],
@@ -90,7 +90,7 @@ const requestHardwareCofiguration = async (
         {defaultMapping: 'leftAnalogPress', mappedTo: 'leftAnalogPress'},
         {defaultMapping: 'leftAnalogYStandard', mappedTo: 'leftAnalogYStandard'},
       ],
-      rotation: 0,
+      rotation: 180,
       connectsToId: 0,
       connectsToFace: 'left',
     }
@@ -102,7 +102,7 @@ const requestHardwareCofiguration = async (
         {defaultMapping: 'rightAnalogPress', mappedTo: 'rightAnalogPress'},
         {defaultMapping: 'rightAnalogYStandard', mappedTo: 'rightAnalogYInverted'},
       ],
-      rotation: 0,
+      rotation: 180,
       connectsToId: 0,
       connectsToFace: 'right',
     }
@@ -157,7 +157,7 @@ const requestHardwareCofiguration = async (
       connectsToId: 6,
       connectsToFace: 'top',
     }
-    const byteArr = [mother, lAnalog, rAnalog, fourButton, triggerLeft, triggerRight, edge, dPad]
+    const byteArr = [motherMaster, lAnalog, rAnalog, fourButton, triggerLeft, triggerRight, edge, dPad]
 
     // Next we transform the byte array into an object of type ControllerConfiguration
     const config: ControllerConfiguration = {

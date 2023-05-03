@@ -52,6 +52,7 @@ export enum ModuleType {
   triggerRight  = 0x11,
   triggerLeft   = 0x12,
   xBox          = 0x13,
+  joystick      = 0x14,
 }
 
 export enum ModuleFace {
