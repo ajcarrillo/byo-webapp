@@ -21,6 +21,7 @@ import ProductPage from '../Pages/Product'
 import CheckoutPage from '../Pages/Checkout'
 import BasketPage from '../Pages/Basket'
 import OrdersPage from '../Pages/Orders'
+import UserProfilePage from '../Pages/UserProfile'
 
 import { IStoreState } from '../../../types/store-types'
 import { ShopBasketItem } from '../../../types/shop-types'
@@ -114,6 +115,7 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
           <Route path="/checkout" render={(p) => <CheckoutPage {...p} tokenIsValid={tokenIsValid} />} />
           <Route path="/product/:address" render={(p) => <ProductPage {...p} />} />
           <Route path="/accessibility" render={(p) => <AccessibilityPage {...p} />} />
+          <PrivateRoute path="/profile/:address" component={UserProfilePage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} />
           <PrivateRoute path="/orders" component={OrdersPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 

@@ -31,6 +31,7 @@ import {
   getShopProductsSagaWatcher, 
   saveShopCustomerDetailsSagaWatcher
 } from './shop/shop-sagas'
+import { getUserProfileDetailsSagaWatcher } from './user-profile/user-profile-sagas'
 
 export function* rootSaga(){
   yield fork(getUserSagaWatcher)
@@ -57,4 +58,5 @@ export function* rootSaga(){
   yield fork(getShopAmericanStateListSagaWatcher)
   yield fork(saveShopCustomerDetailsSagaWatcher)
   yield fork(createSalesTransactionSagaWatcher)
+  yield fork(getUserProfileDetailsSagaWatcher)
 }

@@ -33,7 +33,7 @@ export const Header: React.FC<IHeaderProps> = (props: IHeaderProps) => {
       </span>
     </Link>
   })
-
+  
   /**
    * Click handler to open/close the burger menu
    */

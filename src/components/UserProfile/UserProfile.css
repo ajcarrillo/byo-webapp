@@ -1,0 +1,40 @@
+.UserProfile-container {
+  width: 80%; 
+  margin: auto;
+  display: flex; 
+  flex-direction: row; 
+  justify-content: center; 
+  column-gap: 20px;
+  /* align-items: center; */
+}
+
+.UserProfile-leftCol {
+  flex-basis: 0;
+  flex-grow: 5;
+}
+
+.UserProfile-rightCol {
+  flex-basis: 0;
+  flex-grow: 2;
+  background-color: rgb(49,49,49);
+  border-radius: .6rem .6rem 0 0;
+}
+
+.UserProfile-modules-container {
+  background-color: rgb(49,49,49);
+  padding: 1rem;
+}
+
+@media screen and (max-width: 1024px) {
+
+}
+
+@media screen and (max-width: 768px) {
+  .UserProfile-rightCol {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+
+}

@@ -40,25 +40,24 @@ export type UserProfile = {
   bannerImage: string,
 }
 
-export type UserDisabilities = {
-  list: Disability[],
-}
-
-export interface IUserState {
-  user: User,
-  profile: UserProfile,
-  disabilities: UserDisabilities,
-  controllers: Controller[],
-  contacts: UserContact[],
+export type UserProfileAddress = {
+  address: string,
 }
 
 export interface IUserProfileState {
-  userProfileLoading: boolean;
   apiError: APIError | null;
-  saveApiError: APIError | null;
-  uploadImageApiError: APIError | null;
-  profileDetails: UserProfile | null;
-  userOnboardingLoading: boolean;
-  //onboardingDetails: UserOnboardingDetails | null;
-  //stripeAccountLinkURL: string | null;
+  userProfileLoading: boolean;
+  profile: UserProfile | null;
 }
+
+// export type UserDisabilities = {
+//   list: Disability[],
+// }
+
+// export interface IUserState {
+//   user: User,
+//   profile: UserProfile,
+//   disabilities: UserDisabilities,
+//   controllers: Controller[],
+//   contacts: UserContact[],
+// }
