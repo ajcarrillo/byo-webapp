@@ -3,10 +3,10 @@ import { Controller, ControllerConfiguration, IModule, Module } from './controll
 
 export type ConnectedController = {
   communicating: boolean,
-  connected: boolean,
-  connectionType: 'usb' | 'bluetooth',
-  usbDevice?: USBDevice,
-  bluetoothDevice?: BluetoothDevice,
+  hidConnected: boolean,
+  serialConnected: boolean,
+  hidDevice?: HIDDevice,
+  serialPort?: SerialPort,
   controllerConfiguration?: ControllerConfiguration,
 }
 

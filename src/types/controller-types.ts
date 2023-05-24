@@ -2,6 +2,7 @@ export enum ProteusButton {
   oB01,     // Proteus One Button module
   tB01,     // Proteus Two Button module - button 1
   tB02,     // Proteus Two Button module - button 2
+  stick     // Proteus Additional Joystick
 }
 
 export enum XBoxButton {
@@ -25,7 +26,7 @@ export enum XBoxButton {
   rightButton,            // Allow button remap
   leftTrigger,            // Can only be swapped left to right
   rightTrigger,           // Can only be swapped right to left
-  back,                   // Cannot be remapped
+  select,                 // Cannot be remapped
   start,                  // Cannot be remapped
 }
 

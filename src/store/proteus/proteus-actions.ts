@@ -58,12 +58,10 @@ export const setGamepadReadySuccess = (ready: boolean) => ({
 })
 
 export const getControllerConfigRequest = (
-  connectType: string,
-  deviceInterface: BluetoothDevice | USBDevice | null,
+  deviceInterface: HIDDevice | null,
   availableModules: Module[]
 ) => ({
   type: PROTEUS_GET_CONTROLLER_CONFIG_REQUEST,
-  connectType,
   deviceInterface,
   availableModules
 })
@@ -78,9 +76,9 @@ export const getControllerConfigFailure = (error: string) => ({
   error
 })
 
-export const connectControllerRequest = (connectType: string) => ({
+export const connectControllerRequest = (device: HIDDevice | undefined) => ({
   type: PROTEUS_CONNECT_CONTROLLER_REQUEST,
-  connectType,
+  device,
 })
 
 export const connectControllerSuccess = (controller: ConnectedController) => ({

@@ -9,6 +9,7 @@ import ProteusEventHandler from './EventHandler/ProteusEventHandler'
 import { transformProteusWebGLFileVersion } from '../../transformers/proteus-transformers'
 import UnityContainer from './Unity/UnityContainer'
 import ProteusHints from './Hints/ProteusHints'
+import ProteusScene from './Scene/ProteusScene'
 import ProteusMapping from './Mapping/ProteusMapping'
 import ProteusGallery from './Gallery/ProteusGallery'
 import ProteusLogo from '../../assets/images/proteus-header-logo.png'
@@ -117,10 +118,6 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
     case'ready':
       setUnityReady(true)
       break
-    // A connected gamepad has been initialised in Unity
-    case'gamepadReady':
-      setGamepadReady(true)
-      break
     // Unity finsihed rendering the controller
     case'controllerBuilt': 
       sendMessage(
@@ -129,45 +126,64 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
         activeWorkspace
       )
       setNavigationDisabled(false)
-      break
-    // User used a button/joystick on the controller
-    case'buttonPress':
-      setMappingMode(payload)
+      setGamepadReady(true)
       break
     default:
       break
     }
   }
 
-  /**
-   * Handles a Controller event emitted from the ProteusEventHandler component
-   * @param evt 
-   * @param payload 
-   */
-  const handleControllerEvent = (evt: string, payload: string) => {
-    //
+  const handleControllerRotation = (axis: string) => {
+    sendMessage(
+      UNITY_GAME_OBJECT, 
+      'RotateController', 
+      axis
+    ) 
+  }
+
+  const handleSceneLighting = (scene: string) => {
+    sendMessage(
+      UNITY_GAME_OBJECT, 
+      'LightingChange', 
+      scene
+    ) 
   }
 
   /**
-   * Connects a controller via USB or Bluetooth
+   * Handles a Controller event emitted from the ProteusEventHandler component
+   * @param eventType The string name of the event 
+   * @param payload The payload contained in the event
    */
-  const requestControllerConfig = useCallback(() => {
-    const deviceInterface = proteus.connectedController?.connectionType === 'usb' 
-      ? proteus.connectedController?.usbDevice 
-      : proteus.connectedController?.connectionType === 'bluetooth' 
-        ? proteus.connectedController?.bluetoothDevice 
-        : null
-
-    dispatch(getControllerConfigRequest(
-      proteus.connectedController?.connectionType || '',
-      deviceInterface || null,
-      proteus.modules || []
-    ))
-  }, [dispatch, proteus.connectedController?.bluetoothDevice, proteus.connectedController?.connectionType, proteus.connectedController?.usbDevice, proteus.modules])
+  const handleControllerEvent = (eventType: string, payload: any) => {
+    if(eventType === 'inputReport'){
+      if(payload !== undefined && activeWorkspace === 'mapping'){
+        if(proteus.mapping && payload === proteus.mapping.control) return
+        
+        setMappingMode(payload)
+      }
+    }
+  }
+  useEffect(() => {
+    if(proteus.mapping?.control){
+      sendMessage(
+        UNITY_GAME_OBJECT, 
+        'ButtonPress', 
+        proteus.mapping?.control
+      )      
+    }
+  }, [proteus.mapping?.control, sendMessage])
 
   /**
    * Requests the intial controller configuration if it is not in the store AND Unity is ready
    */
+  const requestControllerConfig = useCallback(() => {
+    dispatch(getControllerConfigRequest(
+      proteus.connectedController?.hidDevice || null,
+      proteus.modules || []
+    ))
+  }, [dispatch, proteus.connectedController?.hidDevice, proteus.modules])
+
+
   useEffect(() => {
     if(proteus.unityReady && !proteus.connectedController?.controllerConfiguration) requestControllerConfig()
   }, [proteus.connectedController?.controllerConfiguration, proteus.unityReady, requestControllerConfig])
@@ -181,7 +197,8 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
       setTimeout(() => {
         //if(process.env.REACT_APP_PROTEUS_DEBUG === 'true')
         //sendMessage(UNITY_GAME_OBJECT, 'ToggleDebug', 'show')
-
+        //console.log(JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules).replaceAll('"', '\\"'))
+        
         sendMessage(
           UNITY_GAME_OBJECT, 
           'BuildControllerConfig', 
@@ -190,9 +207,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
       }, 1000)
     }
   }, [proteus.connectedController?.controllerConfiguration, proteus.unityReady, sendMessage])
-
-  //console.log(proteus.connectedController?.controllerConfiguration?.modules)
-  //console.log(JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules).replaceAll('"', '\\"'))
+ 
   return (
     <>
       <div className='Proteus-shell'>
@@ -261,6 +276,12 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
                 workspace={activeWorkspace}
                 language={'en'}
               />
+              <ProteusScene 
+                rotateController={handleControllerRotation}
+                updateSceneLighting={handleSceneLighting}
+                workspace={activeWorkspace}
+                language={'en'}
+              />
               <ProteusMapping 
                 gamepadReady={proteus.gamepadReady}
                 mapping={proteus.mapping} 
@@ -286,7 +307,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
           <div style={{paddingRight: '10px', paddingTop: '2px'}}>
             <img 
               className={`${proteus.connectedController?.communicating ? 'BlinkMeQuick' : ''}`}
-              src={proteus.connectedController?.connected ? ProteusLightGreen : ProteusLightRed} 
+              src={proteus.connectedController?.hidConnected ? ProteusLightGreen : ProteusLightRed} 
               alt="Connected Light" 
               style={{width: '14px'}} 
             />
