@@ -1,4 +1,6 @@
 /build
+/public/proteus-app
+/public/proteus-app-0.1.0
 /node_modules
 /config/*
 !/config/Readme.md

@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { findPairedHidDevice } from '../../utils/proteus-utils'
 import { 
   connectControllerRequest, 
   getApplicationSettingsRequest,
@@ -22,8 +23,8 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
     proteus
   } = useSelector<IStoreState, IStoreState>((store) => store)
 
-  const connectController = useCallback((connectType: string) => {
-    dispatch(connectControllerRequest(connectType))
+  const connectController = useCallback((pairedDevice: HIDDevice | undefined) => {
+    dispatch(connectControllerRequest(pairedDevice))
   }, [dispatch])
 
   const loadModules = useCallback(() => {
@@ -42,10 +43,25 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
     if(!proteus.settings) loadSettings()
   }, [proteus.settings, loadSettings])
 
-  const handleClickConnectDevice = (connectType: string) => {
-    connectController(connectType)
+  const handleClickConnectDevice = () => {
+    connectController(undefined)
   }
 
+  /**
+   * Checks for an existing paired device, and connects automatically
+   */
+  const checkPairedDeviceExists = useCallback(async () => {
+    const devices = await navigator.hid.getDevices()
+    const pairedDevice = findPairedHidDevice(devices)
+    if(pairedDevice){
+      connectController(pairedDevice)
+    }
+  }, [connectController])
+
+  useEffect(() => {
+    if(!proteus.connectedController?.hidConnected) checkPairedDeviceExists()
+  }, [checkPairedDeviceExists, proteus.connectedController?.hidConnected])
+  
   return (
     <div className={'App-container'}>
       <div className='Proteus-container'>
@@ -53,21 +69,15 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
           <Spinner />
         ) : (
           <>
-            {!proteus.connectedController?.connected ? (
+            {!proteus.connectedController?.hidConnected ? (
               <div className="Proteus-splashscreen-container">
                 <img src={SplashScreen} alt="Proteus Splash Screen" />
                 <div className="Proteus-splashscreen-version">Version: {proteus.version}</div>
                 <div className="Proteus-splashscreen-buttons">
-                  <button className='Button-proteus' onClick={() => handleClickConnectDevice('bluetooth')}>
+                  <button className='Button-proteus' onClick={() => handleClickConnectDevice()}>
                     <span className="Button-proteus-icon">
-                      <i className={'fa-brands fa-bluetooth'}></i>
-                      <span>Connect your controller using Bluetooth</span>
-                    </span>
-                  </button>
-                  <button className='Button-proteus' onClick={() => handleClickConnectDevice('usb')}>
-                    <span className="Button-proteus-icon">
-                      <i className={'fa-brands fa-usb'}></i>
-                      <span>Connect your controller using USB</span>
+                      <i className={'fa-solid fa-gamepad'}></i>
+                      <span>Click to connect your Proteus Controller</span>
                     </span>
                   </button>
                 </div>

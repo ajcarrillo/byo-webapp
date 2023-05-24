@@ -5,7 +5,7 @@ import { ControllerConfiguration } from '../../types/controller-types'
 import { ConnectedController } from '../../types/proteus-types'
 import { apiCall } from '../../utils/api-utils'
 import { generateApiError, generateControllerConnectionError } from '../../utils/error-utils'
-import { connectController, requestHardwareCofiguration } from '../../utils/proteus-utils'
+import { connectHidDevice, requestHardwareCofiguration } from '../../utils/proteus-utils'
 import { 
   getStoredAccessToken, 
   updateStoredAccessToken
@@ -142,11 +142,11 @@ export function* getProteusGalleryItemsSaga(action: any){
 export function* connectControllerSaga(action: any){
   try {
     const response: ConnectedController = yield call(
-      connectController, 
-      action.connectType
+      connectHidDevice,
+      action.device
     )
 
-    if(response.connected){
+    if(response.hidConnected){
       yield put(connectControllerSuccess(response))
     }
     else {
@@ -164,7 +164,6 @@ export function* getControllerConfigSaga(action: any){
   try {
     const response: ControllerConfiguration = yield call(
       requestHardwareCofiguration, 
-      action.connectType,
       action.deviceInterface,
       action.availableModules
     )

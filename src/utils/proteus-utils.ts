@@ -6,54 +6,124 @@ import {
 import { ConnectedController } from '../types/proteus-types'
 import { getXBoxButtonParamFromString, transformModuleListFromHardware } from '../transformers/controller-transformers'
 import { getStoredUserAddress } from './user-utils'
+import { intArray2Hex, serialRead, serialWrite, validateResponseArray } from './serial-utils'
+import { COM_END_REQUEST, COM_END_RESPONSE, COM_GET_APP_01_VERSION_REQUEST, COM_START_REQUEST, COM_START_RESPONSE } from './constants/serial-constants'
 
 /**
- * Connects the controller by Bluetooth or USB
- * @param connectionType The type of connection - bluetooth or usb
- * @returns A connected controller object
+ * Connects a HID device
+ * @returns The connected controller object
  */
-const connectController = async (connectionType: 'usb' | 'bluetooth'):  Promise<ConnectedController> => {
+const connectHidDevice = async (pairedDevice: HIDDevice | undefined):  Promise<ConnectedController> => {
   const connection: ConnectedController = {
     communicating: false,
-    connected: false,
-    connectionType,
+    hidConnected: false,
+    serialConnected: false,
   }
+  const deviceFilter = { 
+    vendorId: +(process.env.REACT_APP_PROTEUS_CONTROLLER_VENDOR_ID || ''), 
+    productId: +(process.env.REACT_APP_PROTEUS_CONTROLLER_PRODUCT_ID || '') 
+  }
+  const requestParams = { filters: [deviceFilter] }
 
   try {
-    if(connectionType === 'usb'){
-      const usbDevice: USBDevice = await window.navigator.usb.requestDevice({ 
-        filters: [{ 
-          vendorId: +(process.env.REACT_APP_PROTEUS_CONTROLLER_USB_VENDOR_ID || '')  
-        }],
-      })
-
-      if(usbDevice){
-        await usbDevice.open()
-        connection.usbDevice = usbDevice
-        connection.connected = true
-      }else{
-        throw new Error('UNKOWN_ERROR')
-      }
+    let connectedDevice = undefined
+    if(pairedDevice){
+      connectedDevice = pairedDevice
     }else{
-      const bluetoothDevice: BluetoothDevice = await window.navigator.bluetooth.requestDevice({
-        // TODO: Use filter here
-        acceptAllDevices: true,
-        // filters: [{
-        //   services: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b']
-        // }],
-        optionalServices: [process.env.REACT_APP_PROTEUS_CONTROLLER_BLUETOOTH_PRIMARY_SERVICE || ''],
-      })
+      const [device] = await navigator.hid.requestDevice(requestParams)
+      connectedDevice = device
+    }
 
-      if(bluetoothDevice){
-        connection.bluetoothDevice = bluetoothDevice
-        connection.connected = true
+    if(connectedDevice){
+      await connectedDevice.open()
+      connection.hidDevice = connectedDevice
+      connection.hidConnected = true
+    }else{
+      throw new Error('UNKOWN_ERROR')
+    }
+
+    return connection
+  }
+  catch(e) {
+    return connection
+  }
+}
+
+/**
+ * Checks to see if a device is already paired, and returns the device interface
+ * @param deviceArr An array of paired HID devices
+ * @returns The device interface if paired
+ */
+const findPairedHidDevice = (deviceArr: HIDDevice[]): HIDDevice | undefined => {
+  return deviceArr.find(d => 
+    d.productId === +(process.env.REACT_APP_PROTEUS_CONTROLLER_PRODUCT_ID || '') && 
+    d.vendorId === +(process.env.REACT_APP_PROTEUS_CONTROLLER_VENDOR_ID || '')
+  )
+}
+
+/**
+ * 
+ */
+const connectSerialPort = async () => {
+  try {
+    const port = await navigator.serial.requestPort()
+    await port.open({ baudRate: 9600 })
+    
+    if(port && port.writable && port.readable){
+      const reader = port.readable.getReader()
+      const writer = port.writable.getWriter()
+
+      /*
+      Start Communication
+      */
+      console.log('--- writing COM_START_REQUEST')
+      await serialWrite(writer, COM_START_REQUEST)
+
+      console.log('--- reading COM_START_REQUEST response')
+      const startResponse = await serialRead(reader)
+      if(startResponse && !startResponse.error){
+        if(!validateResponseArray(intArray2Hex(startResponse.value), COM_START_RESPONSE))
+          throw new Error('COM_START_REQUEST: Failed')        
       }else{
-        throw new Error('UNKOWN_ERROR')
+        throw new Error(`COM_START_REQUEST: Failed - ${startResponse?.error}`) 
+      }
+
+      /*
+      Get App 1 Version
+      */
+      console.log('--- writing COM_GET_APP_01_VERSION_REQUEST')
+      await serialWrite(writer, COM_GET_APP_01_VERSION_REQUEST)
+
+      console.log('--- reading COM_GET_APP_01_VERSION_REQUEST response')
+      const appVerResponse = await serialRead(reader)
+      if(appVerResponse && !appVerResponse.error){
+        console.log(intArray2Hex(appVerResponse.value))
+        console.log('App 01 Version is: ' + intArray2Hex(appVerResponse.value)[10])
+      }else{
+        throw new Error(`COM_GET_APP_01_VERSION_REQUEST: Failed - ${startResponse?.error}`) 
+      }
+
+      /*
+      End Communication
+      */
+      console.log('--- writing COM_END_REQUEST')
+      await serialWrite(writer, COM_END_REQUEST)
+      writer.releaseLock()
+
+      console.log('--- reading COM_END_REQUEST response')
+      const endResponse = await serialRead(reader)
+      if(endResponse && !endResponse.error){
+        if(!validateResponseArray(intArray2Hex(endResponse.value), COM_END_RESPONSE))
+          throw new Error('COM_END_REQUEST: Failed')
+      }else{
+        throw new Error(`COM_END_REQUEST: Failed - ${endResponse?.error}`) 
       }
     }
-    return connection
-  } catch(e) {
-    return connection
+
+    //await port.close() 
+  }
+  catch(e) {
+    console.log(e)
   }
 }
 
@@ -65,7 +135,6 @@ const connectController = async (connectionType: 'usb' | 'bluetooth'):  Promise<
  * @returns Returns a controller configuration which can be used to render a visual representation
  */
 const requestHardwareCofiguration = async (
-  connectionType: 'usb' | 'bluetooth', 
   deviceInterface: BluetoothDevice | USBDevice | null,
   availableModules: Module[]
 ): Promise<ControllerConfiguration | null> => {
@@ -152,7 +221,12 @@ const requestHardwareCofiguration = async (
     const dPad = {
       id: 7,
       type: '0x07',
-      buttons: [],
+      buttons: [
+        {defaultMapping: 'dPadUp', mappedTo: 'dPadUp'},
+        {defaultMapping: 'dPadDown', mappedTo: 'dPadDown'},
+        {defaultMapping: 'dPadLeft', mappedTo: 'dPadLeft'},
+        {defaultMapping: 'dPadRight', mappedTo: 'dPadRight'},
+      ],
       rotation: 4,
       connectsToId: 6,
       connectsToFace: 'back',
@@ -168,7 +242,10 @@ const requestHardwareCofiguration = async (
     const twoButton = {
       id: 9,
       type: '0x09',
-      buttons: [],
+      buttons: [
+        {defaultMapping: 'tB01', mappedTo: 'tB01'},
+        {defaultMapping: 'tB02', mappedTo: 'tB02'},
+      ],
       rotation: 0,
       connectsToId: 6,
       connectsToFace: 'front',
@@ -176,7 +253,9 @@ const requestHardwareCofiguration = async (
     const joystick = {
       id: 10,
       type: '0x14',
-      buttons: [],
+      buttons: [
+        {defaultMapping: 'stick', mappedTo: 'stick'},
+      ],
       rotation: 0,
       connectsToId: 2,
       connectsToFace: 'bottom',
@@ -200,7 +279,9 @@ const requestHardwareCofiguration = async (
     const oneButton = {
       id: 13,
       type: '0x10',
-      buttons: [],
+      buttons: [
+        {defaultMapping: 'oB01', mappedTo: 'oB01'},
+      ],
       rotation: 0,
       connectsToId: 2,
       connectsToFace: 'left',
@@ -276,7 +357,9 @@ const resolveControllerModuleFromMapping = (controllerConfig: ControllerConfigur
 }
 
 export {
-  connectController,
+  connectHidDevice,
+  connectSerialPort,
+  findPairedHidDevice,
   requestHardwareCofiguration,
   resolveControllerMappingMode,
   resolveControllerModuleFromMapping
