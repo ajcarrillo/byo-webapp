@@ -1,0 +1,8 @@
+.Unity-loading-container {
+  background: var(--byowave-panel-bg-colour);
+  width: 100%;
+  height: calc(100vh - 230px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
