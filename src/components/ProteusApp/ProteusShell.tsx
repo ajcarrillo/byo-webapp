@@ -271,17 +271,21 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
                 loadingProgression={loadingProgression}
                 unityProvider={unityProvider}
               />
-              <ProteusHints 
-                showHints={proteus.settings?.displayHints || true} 
-                workspace={activeWorkspace}
-                language={'en'}
-              />
-              <ProteusScene 
-                rotateController={handleControllerRotation}
-                updateSceneLighting={handleSceneLighting}
-                workspace={activeWorkspace}
-                language={'en'}
-              />
+              {!navigationDisabled &&
+                <>
+                  <ProteusHints 
+                    showHints={proteus.settings?.displayHints || true} 
+                    workspace={activeWorkspace}
+                    language={'en'}
+                  />
+                  <ProteusScene 
+                    rotateController={handleControllerRotation}
+                    updateSceneLighting={handleSceneLighting}
+                    workspace={activeWorkspace}
+                    language={'en'}
+                  />
+                </>
+              }
               <ProteusMapping 
                 gamepadReady={proteus.gamepadReady}
                 mapping={proteus.mapping} 

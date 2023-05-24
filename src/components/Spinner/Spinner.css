@@ -1,5 +1,5 @@
 .Spinner-container {
-  background: rgb(13, 12, 33);
+  background: var(--byowave-panel-bg-colour);
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -12,7 +12,7 @@
 }
 
 .Spinner-image {
-  -webkit-animation:spin 1s linear infinite;
+  /*-webkit-animation:spin 1s linear infinite;
   -moz-animation:spin 1s linear infinite;
-  animation:spin 1s linear infinite;
+  animation:spin 1s linear infinite;*/
 }

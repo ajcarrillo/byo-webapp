@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Unity, useUnityContext } from 'react-unity-webgl'
 import { UnityProvider } from 'react-unity-webgl/distribution/types/unity-provider'
 
+import './Unity.css'
+
 interface IUnityContainerProps {
   unityProvider: UnityProvider,
   loadingProgression: number,
@@ -82,12 +84,14 @@ const UnityContainer: React.FC<IUnityContainerProps> = (props: IUnityContainerPr
         <button onClick={handleClickSetLogText}>Set Log Text</button>
       </p> */}
       {!isLoaded && (
-        <div style={{textAlign: 'right'}}>Loading... {Math.round(loadingProgression * 100)}%</div>
+        <div className='Unity-loading-container'>
+          <span>Loading... {Math.round(loadingProgression * 100)}%</span>
+        </div>
       )}
       <Unity
         unityProvider={unityProvider}
         className={'Proteus-webgl-canvas'}
-        style={{ visibility: isLoaded ? 'visible' : 'hidden' }}
+        style={{ visibility: isLoaded ? 'visible' : 'hidden', display: isLoaded ? '' : 'none' }}
         devicePixelRatio={window.devicePixelRatio}
         disabledCanvasEvents={['dragstart', 'scroll', 'click']}
         // ref={canvasRef}
