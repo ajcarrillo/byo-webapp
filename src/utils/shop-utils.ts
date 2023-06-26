@@ -8,20 +8,27 @@ export const updateBasket = async (item: ShopBasketItem) => {
   const basketItems = getStoredBasketItems()
   let newBasket: ShopBasketItem[] = []
   if(basketItems.length > 0){
-    if(item.amount === 0){
-      // remove it
-      newBasket = basketItems.filter(b => b.item.productAddress !== item.item.productAddress)
-    }else{
-      // update the amount
-      newBasket = basketItems.map(b => {
-        if(b.item.productAddress === item.item.productAddress){
-          b.amount = item.amount
-        }
-        return b
-      })
+    // Item already in basket
+    if(basketItems.some(bE => bE.item.productAddress === item.item.productAddress)){
+      if(item.amount === 0){
+        // remove it
+        newBasket = basketItems.filter(b => b.item.productAddress !== item.item.productAddress)
+      }else{
+        // update the amount
+        newBasket = basketItems.map(b => {
+          if(b.item.productAddress === item.item.productAddress){
+            b.amount = item.amount
+          }
+          return b
+        })
+      }      
+    }
+    // Item not in basket - add it
+    else {
+      newBasket = [...basketItems, item]
     }
   }else{
-    // add it
+    // add it to empty basket
     if(item.amount > 0)
       newBasket = [...basketItems, item]
     else

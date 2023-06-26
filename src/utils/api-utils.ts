@@ -53,6 +53,7 @@ export const apiDownload = async (
   })
 
   const header = resp.headers.get('Content-Disposition')
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const parts = header!.split(';')
   const filename = parts[1].split('=')[1]
   const data = await resp.blob()
@@ -98,19 +99,24 @@ export const uploadWithProgress = async (
   token: string | null,
   body: any
 ): Promise<APIResponse> => {
-  const resp = await axios.post(url, body, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      ...(token && {'Authorization': `Bearer ${token}`}),
-    },
-    onUploadProgress: (progressEvent) => {
-      const working = progressEvent.loaded !== progressEvent.total
-      filesUploadProgress.next({isUploading: working, progress: Math.round(100 * (progressEvent.loaded / progressEvent.total))})
-    }
-  })
+  try {
+    const resp = await axios.post(url, body, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...(token && {'Authorization': `Bearer ${token}`}),
+      },
+      onUploadProgress: (progressEvent) => {
+        const working = progressEvent.loaded !== progressEvent.total
+        filesUploadProgress.next({isUploading: working, progress: Math.round(100 * (progressEvent.loaded / progressEvent.total))})
+      }
+    })
 
-  const { status, data, statusText } = resp
-  return {status, data, message: statusText}
+    const { status, data, statusText } = resp
+    return {status, data, message: statusText}
+  } catch(e: any) {
+    const { status, data, statusText } = e.response
+    return {status, data, message: data.message}
+  }
 }
 
 export const uploadWithObservable = async (

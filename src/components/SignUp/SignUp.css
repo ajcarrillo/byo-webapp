@@ -81,7 +81,11 @@
 
 @media screen and (max-width: 768px) {
   .SignUp-container {
-    width: 90%;
+    flex-direction: column; 
+    width: 95%;
+  }
+  .SignUp-rightCol {
+    display: none;
   }
 }
 

@@ -1,0 +1,64 @@
+
+.Admin-container {
+  width: 100%; 
+  padding: 1rem;
+}
+
+.Admin-menu-container {
+  background-color: rgb(40,39,63);
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.Admin-menu-container i {
+  padding: 0 1rem;
+  font-size: 1.4rem;
+  color: rgb(74, 80, 142);
+}
+
+.Admin-menu-link {
+  color: rgb(95,106,219);
+  cursor: pointer;
+}
+
+.Admin-menu-link:hover {
+  color: rgb(150, 157, 237);
+}
+
+.Admin-menu-link__active {
+  color: rgb(201,204,232);
+}
+
+.Admin-workspace-container {
+  background-color: rgb(46,46,64);
+  padding: 1rem;
+}
+
+.Admin-tabs-container {
+  width: 100%;
+  display: flex;
+  margin-top: 1rem;;
+}
+
+.Admin-tab {
+  border-radius: 20px 20px 0 0;
+  background-color: rgb(35,34,58);
+  color: rgb(99,102,147);
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer
+}
+
+.Admin-tab:hover {
+  color: rgb(144, 147, 186);
+}
+
+.Admin-tab__selected {
+  border-radius: 20px 20px 0 0;
+  background-color: rgb(40,39,63);
+  color: rgb(144, 147, 186);
+  padding: 1rem;
+  text-align: center;
+}
+

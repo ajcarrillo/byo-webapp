@@ -1,0 +1,68 @@
+.Admin-shop-products-container {
+  background-color: rgb(40,39,63);
+}
+
+.Admin-shop-new-product-image-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .6rem;
+  margin-top: .4rem;
+  background-color:  rgb(61, 58, 84);
+}
+
+.Admin-shop-new-product-image {
+  width: 50px;
+}
+
+.Admin-shop-new-product-image img {
+  width: 100%
+}
+
+.AdminProductUpload-container {
+  display: flex;
+}
+
+.AdminProductUpload-file-summary-container {
+  background-color: rgb(32,33,45);
+  padding: .6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: .3rem;
+  margin-top: .5rem;
+}
+
+.AdminProductUpload-filename {
+  font-size: .9rem;
+  color: var(--byowave-panel-text-colour);
+  overflow: hidden;
+}
+
+.AdminProductUpload-status-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 2rem;
+}
+
+.AdminProductUpload-status-container i {
+  color: rgb(92, 98, 162);
+  font-size: 1.4rem;
+  width: 2rem;
+}
+
+.AdminProductUpload-status-spinner {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-animation:spin 1s linear infinite;
+  -moz-animation:spin 1s linear infinite;
+  animation:spin 1s linear infinite;
+}
+
+.AdminProductUpload-status-spinner i {
+  width: auto;
+}

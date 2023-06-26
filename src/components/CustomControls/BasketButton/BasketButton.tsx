@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ShopBasketItem, ShopProduct } from '../../../types/shop-types'
+import { ShopBasketItem, ShopProduct, ShopSaleTracker } from '../../../types/shop-types'
 import { updateShoppingBasketObservable } from '../../../utils/events'
 import './BasketButton.css'
 
@@ -8,10 +8,11 @@ interface IBasketButtonProps {
     size: string,
     product: ShopProduct | undefined;
     basketItemCount: number;
+    trackers: ShopSaleTracker[]
   }
 
 export const BasketButton: React.FC<IBasketButtonProps> = (props: IBasketButtonProps) =>{
-  const { basketItemCount, product, size } = props
+  const { basketItemCount, product, size, trackers } = props
 
   /**
    * Handles button clicks to update the basket amount
@@ -22,6 +23,7 @@ export const BasketButton: React.FC<IBasketButtonProps> = (props: IBasketButtonP
       const item: ShopBasketItem = {
         item: product,
         amount: amount < 0 ? 0 : amount,
+        trackers,
       }
       updateShoppingBasketObservable.next(item)      
     }

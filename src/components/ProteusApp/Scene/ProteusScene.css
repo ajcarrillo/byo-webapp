@@ -1,0 +1,45 @@
+.Proteus-scene-container {
+  position: absolute; 
+  z-index: 10; 
+  width: 260px;
+  background-color: var(--byowave-panel-bg-colour);
+  top: 0;
+  right: 0;
+  border-radius: 0 0 10px 0;
+  transform: translateX(105%);
+  transition: .5s transform ease-in;
+  box-shadow: rgba(0, 0, 0, 0.2) -3px 0px 5px;
+}
+
+.Proteus-scene-container.open {
+  transform: translateX(0);
+}
+
+.Proteus-scene-header {
+  background-color: rgb(23, 24, 32);
+  border-bottom: 1px solid rgb(11, 11, 16);
+  padding: 1.2rem;
+  color: var(--byowave-cta-colour);
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.Proteus-scene-inner-container {
+  padding: .6rem 1.6rem;
+}
+
+.Proteus-scene-text {
+  color: var(--byowave-paragraph-text-colour);
+  line-height: 1.6rem;
+  padding-top: 1rem
+}
+
+.Proteus-scene-button-container {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.Proteus-scene-select-container {
+  margin: 1rem 0;
+}

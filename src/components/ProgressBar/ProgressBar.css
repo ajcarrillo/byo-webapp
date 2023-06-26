@@ -1,0 +1,42 @@
+.FileUploadProgressBar-container {
+  border-radius: .4rem;
+  padding: 6px;
+  background-color: var(--byowave-custom-control-bg-colour);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 240px
+}
+
+.FileUploadProgressBar-progress {
+  display: flex;
+  align-items: center;
+}
+
+.FileUploadProgressBar-cell-on {
+  background-color: var(--byowave-cta-colour);
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.FileUploadProgressBar-cell-on:not(:first-child) { 
+  margin-left: 4px;
+}
+
+.FileUploadProgressBar-cell-off {
+  background-color: var(--byowave-cta-dark-colour);
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.FileUploadProgressBar-cell-off:not(:first-child) { 
+  margin-left: 4px;
+}
+
+.FileUploadProgressBar-text {
+  color: var(--byowave-custom-control-text-colour)
+}

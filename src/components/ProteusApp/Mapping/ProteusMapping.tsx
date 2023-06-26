@@ -54,7 +54,7 @@ const ProteusMapping: React.FC<IProteusMappingProps> = (props: IProteusMappingPr
               ) : (
                 <>
                   <div style={{textAlign: 'center'}}><i className='fa-solid fa-gamepad Proteus-mapping-initialise-container__green'></i></div>
-                  <div className='Proteus-mapping-text'>Thank you. You may now remap your controller by clicking any button or moving a joystick.</div>                  
+                  <div className='Proteus-mapping-text'>You can remap your controller by clicking any button or moving a joystick.</div>                  
                 </>
               )}
             </div>

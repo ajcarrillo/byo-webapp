@@ -14,6 +14,9 @@ export const shoppingBasketObservable = new BehaviorSubject<ShopBasketItem[]>(
 
 export const updateShoppingBasketObservable = new BehaviorSubject<ShopBasketItem>({
   item: {
+    productMetaTitle: '',
+    productMetaDescription: '',
+    productMetaKeywords: '',
     productAddress: '',
     productCode: '',
     productName: '',
@@ -21,6 +24,9 @@ export const updateShoppingBasketObservable = new BehaviorSubject<ShopBasketItem
     productPrice: '',
     productImages: [], 
     productDispatchTime: '',
+    productStockLevel: '',
+    productGroups: [],
   },
-  amount: 0
+  amount: 0,
+  trackers: []
 })

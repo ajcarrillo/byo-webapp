@@ -3,28 +3,20 @@ import { RgbColorPicker } from 'react-colorful'
 import Select, { SingleValue } from 'react-select'
 
 import { AccessibilitySiteColour } from '../../types/disability-types'
+import { RGBColour, SelectType } from '../../types/global-types'
 import { 
   applyDefaultColours, 
   getSiteColourList, 
   applySiteColourTemplate, 
   getSiteColourTemplateList, 
-  updateStoredAccessibilityColours 
+  updateStoredAccessibilityColours,
+  isHexColour,
+  hex2rgb
 } from '../../utils/accessibility-utils'
 import { Checkbox } from '../CustomControls'
 import { reactSelectCustomStyles } from '../CustomControls/SelectDropdown/custom-styles'
 import { ReactSelectInput } from '../CustomControls/SelectDropdown/ReactSelectInput'
 import './Accessibility.css'
-
-type SelectType = {
-  readonly value: string,
-  readonly label: string,
-}
-
-type RGBColour = {
-  r: number,
-  g: number,
-  b: number,
-}
 
 const AccessibilityContainer: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('template')
@@ -46,9 +38,14 @@ const AccessibilityContainer: React.FC = () => {
    * @returns The RGB value
    */
   const getSelectedColour = (colourName: string): RGBColour => {
-    const col = getComputedStyle(document.documentElement).getPropertyValue(`--${colourName}`).replace(/\s/g,'')
-    if(col){
-      const rgb = col.substring(4, col.length-1).split(',')
+    const colourValue = getComputedStyle(document.documentElement).getPropertyValue(`--${colourName}`).replace(/\s/g,'')
+    if(colourValue){
+      let rgb: string[] 
+      if(isHexColour(colourValue)){
+        rgb = hex2rgb(colourValue)
+      }else{
+        rgb = colourValue.substring(4, colourValue.length-1).split(',')
+      }
       return { r: parseInt(rgb[0].trim()), g: parseInt(rgb[1].trim()), b: parseInt(rgb[2].trim()) }    
     } else {
       return {r: 255, g: 255, b: 255}

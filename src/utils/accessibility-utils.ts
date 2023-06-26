@@ -1,6 +1,7 @@
 import * as _ from 'lodash'
 
 import { AccessibilitySiteColour } from '../types/disability-types'
+import { IIndexable } from '../types/global-types'
 
 const applySiteColourTemplate = (template: string) => {
   const templates = {
@@ -53,6 +54,10 @@ const getSiteColourList = (): AccessibilitySiteColour[] => {
     {name: 'byowave-image-border-colour', desc: 'Image border colour', colour: ''},
     {name: 'byowave-scrollbar-bg-colour', desc: 'Scrollbar background colour', colour: ''},
     {name: 'byowave-scrollbar-handle-colour', desc: 'Scrollbar handle colour', colour: ''},
+    {name: 'byowave-tab-bg-colour', desc: 'Tab background colour', colour: ''},
+    {name: 'byowave-tab-selected-bg-colour', desc: 'Selected tab background colour', colour: ''},
+    {name: 'byowave-tab-text-colour', desc: 'Tab text colour', colour: ''},
+    {name: 'byowave-tab-selected-text-colour', desc: 'Selected tab text colour', colour: ''},
   ]
 }
 
@@ -117,6 +122,35 @@ const applyDefaultColours = () => {
   }
 }
 
+const hex2rgb = (hex: string): string[] => {
+  const rgbChar = ['r', 'g', 'b']
+ 
+  let rgb: any
+  
+  const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i)
+  const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i)
+  if (normal) {
+    rgb = normal.slice(1).reduce((a: IIndexable, e, i) => { 
+      a[rgbChar[i]] = parseInt(e, 16)
+      return a
+    }, {})
+    return [rgb.r.toString(), rgb.g.toString(), rgb.b.toString()]
+  }else if (shorthand) { 
+    rgb = shorthand.slice(1).reduce((a: IIndexable, e, i) => { 
+      a[rgbChar[i]] = 0x11 * parseInt(e, 16)
+      return a
+    }, {})
+    return [rgb.r.toString(), rgb.g.toString(), rgb.b.toString()]
+  }else{
+    return ['255', '255', '255']
+  }
+}
+
+const isHexColour = (hex: string) => {
+  const reg = /^#([0-9a-f]{3}){1,2}$/i
+  return reg.test(hex)
+}
+
 export {
   applyAccessibilityColours,
   applyDefaultColours,
@@ -127,4 +161,6 @@ export {
   saveDefaultSiteColours,
   updateStoredAccessibilityColours,
   updateStoredDefaultColours,
+  hex2rgb,
+  isHexColour,
 }

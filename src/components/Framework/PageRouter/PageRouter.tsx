@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route, Redirect, BrowserRouter, withRouter } from 'react-router-dom'
 import { useMobileOrientation } from 'react-device-detect'
+import { useMediaQuery } from 'react-responsive'
 
 import Header from '../Header'
 //import Footer from '../Footer'
 
 // Page Containers
+import AdminPage from '../Pages/Admin'
 import NotFoundPage from '../Pages/NotFound'
 import HomePage from '../Pages/Home'
 import SignInPage from '../Pages/SignIn'
@@ -16,13 +18,17 @@ import PasswordResetPage from '../Pages/PasswordReset'
 import ProteusAppPage from '../Pages/ProteusApp'
 import AccessibilityPage from '../Pages/Accessibility'
 import ShopPage from '../Pages/Shop'
+import ShopGroupPage from '../Pages/ShopGroup'
 import ProductPage from '../Pages/Product'
 import CheckoutPage from '../Pages/Checkout'
 import BasketPage from '../Pages/Basket'
+import OrdersPage from '../Pages/Orders'
+import UserProfilePage from '../Pages/UserProfile'
+import CommunityPage from '../Pages/Community'
 
 import { IStoreState } from '../../../types/store-types'
 import { ShopBasketItem } from '../../../types/shop-types'
-
+import { UserDeviceType } from '../../../types/global-types'
 import { 
   getStoredAccessToken, 
   isAccessTokenValid, 
@@ -64,7 +70,7 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
   const userProfileType = tokenIsValid ? getStoredUserProfileType() : ''
 
   const { isLandscape } = useMobileOrientation()
-  const device = {
+  const device: UserDeviceType = {
     type: getDeviceType(),
     orientation: isLandscape ? 'landscape' : 'portrait',
     os: getOS(),
@@ -73,7 +79,8 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
     browserVersion: getBrowserVersion(),
     mobileMake: getMobileMake(),
     mobileModel: getMobileModel(),
-    locale: getLocale()
+    locale: getLocale(),
+    isSmallScreen: useMediaQuery({ query: '(max-width: 480px)' }),
   }
 
   const [basketItems, setBasketItems] = useState<ShopBasketItem[]>([])
@@ -110,9 +117,14 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
           <Route path="/basket" render={(p) => <BasketPage {...p} tokenIsValid={tokenIsValid} />} />
           <Route path="/checkout" render={(p) => <CheckoutPage {...p} tokenIsValid={tokenIsValid} />} />
           <Route path="/product/:address" render={(p) => <ProductPage {...p} />} />
+          <Route path="/shop-group/:address" render={(p) => <ShopGroupPage {...p} />} />
           <Route path="/accessibility" render={(p) => <AccessibilityPage {...p} />} />
+          <Route path="/community" render={(p) => <CommunityPage {...p} />} />
+          <PrivateRoute path="/profile/:address" component={UserProfilePage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
-          <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} />
+          <PrivateRoute path="/orders" component={OrdersPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/admin" component={AdminPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <Route path="/404" component={(p: any) => <NotFoundPage {...p} />} />
           <Redirect from='*' to='/404' />
         </Switch>

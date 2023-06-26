@@ -2,10 +2,11 @@ import React, { useCallback, useEffect } from 'react'
 
 import { ReactUnityEventParameter } from '../../../types/unity-types'
 import { ConnectedController } from '../../../types/proteus-types'
+import { resolveInputReport } from '../../../utils/hid-utils'
 
 interface IProteusGalleryProps {
   broadcastUnityEvent: (evt: string, jsonData: string) => void,
-  broadcastControllerEvent: (evt: string, payload: string) => void,
+  broadcastControllerEvent: (eventType: string, payload: any) => void,
   connectedController: ConnectedController | null,
   unityAddEventListener: (eventName: string, callback: (...parameters: ReactUnityEventParameter[]) => void) => void,
   unityRemoveEventListener: (eventName: string, callback: (...parameters: ReactUnityEventParameter[]) => void) => void,
@@ -29,36 +30,26 @@ const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryPr
   }, [broadcastUnityEvent])
 
   /**
- * Handles event from a USB connected controller when there is a configuration change
- * @param payload 
- */
-  const handleUSBControllerConfigUpdate = (payload: any) => {
-    //
-  }
-
-  /**
-   * Handles event from a USB connected controller when it is disconnected
+   * Handles disconnect event from a HID controller
    * @param payload 
    */
-  const handleUSBControllerDisconnect = (evt: USBConnectionEvent) => {
+  const handleHIDControllerDisconnect = (evt: HIDConnectionEvent) => {
     console.log(evt)
   }
 
   /**
-   * Handles event from a Bluetooth connected controller when there is a configuration change
-   * @param payload 
+   * Handles controller HID input reports
+   * @param evt The HID input report event
+   * @returns 
    */
-  const handleBluetoothControllerConfigUpdate = (payload: any) => {
-    //
-  }
+  const handleHIDControllerInputReport = useCallback((evt: HIDInputReportEvent) => {
+    const { data, device, reportId } = evt
 
-  /**
-   * Handles event from a Bluetooth connected controller when it is disconnected
-   * @param payload 
-   */
-  const handleBluetoothControllerDisconnect = (evt: Event) => {
-    console.log(evt)
-  }
+    if(device.productId !== +(process.env.REACT_APP_PROTEUS_CONTROLLER_PRODUCT_ID || '') && reportId !== 0) 
+      return
+
+    broadcastControllerEvent('inputReport', resolveInputReport(data))
+  }, [broadcastControllerEvent])
 
   /**
    * Adds event listeners for the Unity app and the Controller
@@ -67,14 +58,9 @@ const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryPr
     // Unity
     unityAddEventListener('UnityEvent', handleUnityEvent)
     // Controller
-    if(connectedController?.connectionType === 'usb'){
-      window.navigator.usb.addEventListener('NEW_CUBE_MATRIX_AVAILABLE', handleUSBControllerConfigUpdate)
-      window.navigator.usb.addEventListener('disconnect', handleUSBControllerDisconnect)
-    } else {
-      connectedController?.bluetoothDevice?.addEventListener('NEW_CUBE_MATRIX_AVAILABLE', handleBluetoothControllerConfigUpdate)
-      connectedController?.bluetoothDevice?.addEventListener('gattserverdisconnected', handleBluetoothControllerDisconnect)
-    }
-  }, [connectedController?.bluetoothDevice, connectedController?.connectionType, handleUnityEvent, unityAddEventListener])
+    window.navigator.hid.addEventListener('disconnect', handleHIDControllerDisconnect)
+    connectedController?.hidDevice?.addEventListener('inputreport', handleHIDControllerInputReport)
+  }, [connectedController?.hidDevice, handleHIDControllerInputReport, handleUnityEvent, unityAddEventListener])
 
   /**
    * Removes event listeners for the Unity app and the Controller
@@ -83,14 +69,9 @@ const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryPr
     // Unity
     unityRemoveEventListener('UnityEvent', handleUnityEvent)
     // Controller
-    if(connectedController?.connectionType === 'usb'){
-      window.navigator.usb.removeEventListener('NEW_CUBE_MATRIX_AVAILABLE', handleUSBControllerConfigUpdate)
-      window.navigator.usb.removeEventListener('disconnect', handleUSBControllerDisconnect)
-    } else {
-      connectedController?.bluetoothDevice?.removeEventListener('NEW_CUBE_MATRIX_AVAILABLE', handleBluetoothControllerConfigUpdate)
-      connectedController?.bluetoothDevice?.removeEventListener('gattserverdisconnected', handleBluetoothControllerDisconnect)
-    }
-  }, [connectedController?.bluetoothDevice, connectedController?.connectionType, handleUnityEvent, unityRemoveEventListener])
+    window.navigator.hid.removeEventListener('disconnect', handleHIDControllerDisconnect)
+    connectedController?.hidDevice?.removeEventListener('inputreport', handleHIDControllerInputReport)
+  }, [connectedController?.hidDevice, handleHIDControllerInputReport, handleUnityEvent, unityRemoveEventListener])
 
   useEffect(() => {
     addEventHandlers()

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-//import './ImageUploader.css'
+import './ImageUploader.css'
 
 interface IIimageUploaderProps {
   type: string;
@@ -24,10 +24,11 @@ export const ImageUploader = React.forwardRef<HTMLInputElement, IIimageUploaderP
 
   const onImageChange = (e: any) => {
     setImage(e.target.files.item(0))
+    e.target.value = null
   }
 
   return (
-    <input ref={ref} type='file' accept='image/*' onChange={(e) => onImageChange(e)} style={{display: 'none'}} />
+    <input ref={ref} type='file' accept='image/png, image/jpeg' onChange={(e) => onImageChange(e)} style={{display: 'none'}} />
   )
 })
 ImageUploader.displayName = 'ImageUploader'

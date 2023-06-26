@@ -12,6 +12,7 @@
   min-width: 18px;
   min-height: 18px;
   border: 2px solid var(--byowave-custom-control-border-colour);
+  background-color: var(--byowave-custom-control-bg-colour);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -28,7 +29,7 @@
 }
 
 .RadioButton-unselected__small {
-  border: 2px solid var(--byowave-custom-control-bg-colour);
+  border: 2px solid var(--byowave-custom-control-border-colour);
 }
 
 .RadioButton-unselected-circle__small {

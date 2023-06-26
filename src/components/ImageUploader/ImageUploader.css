@@ -1,0 +1,29 @@
+.ImageUpload-container-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 100%;
+  border-radius: .6rem;
+  border: 4px solid var(--byowave-image-border-colour);
+}
+
+.ImageUpload-container-square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 150px;
+  border-radius: .6rem;
+  border: 4px solid var(--byowave-image-border-colour);
+}
+
+.ImageUpload-icon {
+  font-size: 25px;
+  cursor: pointer;
+  color: var(--byowave-cta-colour);
+}
+
+.ImageUpload-icon:hover {
+  color: var(--byowave-cta-hover-colour);
+}

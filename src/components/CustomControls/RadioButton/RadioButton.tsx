@@ -3,10 +3,9 @@ import React from 'react'
 import './RadioButton.css'
 
 interface IRadioButtonProps {
-  size: string;
+  size: 'small' | 'big';
   text: string;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  onChange: Function;
+  onChange: (value: string) => void;
   selected: string;
   value: string;
 }
