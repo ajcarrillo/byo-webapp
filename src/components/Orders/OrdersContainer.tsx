@@ -41,7 +41,7 @@ const OrdersContainer: React.FC<IOrdersContainerProps> = (props: IOrdersContaine
             </div>
             <div className='Orders-empty-rightCol'>
               <h1>Whoops!</h1>
-              <h3 style={{marginTop: '1rem'}}>You haven&apos;t made any orders yet.</h3>
+              <h3 style={{marginTop: '1rem'}}>You haven&apos;t made any purchases yet.</h3>
               <p style={{marginTop: '2rem'}}>Why not visit our shop, load up on goodies, then check back here for updates on your orders.</p>
             </div>
           </div>

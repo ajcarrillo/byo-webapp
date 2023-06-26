@@ -1,39 +1,40 @@
 .react-datepicker {
-  background-color: rgb(47, 47, 47);
-  border: 1px solid rgb(52, 52, 52);
+  background-color: var(--byowave-custom-control-bg-colour);
+  border: 1px solid var(--byowave-custom-control-border-colour);
 }
 
 .react-datepicker__header {
-  background-color: rgb(47, 47, 47);
+  background-color: var(--byowave-panel-bg-colour);
   border-bottom: 0;
 }
 .react-datepicker__current-month {
-  color: rgb(130,130,130)
+  color: var(--byowave-cta-hover-colour)
 }
 .react-datepicker__day-name {
-  color: rgb(130,130,130)
+  color: var(--byowave-cta-hover-colour)
 }
 .react-datepicker__day {
-  color: rgb(130,130,130)
+  color: var(--byowave-cta-hover-colour)
 }
 .react-datepicker__day:hover {
-  background-color: rgb(194,136,45);
-  color: #f0f0f0
+  background-color: var(--byowave-cta-hover-colour);
+  color: var(--byowave-cta-text-colour)
 }
 
 .react-datepicker__input-container input {
-  background-color: rgb(33, 33, 33);
-  color: rgb(184, 184, 184);
+  background-color: var(--byowave-inputfield-bg-colour);
+  color: var(--byowave-inputfield-text-colour);
   border-radius: .4rem;
   border: none;
   outline: none;
-  padding: .5rem;
+  padding: 0.6rem 0.5rem;
+  font-size: 1rem;
   width: 100%;
   cursor: pointer
 }
 
 .react-datepicker__month-container {
-  background-color: rgb(36,36,36);
+  background-color: var(--byowave-custom-control-bg-colour);
   border: 0
 }
 
@@ -48,8 +49,8 @@
 .react-datepicker__year-text--in-selecting-range,
 .react-datepicker__year-text--in-range {
   border-radius: 0.3rem;
-  background-color: rgb(194,136,45);
-  color: #fff;
+  background-color: var(--byowave-cta-colour);
+  color: var(--byowave-cta-text-colour);
 }
 .react-datepicker__day--selected:hover, .react-datepicker__day--in-selecting-range:hover, .react-datepicker__day--in-range:hover,
 .react-datepicker__month-text--selected:hover,
@@ -61,15 +62,15 @@
 .react-datepicker__year-text--selected:hover,
 .react-datepicker__year-text--in-selecting-range:hover,
 .react-datepicker__year-text--in-range:hover {
-  background-color: rgb(114,89,40);
+  background-color: var(--byowave-cta-hover-colour);
 }
 .react-datepicker__day--keyboard-selected,
 .react-datepicker__month-text--keyboard-selected,
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
   border-radius: 0.3rem;
-  background-color: rgb(194,136,45);
-  color: #fff;
+  background-color: var(--byowave-cta-colour);
+  color: var(--byowave-cta-text-colour);
 }
 
 .react-datepicker__navigation-icon {
@@ -78,4 +79,9 @@
 
 .react-datepicker__triangle {
   opacity: 0;
+}
+
+.react-datepicker__close-icon::after {
+  background-color: var(--byowave-cta-colour);
+  color: var(--byowave-cta-text-colour);
 }

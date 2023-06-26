@@ -7,8 +7,7 @@ interface IPaginationProps {
   totalRecords: number;
   itemsPerPage: number;
   pagesPerGroup: number;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  callbackPageLoad: Function;
+  callbackPageLoad: (start?: string) => Promise<void>;
 }
 
 const Pagination: React.FC<IPaginationProps> = (props: IPaginationProps) => {
@@ -65,7 +64,7 @@ const Pagination: React.FC<IPaginationProps> = (props: IPaginationProps) => {
   },[itemsPerPage, page, selectPage, totalRecords])
 
   /**
-   * 
+   * Switches page group
    * @param direction 
    */
   const changePageGroup = (direction: string) => {
@@ -83,11 +82,27 @@ const Pagination: React.FC<IPaginationProps> = (props: IPaginationProps) => {
   return (
     <div style={{display: 'flex'}}>
       {pageButtons.length > pagesPerGroup && (
-        <div style={{marginRight: '.6rem'}}><button title="Previous page group" className="Button-icon-small" onClick={() => changePageGroup('prev')}><i className="fa-solid fa-angles-left"></i></button></div>
+        <div style={{marginRight: '.6rem'}}>
+          <button 
+            title="Previous page group" 
+            className="Button-icon-small" 
+            onClick={() => changePageGroup('prev')}
+          >
+            <i className="fa-solid fa-angles-left"></i>
+          </button>
+        </div>
       )}
       <div>{pageButtons.slice(pageGroup, pageGroup+pagesPerGroup)}</div>
       {pageButtons.length > pagesPerGroup && (
-        <div style={{marginLeft: '.6rem'}}><button title="Next page group" className="Button-icon-small" onClick={() => changePageGroup('next')}><i className="fa-solid fa-angles-right"></i></button></div>
+        <div style={{marginLeft: '.6rem'}}>
+          <button 
+            title="Next page group" 
+            className="Button-icon-small" 
+            onClick={() => changePageGroup('next')}
+          >
+            <i className="fa-solid fa-angles-right"></i>
+          </button>
+        </div>
       )}
     </div>
   )

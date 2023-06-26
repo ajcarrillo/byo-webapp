@@ -41,7 +41,7 @@ export const reactSelectCustomStyles = {
   clearIndicator: (provided: any, state: any) => ({
     ...provided,
     padding: '2px',
-    backgroundColor: 'rgb(118,87,44)',
+    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-colour'),
   }),
   // the option container
   menu: (provided: any, state: any) => ({
@@ -52,19 +52,20 @@ export const reactSelectCustomStyles = {
   }),
   multiValue: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: 'rgb(118,87,44)',
+    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-colour'),
   }),
   multiValueLabel: (provided: any, state: any) => ({
     ...provided,
-    color: 'rgb(184, 184, 184)',
+    padding: '8px 0 7px 0',
+    color: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-text-colour'),
   }),
   multiValueRemove: (provided: any, state: any) => ({
     ...provided,
     cursor: 'pointer',
-    color: 'rgb(184, 184, 184)',
+    color: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-text-colour'),
     '&:hover': {
-      backgroundColor: 'rgb(128,92,36)',
-      color: 'rgb(140, 140, 140)',
+      backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-hover-colour'),
+      color: getComputedStyle(document.documentElement).getPropertyValue('--byowave-cta-text-colour'),
     },
   }),
   option: (provided: any, state: any) => ({

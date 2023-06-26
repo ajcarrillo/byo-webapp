@@ -2,10 +2,10 @@ import React, { ReactElement, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { 
-  ShopProductSummary,
+  ShopGroupCard,
 } from '.'
 import Spinner from '../Spinner'
-import { getShopProductsRequest } from '../../store/shop/shop-actions'
+import { getShopGroupsRequest } from '../../store/shop/shop-actions'
 import { IStoreState } from '../../types/store-types'
 import './Shop.css'
 
@@ -15,33 +15,32 @@ const ShopContainer = (): ReactElement => {
     shop
   } = useSelector<IStoreState, IStoreState>((store) => store)
 
-  const loadShopProducts = useCallback(() => {
-    dispatch(getShopProductsRequest())
+  const loadShopGroups = useCallback(() => {
+    dispatch(getShopGroupsRequest())
   }, [dispatch])
   
   useEffect(() => {
-    if(!shop.products){
-      loadShopProducts()
+    if(!shop.groups){
+      loadShopGroups()
     }
-  }, [loadShopProducts, shop.products])
+  }, [loadShopGroups, shop.groups])
 
   return (
     <>
-      {(shop.productsLoading) && (
+      {(shop.groupsLoading) && (
         <Spinner />
       )}
 
       <div className='Shop-container'>
         <h1><span className="Colour-blue-bright">Shop</span></h1>
         <div>
-          {shop.products?.map(p => (
-            <ShopProductSummary 
-              key={p.productAddress} 
-              address={p.productAddress}
-              name={p.productName}
-              desc={p.productDescription}
-              price={p.productPrice}
-              image={p.productImages[0]}
+          {shop.groups?.map(g => (
+            <ShopGroupCard 
+              key={g.groupAddress} 
+              address={g.groupAddress}
+              name={g.groupName}
+              desc={g.groupDescription}
+              image={g.groupImage}
             />
           ))}
         </div>

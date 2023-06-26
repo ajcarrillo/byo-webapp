@@ -1,10 +1,15 @@
 import * as Constants from './shop-constants'
-import { IShopState } from '../../types/shop-types'
-import { transformAmericanStatesFromDB, transformCountriesFromDB, transformStripeSalesTransaction } from '../../transformers/shop-transformers'
+import { IShopState, ShopProduct } from '../../types/shop-types'
+import { 
+  transformAmericanStatesFromDB, 
+  transformCountriesFromDB, 
+  transformStripeSalesTransaction 
+} from '../../transformers/shop-transformers'
 
 const initialState = {
   apiError: null,
   productsLoading: false,
+  groupsLoading: false,
   customerDetailsLoading: false,
   countriesLoading: false,
   americanStatesLoading: false,
@@ -13,10 +18,35 @@ const initialState = {
   countries: null,
   americanStates: null,
   products: null,
+  groups: null,
+  groupsFetched: null,
   customerDetails: null,
   basketItems: null,
   salesTransaction: null,
   orders: null,
+}
+
+const updateFetchedProductGroups = (groups: string[] | null, address: string): string[] => {
+  if(!groups)
+    groups = [address]
+  else if(!groups.includes(address))
+    groups.push(address)
+  
+  return groups
+}
+
+const updateFetchedProducts = (existing: ShopProduct[] | null, newProducts: ShopProduct[]): ShopProduct[] => {
+  if(!existing){
+    return newProducts
+  } else {
+    const newList = [...existing]
+    for(let p = 0; p < newProducts.length; p++){
+      if(!newList.find(nP => nP.productAddress === newProducts[p].productAddress)){
+        newList.push(newProducts[p])
+      }
+    }
+    return newList
+  }
 }
 
 export const shopReducer = (state: IShopState = initialState, action: any) => {
@@ -42,12 +72,26 @@ export const shopReducer = (state: IShopState = initialState, action: any) => {
   case Constants.SHOP_SAVE_CUSTOMER_DETAILS_FAILURE:
     return { ...state, apiError: action.payload, customerDetailsLoading: false, customerDetails: null }
 
-  case Constants.SHOP_GET_PRODUCTS_REQUEST:
+  case Constants.SHOP_GET_GROUP_PRODUCTS_REQUEST:
     return { ...state, apiError: null, productsLoading: true, products: null }
-  case Constants.SHOP_GET_PRODUCTS_SUCCESS:
-    return { ...state, apiError: null, productsLoading: false, products: action.payload.products }
-  case Constants.SHOP_GET_PRODUCTS_FAILURE:
+  case Constants.SHOP_GET_GROUP_PRODUCTS_SUCCESS:
+    return { ...state, apiError: null, productsLoading: false, products: updateFetchedProducts(state.products, action.payload.products), groupsFetched: updateFetchedProductGroups(state.groupsFetched, action.payload.groupAddress) }
+  case Constants.SHOP_GET_GROUP_PRODUCTS_FAILURE:
     return { ...state, apiError: action.payload, productsLoading: false, products: null }
+
+  case Constants.SHOP_GET_PRODUCT_REQUEST:
+    return { ...state, apiError: null, productsLoading: true, products: null }
+  case Constants.SHOP_GET_PRODUCT_SUCCESS:
+    return { ...state, apiError: null, productsLoading: false, products: updateFetchedProducts(state.products, action.payload.product === null ? [] : [action.payload.product]) }
+  case Constants.SHOP_GET_PRODUCT_FAILURE:
+    return { ...state, apiError: action.payload, productsLoading: false, products: null }
+
+  case Constants.SHOP_GET_GROUPS_REQUEST:
+    return { ...state, apiError: null, groupsLoading: true, groups: null }
+  case Constants.SHOP_GET_GROUPS_SUCCESS:
+    return { ...state, apiError: null, groupsLoading: false, groups: action.payload.groups }
+  case Constants.SHOP_GET_GROUPS_FAILURE:
+    return { ...state, apiError: action.payload, groupsLoading: false, groups: null }
 
   case Constants.SHOP_GET_COUNTRY_LIST_REQUEST:
     return { ...state, apiError: null, countriesLoading: true, countries: null }

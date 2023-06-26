@@ -1,0 +1,58 @@
+.AdminOrders-container {
+  background-color: rgb(40,39,63);
+  padding: 1rem;
+}
+
+.AdminOrders-header-container {
+  background-color: rgb(40,39,63);
+}
+
+.AdminOrdersItem-container {
+  background-color: var(--byowave-panel-bg-colour);
+  border: 1px solid rgb(60,59,85);
+  padding: 2rem;
+  border-radius: 5px;
+  display: flex;
+  margin-bottom: .6rem;
+}
+
+.AdminOrdersItem-product-list-container {
+  width: 45%
+}
+
+.AdminOrdersItem-product-container {
+  margin-bottom: .8rem;
+}
+
+.AdminOrdersItem-product-inner-container {
+  padding-right: 2rem;
+}
+
+.AdminOrdersItem-summay-container {
+  width: 55%;
+  padding-left: 2rem;
+  border-left: 1px solid var(--byowave-cta-dark-colour);
+}
+
+.AdminOrdersItem-summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 .4rem;
+}
+
+.AdminOrdersItem-summary-item p {
+  line-height: 1.4rem;
+}
+
+.AdminOrdersItem-summary-item p:nth-of-type(1) {
+  color: var(--byowave-panel-text-colour);
+  font-size: .9rem;
+}
+
+.AdminOrdersItem-summary-item p:nth-of-type(2) {
+  font-size: .9rem;
+}
+
+.AdminOrderStatus-container {
+  display: flex;
+}

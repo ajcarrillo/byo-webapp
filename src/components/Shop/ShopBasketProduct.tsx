@@ -12,7 +12,7 @@ interface IShopBasketProductProps {
 }
 
 const ShopBasketProduct: React.FC<IShopBasketProductProps> = (props: IShopBasketProductProps) => {
-  const { amount, item, item: {productAddress, productCode, productName, productImages, productPrice} } = props.basketItem
+  const { amount, trackers, item, item: {productAddress, productCode, productName, productImages, productPrice} } = props.basketItem
   return (
     <div className='ShopBasketProduct-container'>
       <div className='ShopBasketProduct-image-container'><img src={productImages[0]} alt={productName} /></div>
@@ -24,7 +24,7 @@ const ShopBasketProduct: React.FC<IShopBasketProductProps> = (props: IShopBasket
         <div className='ShopBasketProduct-price-container'>
           <p>{parse(`&euro;${productPrice}`)}</p>
           {props.allowQuantityUpdates ? (
-            <BasketButton basketItemCount={amount} product={item} size='tiny' />
+            <BasketButton basketItemCount={amount} product={item} trackers={trackers} size='tiny' />
           ) : (
             <p>Quantity: {amount}</p>
           )}        
