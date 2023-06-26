@@ -173,9 +173,85 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
   background-color: var(--byowave-cta-disabled-colour);
   border: none;
   border-radius: .5rem;
-  padding: .5rem 1rem;
+  padding: .6rem 1.2rem;
   color: var(--byowave-cta-disabled-text-colour);
   outline: none;
+}
+
+.Button-small {
+  background-color: var(--byowave-cta-colour);
+  border: none;
+  border-radius: .4rem;
+  padding: .3rem .8rem;
+  color: var(--byowave-cta-text-colour);
+  cursor: pointer;
+  outline: none;
+  font-weight: 400;
+  font-size: .8rem;
+}
+
+.Button-small:hover {
+  background-color: var(--byowave-cta-hover-colour);
+}
+
+.Button-small-disabled {
+  background-color: var(--byowave-cta-disabled-colour);
+  border: none;
+  border-radius: .4rem;
+  padding: .3rem .8rem;
+  color: var(--byowave-cta-disabled-text-colour);
+  outline: none;
+  font-size: .9rem;
+}
+
+.Button-icon-small {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  font-size: .9rem;
+}
+
+.Button-icon-small i {
+  font-size: 1.2rem;
+  color: var(--byowave-cta-colour)
+}
+
+.Button-icon-small i:hover {
+  color: var(--byowave-cta-hover-colour)
+}
+
+.Button-icon-small-selected {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  font-size: .9rem;
+}
+
+.Button-text {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  font-size: 1rem;
+  color: var(--byowave-cta-colour)
+}
+
+.Button-text:hover {
+  color: var(--byowave-cta-hover-colour);
+}
+
+.Button-text-selected {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  font-size: 1rem;
+  color: var(--byowave-cta-hover-colour);
+  text-decoration: underline;
 }
 
 ::placeholder {
@@ -195,7 +271,14 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
 }
 
 .Textfield-dark-disabled { 
-  color: var(--byowave-inputfield-text-disabled-colour)
+  background-color: var(--byowave-inputfield-bg-colour);
+  opacity: 0.5;
+  color: var(--byowave-inputfield-text-disabled-colour);
+  border-radius: .4rem;
+  border: none;
+  outline: none;
+  padding: 0.6rem 0.5rem;
+  font-size: 1rem;
 }
 
 .PanelLabel {

@@ -201,7 +201,11 @@ const ShopCheckoutContainer: React.FC<IShopCheckoutContainerProps> = (props: ISh
     if(shop.basketItems && !shop.salesTransactionLoading && !shop.apiError){
       dispatch(createSalesTransactionRequest(
         shop.basketItems?.map((b) => { 
-          return {productCode: b.item.productCode, productAmount: b.amount}
+          return {
+            productCode: b.item.productCode, 
+            productAmount: b.amount,
+            ...(b.trackers.length > 0 && {trackers: b.trackers})
+          }
         }), 
         deliverAlternateAddress === 'yes' ? 'delivery' : 'billing',
         shop.salesTransaction?.stripeClientSecret

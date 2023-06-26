@@ -45,6 +45,9 @@ const ShopCheckoutPaymentComplete: React.FC<IShopCheckoutPaymentCompleteProps> =
     for(let i = 0; i < items.length; i++){
       updateShoppingBasketObservable.next({
         item: {
+          productMetaTitle: items[i].item.productMetaTitle,
+          productMetaDescription: items[i].item.productMetaDescription,
+          productMetaKeywords: items[i].item.productMetaKeywords,
           productAddress: items[i].item.productAddress,
           productCode: items[i].item.productCode,
           productName: items[i].item.productName,
@@ -52,8 +55,11 @@ const ShopCheckoutPaymentComplete: React.FC<IShopCheckoutPaymentCompleteProps> =
           productPrice: items[i].item.productPrice,
           productImages: items[i].item.productImages, 
           productDispatchTime: items[i].item.productDispatchTime,
+          productStockLevel: items[i].item.productStockLevel,
+          productGroups: items[i].item.productGroups,
         },
-        amount: 0
+        amount: 0,
+        trackers: items[i].trackers
       })
       await sleep(200)
     }
@@ -127,7 +133,7 @@ const ShopCheckoutPaymentComplete: React.FC<IShopCheckoutPaymentCompleteProps> =
 
                 <div className='FadeInAfterDelay' style={{opacity: 0}}>
                   <OrdersListItem 
-                    order={orders?.find(o => o.orderTransactionId === transactionId)}
+                    order={orders?.find(o => o.orderTransactionId === transactionId)} 
                   />
                 </div>
 

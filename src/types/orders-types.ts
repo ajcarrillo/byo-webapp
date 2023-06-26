@@ -13,5 +13,6 @@ export type OrdersItem = {
 }
 
 export type OrdersProductItem = Modify<ShopProduct, {
-  amount: string
+  amount: string,
+  fileAddress?: string
 }>

@@ -1,18 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import parse from 'html-react-parser'
 
 import { OrdersItem } from '../../types/orders-types'
+import { downloadProductFile } from '../../utils/download-utils'
+import { updateStoredAccessToken } from '../../utils/user-utils'
 import './Orders.css'
 
 interface IOrdersListItemProps {
-  order: OrdersItem | undefined,
+  order: OrdersItem | undefined
 }
 
 const OrdersListItem: React.FC<IOrdersListItemProps> = (props: IOrdersListItemProps) => {
   const { 
     order
   } = props 
+
+  const [downloading, setDownloading] = useState(false)
+
+  const downloadFile = async (address: string) => {
+    setDownloading(true)
+    const response = await downloadProductFile(address)
+    if(response.status === 200){
+      const fileURL = URL.createObjectURL(response.data)
+      const anchor = document.createElement('a')
+      anchor.href = fileURL
+      anchor.download = response.filename
+      document.body.appendChild(anchor)
+      anchor.click()
+      document.body.removeChild(anchor)
+      URL.revokeObjectURL(fileURL)
+      setDownloading(false)
+    }else if(response.status === 401){
+      updateStoredAccessToken('', false)
+      window.location.reload()
+    }else{
+      setDownloading(false)
+    }
+  }
 
   /**
    * Returns a localised date from a Unix timestamp
@@ -30,14 +55,34 @@ const OrdersListItem: React.FC<IOrdersListItemProps> = (props: IOrdersListItemPr
         <h3 style={{marginBottom: '.6rem'}}>Items</h3>
         {order && order.products.map(p => (
           <div key={p.productCode} className='OrdersItem-product-container'>
-            <div className='OrdersItem-product-image-container'><img src={p.productImages[0]} alt={p.productName} /></div>
-            <div className='OrdersItem-product-text-container'>
-              <Link to={`/product/${p.productAddress}`} title={p.productName}>
-                {p.productName}
-              </Link>
-              <p>Product code: {p.productCode}</p>
-              <p>Quantity: {p.amount}</p>
-            </div>     
+            <div className='OrdersItem-product-inner-container'>
+              <div className='OrdersItem-product-image-container'><img src={p.productImages[0]} alt={p.productName} /></div>
+              <div className='OrdersItem-product-text-container'>
+                <Link to={`/product/${p.productAddress}`} title={p.productName}>
+                  {p.productName}
+                </Link>
+                <p>Product code: {p.productCode}</p>
+                <p>Quantity: {p.amount}</p>
+                {p.fileAddress && order?.paymentStatus === 'Paid' && (
+                  <div className='OrdersItem-product-file-container'>
+                    <p>Download your file</p>
+                    {downloading ? (
+                      <div className='OrdersItem-downloading-spinner'>
+                        <i className="fa-solid fa-spinner"></i>
+                      </div>
+                    ) : (
+                      <button 
+                        className="Button-icon-small" 
+                        onClick={() => downloadFile(p.fileAddress || '')} 
+                        title='Download this file'
+                      >
+                        <i className="fa-solid fa-cloud-arrow-down"></i>
+                      </button>                      
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         ))}
       </div>

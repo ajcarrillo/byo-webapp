@@ -18,10 +18,14 @@ import {
   getCustomerDetailsSuccess, 
   getCustomerOrdersFailure, 
   getCustomerOrdersSuccess, 
-  getShopProductsFailure, 
-  getShopProductsSuccess, 
+  getShopGroupsFailure, 
+  getShopGroupsSuccess, 
+  getShopGroupProductsFailure, 
+  getShopGroupProductsSuccess, 
   saveCustomerDetailsFailure, 
-  saveCustomerDetailsSuccess
+  saveCustomerDetailsSuccess,
+  getShopProductFailure,
+  getShopProductSuccess
 } from './shop-actions'
 import { 
   SHOP_CREATE_SALES_TRANSACTION_API_ERROR_MESSAGES,
@@ -34,8 +38,12 @@ import {
   SHOP_GET_CUSTOMER_DETAILS_REQUEST,
   SHOP_GET_CUSTOMER_ORDERS_API_ERROR_MESSAGES,
   SHOP_GET_CUSTOMER_ORDERS_REQUEST,
-  SHOP_GET_PRODUCTS_API_ERROR_MESSAGES, 
-  SHOP_GET_PRODUCTS_REQUEST, 
+  SHOP_GET_GROUPS_API_ERROR_MESSAGES,
+  SHOP_GET_GROUPS_REQUEST,
+  SHOP_GET_GROUP_PRODUCTS_API_ERROR_MESSAGES, 
+  SHOP_GET_GROUP_PRODUCTS_REQUEST, 
+  SHOP_GET_PRODUCT_API_ERROR_MESSAGES, 
+  SHOP_GET_PRODUCT_REQUEST, 
   SHOP_SAVE_CUSTOMER_DETAILS_API_ERROR_MESSAGES,
   SHOP_SAVE_CUSTOMER_DETAILS_REQUEST
 } from './shop-constants'
@@ -89,26 +97,74 @@ export function* getShopAmericanStateListSaga(action: any){
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-export function* getShopProductsSaga(action: any){
+export function* getShopGroupProductsSaga(action: any){
   try {
     const response: APIResponse = yield call(
       apiCall, 
-      `${process.env.REACT_APP_API_BASE_URL}/shop/products`,
+      `${process.env.REACT_APP_API_BASE_URL}/shop/products/group/${action.address}`,
       'GET',
       undefined,
       'json'
     )
 
     if(response.status === 200){
-      yield put(getShopProductsSuccess(response.data))
+      yield put(getShopGroupProductsSuccess(response.data))
     }
     else {
       if(response.status === 401) updateStoredAccessToken('', false)
-      yield put(getShopProductsFailure(generateApiError('shop/getShopProductsSaga', response, SHOP_GET_PRODUCTS_API_ERROR_MESSAGES)))
+      yield put(getShopGroupProductsFailure(generateApiError('shop/getShopGroupProductsSaga', response, SHOP_GET_GROUP_PRODUCTS_API_ERROR_MESSAGES)))
     }
   } 
   catch(e) {
-    yield put(getShopProductsFailure(generateApiError('shop/getShopProductsSaga', undefined, SHOP_GET_PRODUCTS_API_ERROR_MESSAGES)))
+    yield put(getShopGroupProductsFailure(generateApiError('shop/getShopGroupProductsSaga', undefined, SHOP_GET_GROUP_PRODUCTS_API_ERROR_MESSAGES)))
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+export function* getShopProductSaga(action: any){
+  try {
+    const response: APIResponse = yield call(
+      apiCall, 
+      `${process.env.REACT_APP_API_BASE_URL}/shop/product/${action.address}`,
+      'GET',
+      undefined,
+      'json'
+    )
+
+    if(response.status === 200){
+      yield put(getShopProductSuccess(response.data))
+    }
+    else {
+      if(response.status === 401) updateStoredAccessToken('', false)
+      yield put(getShopProductFailure(generateApiError('shop/getShopProductSaga', response, SHOP_GET_PRODUCT_API_ERROR_MESSAGES)))
+    }
+  } 
+  catch(e) {
+    yield put(getShopProductFailure(generateApiError('shop/getShopProductSaga', undefined, SHOP_GET_PRODUCT_API_ERROR_MESSAGES)))
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+export function* getShopGroupsSaga(action: any){
+  try {
+    const response: APIResponse = yield call(
+      apiCall, 
+      `${process.env.REACT_APP_API_BASE_URL}/shop/groups`,
+      'GET',
+      undefined,
+      'json'
+    )
+
+    if(response.status === 200){
+      yield put(getShopGroupsSuccess(response.data))
+    }
+    else {
+      if(response.status === 401) updateStoredAccessToken('', false)
+      yield put(getShopGroupsFailure(generateApiError('shop/getShopGroupsSaga', response, SHOP_GET_GROUPS_API_ERROR_MESSAGES)))
+    }
+  } 
+  catch(e) {
+    yield put(getShopGroupsFailure(generateApiError('shop/getShopGroupsSaga', undefined, SHOP_GET_GROUPS_API_ERROR_MESSAGES)))
   }
 }
 
@@ -218,8 +274,16 @@ export function* createSalesTransactionSaga(action: any){
   }
 }
 
-export function* getShopProductsSagaWatcher(){
-  yield takeLatest(SHOP_GET_PRODUCTS_REQUEST, getShopProductsSaga)
+export function* getShopGroupProductsSagaWatcher(){
+  yield takeLatest(SHOP_GET_GROUP_PRODUCTS_REQUEST, getShopGroupProductsSaga)
+}
+
+export function* getShopProductSagaWatcher(){
+  yield takeLatest(SHOP_GET_PRODUCT_REQUEST, getShopProductSaga)
+}
+
+export function* getShopGroupsSagaWatcher(){
+  yield takeLatest(SHOP_GET_GROUPS_REQUEST, getShopGroupsSaga)
 }
 
 export function* getShopCustomerDetailsSagaWatcher(){

@@ -28,3 +28,18 @@ export const useEvent = (eventName: string, eventHandler: any) => {
   }, [eventName])
   return
 }
+
+export const useEffectOnlyOnce = (callback: (arg0: any) => void, dependencies: any, condition: (arg0: any) => any) => {
+  const calledOnce = useRef(false)
+
+  useEffect(() => {
+    if (calledOnce.current) {
+      return
+    }
+
+    if (condition(dependencies)) {
+      callback(dependencies)
+      calledOnce.current = true
+    }
+  }, [callback, condition, dependencies])
+}

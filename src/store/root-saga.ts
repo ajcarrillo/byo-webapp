@@ -28,10 +28,13 @@ import {
   getShopCountryListSagaWatcher,
   getShopCustomerDetailsSagaWatcher, 
   getShopCustomerOrdersSagaWatcher, 
-  getShopProductsSagaWatcher, 
-  saveShopCustomerDetailsSagaWatcher
+  getShopGroupsSagaWatcher, 
+  getShopGroupProductsSagaWatcher, 
+  saveShopCustomerDetailsSagaWatcher,
+  getShopProductSagaWatcher
 } from './shop/shop-sagas'
 import { getUserProfileDetailsSagaWatcher } from './user-profile/user-profile-sagas'
+import { getCommunityPostsSagaWatcher, isCommunityAdminSagaWatcher } from './community/community-sagas'
 
 export function* rootSaga(){
   yield fork(getUserSagaWatcher)
@@ -51,7 +54,9 @@ export function* rootSaga(){
   yield fork(setMappingModeSagaWatcher)
   yield fork(getProteusGalleryItemsSagaWatcher)
   yield fork(appendGalleryItemSagaWatcher)
-  yield fork(getShopProductsSagaWatcher)
+  yield fork(getShopGroupProductsSagaWatcher)
+  yield fork(getShopProductSagaWatcher)
+  yield fork(getShopGroupsSagaWatcher)
   yield fork(getShopCustomerDetailsSagaWatcher)
   yield fork(getShopCustomerOrdersSagaWatcher)
   yield fork(getShopCountryListSagaWatcher)
@@ -59,4 +64,6 @@ export function* rootSaga(){
   yield fork(saveShopCustomerDetailsSagaWatcher)
   yield fork(createSalesTransactionSagaWatcher)
   yield fork(getUserProfileDetailsSagaWatcher)
+  yield fork(isCommunityAdminSagaWatcher)
+  yield fork(getCommunityPostsSagaWatcher) 
 }

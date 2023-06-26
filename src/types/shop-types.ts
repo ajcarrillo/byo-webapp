@@ -5,6 +5,7 @@ import { User, UserContact } from './user-types'
 export interface IShopState {
   apiError: APIError | null,
   productsLoading: boolean,
+  groupsLoading: boolean,
   customerDetailsLoading: boolean,
   countriesLoading: boolean,
   americanStatesLoading: boolean,
@@ -13,6 +14,8 @@ export interface IShopState {
   americanStates: ShopAmericanState[] | null,
   countries: ShopCountry[] | null,
   products: ShopProduct[] | null,
+  groups: ShopGroup[] | null,
+  groupsFetched: string[] | null,
   customerDetails: ShopCustomer | null,
   basketItems: ShopBasketItem[] | null,
   salesTransaction: ShopSalesTransaction | null,
@@ -39,7 +42,17 @@ export type ShopCustomer = {
   contacts: UserContact[],
 }
 
+export type ShopGroup = {
+  groupAddress: string,
+  groupName: string,
+  groupDescription: string,
+  groupImage: string, 
+}
+
 export type ShopProduct = {
+  productMetaTitle: string,
+  productMetaDescription: string,
+  productMetaKeywords: string,
   productAddress: string,
   productCode: string,
   productName: string,
@@ -47,16 +60,25 @@ export type ShopProduct = {
   productPrice: string,
   productImages: string[], 
   productDispatchTime: string,
+  productStockLevel: string,
+  productGroups: string[],
 }
 
 export type ShopBasketItem = {
   item: ShopProduct,
   amount: number,
+  trackers: ShopSaleTracker[],
 }
 
 export type ShopBasketItemLite = {
   productCode: string,
   productAmount: number,
+  trackers?: ShopSaleTracker[],
+}
+
+export type ShopSaleTracker = {
+  trackerType: 'campaign' | 'affiliate',
+  trackerCode: string,
 }
 
 export type ShopCheckoutSummary = {

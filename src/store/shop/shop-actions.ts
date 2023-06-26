@@ -17,9 +17,15 @@ import {
   SHOP_GET_CUSTOMER_ORDERS_FAILURE, 
   SHOP_GET_CUSTOMER_ORDERS_REQUEST, 
   SHOP_GET_CUSTOMER_ORDERS_SUCCESS,
-  SHOP_GET_PRODUCTS_FAILURE,
-  SHOP_GET_PRODUCTS_REQUEST,
-  SHOP_GET_PRODUCTS_SUCCESS,
+  SHOP_GET_GROUPS_FAILURE,
+  SHOP_GET_GROUPS_REQUEST,
+  SHOP_GET_GROUPS_SUCCESS,
+  SHOP_GET_GROUP_PRODUCTS_FAILURE,
+  SHOP_GET_GROUP_PRODUCTS_REQUEST,
+  SHOP_GET_GROUP_PRODUCTS_SUCCESS,
+  SHOP_GET_PRODUCT_FAILURE,
+  SHOP_GET_PRODUCT_REQUEST,
+  SHOP_GET_PRODUCT_SUCCESS,
   SHOP_SAVE_CUSTOMER_DETAILS_FAILURE,
   SHOP_SAVE_CUSTOMER_DETAILS_REQUEST,
   SHOP_SAVE_CUSTOMER_DETAILS_SUCCESS,
@@ -119,17 +125,47 @@ export const getAmericaStateListFailure = (error: APIError) => ({
   payload: error,
 })
 
-export const getShopProductsRequest = () => ({
-  type: SHOP_GET_PRODUCTS_REQUEST,
+export const getShopGroupProductsRequest = (address: string) => ({
+  type: SHOP_GET_GROUP_PRODUCTS_REQUEST,
+  address
 })
 
-export const getShopProductsSuccess = (response: APIResponse) => ({
-  type: SHOP_GET_PRODUCTS_SUCCESS,
+export const getShopGroupProductsSuccess = (response: APIResponse) => ({
+  type: SHOP_GET_GROUP_PRODUCTS_SUCCESS,
   payload: response,
 })
 
-export const getShopProductsFailure = (error: APIError) => ({
-  type: SHOP_GET_PRODUCTS_FAILURE,
+export const getShopGroupProductsFailure = (error: APIError) => ({
+  type: SHOP_GET_GROUP_PRODUCTS_FAILURE,
+  payload: error,
+})
+
+export const getShopProductRequest = (address: string) => ({
+  type: SHOP_GET_PRODUCT_REQUEST,
+  address
+})
+
+export const getShopProductSuccess = (response: APIResponse) => ({
+  type: SHOP_GET_PRODUCT_SUCCESS,
+  payload: response,
+})
+
+export const getShopProductFailure = (error: APIError) => ({
+  type: SHOP_GET_PRODUCT_FAILURE,
+  payload: error,
+})
+
+export const getShopGroupsRequest = () => ({
+  type: SHOP_GET_GROUPS_REQUEST,
+})
+
+export const getShopGroupsSuccess = (response: APIResponse) => ({
+  type: SHOP_GET_GROUPS_SUCCESS,
+  payload: response,
+})
+
+export const getShopGroupsFailure = (error: APIError) => ({
+  type: SHOP_GET_GROUPS_FAILURE,
   payload: error,
 })
 
