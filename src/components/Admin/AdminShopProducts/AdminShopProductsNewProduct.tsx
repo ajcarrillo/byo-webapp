@@ -11,6 +11,7 @@ import { getStoredAccessToken, updateStoredAccessToken } from '../../../utils/us
 import { apiCall, uploadWithObservable } from '../../../utils/api-utils'
 import AdminProductForm from './AdminProductForm'
 import AdminProductUpload from './AdminProductUpload'
+import { ProdFile } from './AdminShopProducts'
 
 const initialErrors = {
   productCode: '',
@@ -27,34 +28,12 @@ const initialErrors = {
   file: '',
 }
 
-export type FileUpload = {
-  progress: number,
-  response: any,
-}
-
-export type ProdFile = {
-  index: string,
-  name: string,
-  upload: FileUpload,
-  file: File,
-}
-
-export type UploadingState = {
-  uploadingImages: boolean,
-  uploadingImagesComplete: boolean,
-  uploadingImagesSuccess: boolean,
-  uploadingImagesFail: boolean,
-  uploadingFile: boolean,
-  uploadingFileComplete: boolean,
-  uploadingFileSuccess: boolean,
-  uploadingFileFail: boolean,
-  savingProduct: boolean,
-  savingProductComplete: boolean,
-  savingProductError: string,
-}
-
 interface IAdminShopProductsNewProductProps {
-  formData: ShopProduct | null,
+  metaDescriptionLimit: number,
+  metaKeywordsLimit: number,
+  productDescriptionLimit: number,
+  maxImageSizeMB: number,
+  maxFileSizeMB: number,
 }
 
 const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> = (props: IAdminShopProductsNewProductProps) => {
@@ -63,7 +42,13 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
     shop
   } = useSelector<IStoreState, IStoreState>((store) => store)
   
-  const { formData } = props
+  const { 
+    metaDescriptionLimit,
+    metaKeywordsLimit,
+    productDescriptionLimit,
+    maxImageSizeMB,
+    maxFileSizeMB
+  } = props
 
   const [newProductStage, setNewProductStage] = useState('prepare')
 
@@ -101,12 +86,6 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
   const [savingProduct, setSavingProduct] = useState(false)
   const [savingProductComplete, setSavingProductComplete] = useState(false)
   const [savingProductError, setSavingProductError] = useState('')
-
-  const META_DESCRIPTION_LIMIT = 256
-  const META_KEYWORDS_LIMIT = 256
-  const PRODUCT_DESCRIPTION_LIMIT = 1000
-  const MAX_IMAGE_SIZE_MB = 2
-  const MAX_FILE_SIZE_MB = 100
 
   const resetAll = () => {
     setSelectedProductGroups([])
@@ -149,11 +128,11 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
   const handleInputChange = (param: string, value: string) => {
     let val = ''
     if(param === 'productMetaDescription')
-      val = value.slice(0, META_DESCRIPTION_LIMIT)
+      val = value.slice(0, metaDescriptionLimit)
     else if(param === 'productMetaKeywords')
-      val = value.slice(0, META_KEYWORDS_LIMIT)
+      val = value.slice(0, metaKeywordsLimit)
     else if(param === 'productDescription')
-      val = value.slice(0, PRODUCT_DESCRIPTION_LIMIT)
+      val = value.slice(0, productDescriptionLimit)
     else
       val = value
 
@@ -341,8 +320,8 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
       e.image = 'Please select at least one product image.'
     } else {
       productImageList.every(i => {
-        if(i.file.size > 1024 * 1024 * MAX_IMAGE_SIZE_MB){
-          e.image = `Image ${i.name} is too large - max size ${MAX_IMAGE_SIZE_MB}MB`
+        if(i.file.size > 1024 * 1024 * maxImageSizeMB){
+          e.image = `Image ${i.name} is too large - max size ${maxImageSizeMB}MB`
           return false
         }
         return true
@@ -350,8 +329,8 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
     }
 
     if(productFile){
-      if(productFile.file.size > 1024 * 1024 * MAX_FILE_SIZE_MB){
-        e.file = `File ${productFile.name} is too large - max size ${MAX_FILE_SIZE_MB}MB`
+      if(productFile.file.size > 1024 * 1024 * maxFileSizeMB){
+        e.file = `File ${productFile.name} is too large - max size ${maxFileSizeMB}MB`
       }
     }
 
@@ -362,7 +341,7 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
       setErrors(e)
     }
 
-  }, [productFile, productImageList, state.productCode, state.productDescription, state.productDispatchTime, state.productGroups.length, state.productMetaDescription, state.productMetaKeywords, state.productMetaTitle, state.productName, state.productPrice, state.productStockLevel])
+  }, [maxFileSizeMB, maxImageSizeMB, productFile, productImageList, state.productCode, state.productDescription, state.productDispatchTime, state.productGroups.length, state.productMetaDescription, state.productMetaKeywords, state.productMetaTitle, state.productName, state.productPrice, state.productStockLevel])
 
   /**
    * Uploads product images
@@ -595,18 +574,6 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
   }
 
   /**
-   * Pre-populates the form if data is available
-   */
-  useEffect(() => {
-    if(formData){
-      setState((prev) => ({
-        ...prev,
-        ...formData
-      }))
-    }
-  }, [formData])
-
-  /**
    * Creates the groups select items
    */
   const createGroupsList = useCallback(() => {
@@ -640,25 +607,32 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
     <>
       {newProductStage === 'prepare' ? (
         <AdminProductForm 
+          isNewProduct={true}
           errors={errors}
           state={state}
-          metaDescriptionLimit={META_DESCRIPTION_LIMIT}
-          metaKeywordsLimit={META_KEYWORDS_LIMIT}
-          productDescriptionLimit={PRODUCT_DESCRIPTION_LIMIT}
+          metaDescriptionLimit={metaDescriptionLimit}
+          metaKeywordsLimit={metaKeywordsLimit}
+          productDescriptionLimit={productDescriptionLimit}
           productGroupsList={productGroupsList}
           selectedProductGroups={selectedProductGroups}
           productImageList={productImageList}
+          existingProductImageList={[]}
           productFile={productFile}
+          existingProductFile={null}
           handleInputChange={handleInputChange}
           handleSelectProductGroups={handleSelectProductGroups}
           handleSelectProductImage={handleSelectProductImage}
           handleClickRemoveImage={handleClickRemoveImage}
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          handleClickRemoveExistingImage={(address: string) => {}}
           setProductFile={setProductFile}
+          setExistingProductFile={null}
           handleSelectProductFile={handleSelectProductFile}
           runChecks={runChecks}
         />
       ) : (
         <AdminProductUpload 
+          isNewProduct={true}
           productImageList={productImageList} 
           productFile={productFile} 
           uploadState={{
@@ -677,6 +651,7 @@ const AdminShopProductsNewProduct: React.FC<IAdminShopProductsNewProductProps> =
           uploadImages={uploadImages} 
           uploadFile={uploadFile}
           saveProduct={saveProduct}
+          returnToProductForm={setNewProductStage}
           resetAll={resetAll}
         />
       )}
