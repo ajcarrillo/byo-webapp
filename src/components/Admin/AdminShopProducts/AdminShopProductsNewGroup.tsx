@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import ImageUploader from '../../ImageUploader'
 import { isEmpty, isPunctuatedText } from '../../../utils/validation-utils'
 import { getStoredAccessToken, updateStoredAccessToken } from '../../../utils/user-utils'
 import { uploadWithProgress } from '../../../utils/api-utils'

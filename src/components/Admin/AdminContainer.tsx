@@ -6,6 +6,7 @@ import {
   AdminShopProducts,
   AdminOrders,
   AdminCampaigns,
+  AdminDocuments,
 } from '.'
 import { isAdminRequest } from '../../store/community/community-actions'
 import { IStoreState } from '../../types/store-types'
@@ -21,7 +22,7 @@ const AdminContainer = (): ReactElement => {
   const [adminWorkspace, setAdminWorkspace] = useState('products')
 
   /**
-   * Switches gallery tabs
+   * Switches tabs
    * @param tab 
    */
   const handleClickTab = (tab: string) => {
@@ -81,6 +82,13 @@ const AdminContainer = (): ReactElement => {
             Affiliates
           </div>
           <div 
+            className={`Admin-tab${adminWorkspace === 'documents' ? '__selected' : ''}`} 
+            style={{marginRight: '1px'}} 
+            onClick={() => handleClickTab('documents')}
+          >
+            Documents
+          </div>
+          <div 
             className={`Admin-tab${adminWorkspace === 'news' ? '__selected' : ''}`} 
             style={{marginRight: '1px'}} 
             onClick={() => handleClickTab('news')}
@@ -111,6 +119,10 @@ const AdminContainer = (): ReactElement => {
 
         {adminWorkspace === 'campaigns' && (
           <AdminCampaigns />
+        )}
+
+        {adminWorkspace === 'documents' && (
+          <AdminDocuments />
         )}
       </div>
     </>
