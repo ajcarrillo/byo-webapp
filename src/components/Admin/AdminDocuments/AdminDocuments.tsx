@@ -28,7 +28,7 @@ interface IAdminDocumentsProps {}
 const AdminDocuments: React.FC<IAdminDocumentsProps> = (props: IAdminDocumentsProps) => {
   const [workspace, setWorkspace] = useState('newDocument')
 
-  const DESCRIPTION_LIMIT = 128
+  const DESCRIPTION_LIMIT = 140
   const FILE_MAX_SIZE_MB = 4
 
   const documentCategoryList: readonly SelectType[] = [
