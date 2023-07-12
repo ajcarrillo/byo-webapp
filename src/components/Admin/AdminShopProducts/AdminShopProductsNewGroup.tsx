@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-import ImageUploader from '../../ImageUploader'
 import { isEmpty, isPunctuatedText } from '../../../utils/validation-utils'
 import { getStoredAccessToken, updateStoredAccessToken } from '../../../utils/user-utils'
 import { uploadWithProgress } from '../../../utils/api-utils'
+import AdminGroupForm from './AdminGroupForm'
 
 const initialErrors = {
   name: '',
@@ -24,7 +24,6 @@ const AdminShopProductsNewGroup: React.FC<IAdminShopProductsNewGroupProps> = (pr
   const [coverImage, setCoverImage] = useState('')
   const [coverImageSize, setCoverImageSize] = useState('')
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null)
-  const coverImageInput = React.useRef<HTMLInputElement>(null)
 
   const DESCRIPTION_LIMIT = 256
   const IMAGE_MAX_SIZE = 1000
@@ -93,7 +92,7 @@ const AdminShopProductsNewGroup: React.FC<IAdminShopProductsNewGroupProps> = (pr
     postData.append('name', name)
     postData.append('description', description)
     const response = await uploadWithProgress(
-      `${process.env.REACT_APP_API_BASE_URL}/admin/shop/new-group`,
+      `${process.env.REACT_APP_API_BASE_URL}/admin/shop/group/new`,
       token,
       postData
     )
@@ -124,74 +123,23 @@ const AdminShopProductsNewGroup: React.FC<IAdminShopProductsNewGroupProps> = (pr
   }
 
   return (
-    <div style={{display: 'flex'}}>
-
-      <div style={{width: '50%', paddingRight: '2rem'}}>
-        <div className="PanelLabel" style={{marginBottom: '.4rem'}}>Ensure your group image is square, and in PNG or JPG format no larger than 1000px by 1000px in size. Max file size 2MB.</div>
-        <div style={{borderRadius: '.4rem', padding: '.5rem'}}>
-          <div className='ImageUpload-container-square' style={{marginTop: '.3rem', backgroundImage: `url(${coverImage})`, backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%'}} >
-            <span className="ImageUpload-icon fa-solid fa-circle-up" onClick={() => coverImageInput?.current?.click()}></span>
-          </div>
-        </div>
-        <ImageUploader ref={coverImageInput} type='cover' update={updateImage} upload={uploadImage}/> 
-        {errors.image && (
-          <div className="Formfield-error-inline" style={{marginTop: '.2rem', marginBottom: '.2rem'}}>{errors.image}</div>
-        )} 
-      </div>
-
-      <div style={{width: '50%'}}>
-        <div style={{marginBottom: '1rem'}}>
-          <input
-            className="Textfield-dark" 
-            type='text' 
-            onChange={(e) => handleNameChange(e.target.value)} 
-            value={name}
-            placeholder="Group name" 
-            style={{ width: '100%' }}
-            data-lpignore="true"
-            autoComplete='off'
-          />
-          {errors.name && (
-            <div className="Formfield-error-inline">{errors.name}</div>
-          )}
-        </div>
-
-        <div style={{marginBottom: '1rem'}}>
-          <textarea
-            className={'Textfield-dark'}
-            onChange={(e) => handleDescriptionChange(e.target.value)} 
-            placeholder="Group description" 
-            style={{ width: '100%' }} 
-            rows={3} 
-            value={description}
-          ></textarea>
-          {errors.description && (
-            <div className="Formfield-error-inline" style={{marginTop: '.2rem', marginBottom: '.2rem'}}>{errors.description}</div>
-          )}            
-          <div style={{textAlign: 'right', fontSize: '.89rem', color: 'rgb(140,140,140)', marginBottom: '1rem'}}>{DESCRIPTION_LIMIT - description.length || 0}</div>
-        </div>
-
-        <div style={{marginBottom: '1rem'}}>
-          <button 
-            disabled={apiLoading}
-            className={apiLoading ? 'Button-standard-disabled' : 'Button-standard'} 
-            onClick={() => handleClickSave()}
-          >
-            Save Group
-          </button>
-          {apiError && (
-            <div className="Formfield-error-inline" style={{marginTop: '.6rem', marginBottom: '.2rem'}}>{apiError}</div>
-          )} 
-          <div 
-            className={`Accessibility-save-panel ${saveComplete ? 'AlertShow' : 'AlertHide'}`} 
-            onTransitionEnd={() => setSaveComplete(false)}
-          >
-            New Group Created
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <AdminGroupForm 
+      isNewGroup={true}
+      errors={errors}
+      apiLoading={apiLoading}
+      apiError={apiError}
+      saveComplete={saveComplete}
+      coverImage={coverImage}
+      name={name}
+      description={description}
+      descriptionLimit={DESCRIPTION_LIMIT}      
+      updateImage={updateImage}
+      uploadImage={uploadImage}
+      handleNameChange={handleNameChange}
+      handleDescriptionChange={handleDescriptionChange}
+      handleClickSave={handleClickSave}
+      setSaveComplete={setSaveComplete}
+    />
   )
 }
 

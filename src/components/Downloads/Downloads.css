@@ -1,0 +1,47 @@
+.Downloads-container {
+  width: 80%; 
+  margin: 2rem auto;
+}
+
+.Downloads-tabs-container {
+  width: 100%;
+  display: flex;
+  margin-top: 1rem;;
+}
+
+.Downloads-tab {
+  border-radius: 20px 20px 0 0;
+  background-color: var(--byowave-tab-bg-colour);
+  color: var(--byowave-tab-text-colour);
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer
+}
+
+.Downloads-tab:hover {
+  color: var(--byowave-tab-selected-text-colour);
+}
+
+.Downloads-tab__selected {
+  border-radius: 20px 20px 0 0;
+  background-color: var(--byowave-tab-selected-bg-colour);
+  color: var(--byowave-tab-selected-text-colour);
+  padding: 1rem;
+  text-align: center;
+}
+
+.Downloads-panel-container {
+  background-color: var(--byowave-tab-selected-bg-colour);
+  padding: 2rem;
+}
+
+.Downloads-documents-container {
+  padding: 1rem;
+  border: 1px solid rgb(102 114 143);
+  background-color: rgb(62 63 86);
+  border-radius: 1rem;
+}
+
+.Downloads-document-item {
+  display: flex;
+}

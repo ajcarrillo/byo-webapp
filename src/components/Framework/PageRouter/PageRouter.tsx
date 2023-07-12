@@ -8,23 +8,24 @@ import Header from '../Header'
 //import Footer from '../Footer'
 
 // Page Containers
-import AdminPage from '../Pages/Admin'
-import NotFoundPage from '../Pages/NotFound'
-import HomePage from '../Pages/Home'
-import SignInPage from '../Pages/SignIn'
-import SignUpPage from '../Pages/SignUp'
-import SignOutPage from '../Pages/SignOut'
-import PasswordResetPage from '../Pages/PasswordReset'
-import ProteusAppPage from '../Pages/ProteusApp'
 import AccessibilityPage from '../Pages/Accessibility'
-import ShopPage from '../Pages/Shop'
-import ShopGroupPage from '../Pages/ShopGroup'
-import ProductPage from '../Pages/Product'
-import CheckoutPage from '../Pages/Checkout'
+import AdminPage from '../Pages/Admin'
 import BasketPage from '../Pages/Basket'
-import OrdersPage from '../Pages/Orders'
-import UserProfilePage from '../Pages/UserProfile'
+import CheckoutPage from '../Pages/Checkout'
 import CommunityPage from '../Pages/Community'
+import DownloadsPage from '../Pages/Downloads'
+import HomePage from '../Pages/Home'
+import NotFoundPage from '../Pages/NotFound'
+import OrdersPage from '../Pages/Orders'
+import PasswordResetPage from '../Pages/PasswordReset'
+import ProductPage from '../Pages/Product'
+import ProteusAppPage from '../Pages/ProteusApp'
+import ShopGroupPage from '../Pages/ShopGroup'
+import ShopPage from '../Pages/Shop'
+import SignInPage from '../Pages/SignIn'
+import SignOutPage from '../Pages/SignOut'
+import SignUpPage from '../Pages/SignUp'
+import UserProfilePage from '../Pages/UserProfile'
 
 import { IStoreState } from '../../../types/store-types'
 import { ShopBasketItem } from '../../../types/shop-types'
@@ -116,6 +117,7 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
           <Route path="/shop" render={(p) => <ShopPage {...p} />} />
           <Route path="/basket" render={(p) => <BasketPage {...p} tokenIsValid={tokenIsValid} />} />
           <Route path="/checkout" render={(p) => <CheckoutPage {...p} tokenIsValid={tokenIsValid} />} />
+          <Route path="/downloads" render={(p) => <DownloadsPage {...p} tokenIsValid={tokenIsValid} />} />
           <Route path="/product/:address" render={(p) => <ProductPage {...p} />} />
           <Route path="/shop-group/:address" render={(p) => <ShopGroupPage {...p} />} />
           <Route path="/accessibility" render={(p) => <AccessibilityPage {...p} />} />

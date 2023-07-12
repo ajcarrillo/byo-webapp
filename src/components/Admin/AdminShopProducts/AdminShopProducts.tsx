@@ -1,30 +1,58 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
-import { IStoreState } from '../../../types/store-types'
 import AdminShopProductsNewGroup from './AdminShopProductsNewGroup'
 import AdminShopProductsEditGroup from './AdminShopProductsEditGroup'
 import AdminShopProductsNewProduct from './AdminShopProductsNewProduct'
 import AdminShopProductsEditProduct from './AdminShopProductsEditProduct'
 import './AdminShopProducts.css'
 
+export type ProductFileUpload = {
+  progress: number,
+  response: any,
+}
+
+export type ProdFile = {
+  index: string,
+  name: string,
+  upload: ProductFileUpload,
+  file: File,
+}
+
+export type ExistingProdFile = {
+  url: string,
+  name: string,
+  address: string,
+}
+
+export type ProductUploadingState = {
+  uploadingImages: boolean,
+  uploadingImagesComplete: boolean,
+  uploadingImagesSuccess: boolean,
+  uploadingImagesFail: boolean,
+  uploadingFile: boolean,
+  uploadingFileComplete: boolean,
+  uploadingFileSuccess: boolean,
+  uploadingFileFail: boolean,
+  savingProduct: boolean,
+  savingProductComplete: boolean,
+  savingProductError: string,
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAdminShopProductsProps {}
 
 const AdminShopProducts: React.FC<IAdminShopProductsProps> = (props: IAdminShopProductsProps) => {
-  const dispatch = useDispatch()
-  const { 
-    shop
-  } = useSelector<IStoreState, IStoreState>((store) => store)
 
   const [workspace, setWorkspace] = useState('newGroup')
+
+  const META_DESCRIPTION_LIMIT = 256
+  const META_KEYWORDS_LIMIT = 256
+  const PRODUCT_DESCRIPTION_LIMIT = 1000
+  const MAX_IMAGE_SIZE_MB = 2
+  const MAX_FILE_SIZE_MB = 100
   
   return (
     <>
-      {/* {community.postsLoading && (
-        <Spinner />
-      )} */}
-
       <div className='Admin-shop-products-container'>
 
         <div className='Admin-menu-container'>
@@ -71,11 +99,23 @@ const AdminShopProducts: React.FC<IAdminShopProductsProps> = (props: IAdminShopP
           )}
 
           {workspace === 'newProduct' && (
-            <AdminShopProductsNewProduct formData={null}/>
+            <AdminShopProductsNewProduct 
+              metaDescriptionLimit={META_DESCRIPTION_LIMIT}
+              metaKeywordsLimit={META_KEYWORDS_LIMIT}
+              productDescriptionLimit={PRODUCT_DESCRIPTION_LIMIT}
+              maxImageSizeMB={MAX_IMAGE_SIZE_MB}
+              maxFileSizeMB={MAX_FILE_SIZE_MB}
+            />
           )}
 
           {workspace === 'editProduct' && (
-            <AdminShopProductsEditProduct />
+            <AdminShopProductsEditProduct 
+              metaDescriptionLimit={META_DESCRIPTION_LIMIT}
+              metaKeywordsLimit={META_KEYWORDS_LIMIT}
+              productDescriptionLimit={PRODUCT_DESCRIPTION_LIMIT}
+              maxImageSizeMB={MAX_IMAGE_SIZE_MB}
+              maxFileSizeMB={MAX_FILE_SIZE_MB}
+            />
           )}
         </div>
 

@@ -166,27 +166,34 @@ const AdminCampaigns: React.FC<IAdminCampaignsProps> = (props: IAdminCampaignsPr
       <div className='AdminCampaigns-container'>
         <div className='AdminCampaigns-header-container'>
 
-          <div className="PanelLabel" style={{border: '1px solid rgb(67,69,81)'}}>
-            <div style={{marginBottom: '.6rem'}}>Search by date range</div>
-            <DatePicker 
-              dateFormat="dd/MM/yyyy" 
-              selectsRange={true}
-              startDate={startDate}
-              endDate={endDate}
-              onChange={(date) => setDateRange(date)} 
-              isClearable={true}
-              showIcon={true} 
-              placeholderText="Select a date range"
-            />
+          <div className="PanelLabel" style={{border: '1px solid rgb(67,69,81)', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+            <div>
+              <div style={{marginBottom: '.6rem'}}>Search by date range</div>
+              <DatePicker 
+                dateFormat="dd/MM/yyyy" 
+                selectsRange={true}
+                startDate={startDate}
+                endDate={endDate}
+                onChange={(date) => setDateRange(date)} 
+                isClearable={true}
+                showIcon={true} 
+                placeholderText="Select a date range"
+              />
 
-            <button
-              className={!startDate || !endDate ? 'Button-standard-disabled' : 'Button-standard'} 
-              style={{marginLeft:'.6rem'}} 
-              onClick={() => handleClickSearch()}
-              disabled={!startDate || !endDate}
-            >
-              Generate Report
-            </button>
+              <button
+                className={!startDate || !endDate ? 'Button-standard-disabled' : 'Button-standard'} 
+                style={{marginLeft:'.6rem'}} 
+                onClick={() => handleClickSearch()}
+                disabled={!startDate || !endDate}
+              >
+                Generate Report
+              </button>              
+            </div>
+
+            <div style={{paddingLeft: '2rem'}}>
+              To create campaign data, add the following parameter to a product&apos;s url: <br />
+              {'www.byowave.com/product/<product_address>'}<strong>?cp={'<campaign_name>'}</strong>
+            </div>
           </div>
 
           <div style={{padding: '1rem', display: 'flex', justifyContent: 'center'}}>
