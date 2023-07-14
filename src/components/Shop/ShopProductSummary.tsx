@@ -21,7 +21,7 @@ const ShopProductSummary: React.FC<IShopProductSummaryProps> = (props: IShopProd
         <div className='ShopProductSummary-text-container'>
           <h3>{name}</h3>
           <p>{parse(desc)}</p>
-          <div className='ShopProductSummary-text-price'>{parse(`&euro;${price}`)}</div>
+          <div className='ShopProductSummary-text-price'>{price === '0.00' ? 'FREE' : parse(`&euro;${price}`)}</div>
         </div>
       </div>
     </Link>

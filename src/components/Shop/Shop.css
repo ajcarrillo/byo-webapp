@@ -137,6 +137,7 @@
 .ShopProduct-image-carousel {
  border: 3px solid var(--byowave-custom-control-bg-colour);
  border-radius: 10px;
+ background-color: var(--byowave-custom-control-bg-colour);
 }
 
 /*
