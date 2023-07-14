@@ -81,7 +81,7 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
       const sT: ShopSaleTracker[] = []
       if(campaignTracker) sT.push({trackerType:'campaign', trackerCode: campaignTracker})
       if(affiliateTracker) sT.push({trackerType:'affiliate', trackerCode: affiliateTracker})
-      console.log(sT)
+
       setSalesTrackers(sT)
     }
   }, [salesTrackers.length])
