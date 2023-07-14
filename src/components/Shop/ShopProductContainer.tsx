@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet-async'
 import { IStoreState } from '../../types/store-types'
 import { ShopProduct, ShopSaleTracker } from '../../types/shop-types'
 import { getShopProductRequest } from '../../store/shop/shop-actions'
-import { BasketButton } from '../CustomControls'
+import { BasketButton, DownloadButton } from '../CustomControls'
 import ImageSlider from '../ImageSlider'
 import Spinner from '../Spinner'
 import './Shop.css'
@@ -81,7 +81,7 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
       const sT: ShopSaleTracker[] = []
       if(campaignTracker) sT.push({trackerType:'campaign', trackerCode: campaignTracker})
       if(affiliateTracker) sT.push({trackerType:'affiliate', trackerCode: affiliateTracker})
-      console.log(sT)
+
       setSalesTrackers(sT)
     }
   }, [salesTrackers.length])
@@ -142,17 +142,25 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
             />
             <div className='ShopProduct-price-container'>
               <div>
-                <h3>{parse(`&euro;${selectedProduct?.productPrice}`)}</h3>
+                <h3>{selectedProduct?.productPrice === '0.00' ? 'FREE' : parse(`&euro;${selectedProduct?.productPrice}`)}</h3>
                 <p>{selectedProduct?.productStockLevel !== '0' ? 'In Stock' : 'Out of Stock'}</p>
                 <p style={{lineHeight: '.8rem'}}>{selectedProduct?.productDispatchTime}</p>
               </div>
               <div>
-                {selectedProduct?.productStockLevel !== '0' && (
-                  <BasketButton 
-                    size='standard'
-                    basketItemCount={selectedProductBasketAmount} 
-                    product={selectedProduct} 
-                    trackers={salesTrackers}
+                {selectedProduct?.productPrice !== '0.00' ? (
+                  <>
+                    {selectedProduct?.productStockLevel !== '0' && (
+                      <BasketButton 
+                        size='standard'
+                        basketItemCount={selectedProductBasketAmount} 
+                        product={selectedProduct} 
+                        trackers={salesTrackers}
+                      />                    
+                    )}                  
+                  </>
+                ) : (
+                  <DownloadButton 
+                    productAddress={selectedProduct?.productAddress} 
                   />
                 )}
               </div> 
