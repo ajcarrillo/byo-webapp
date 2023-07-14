@@ -72,7 +72,7 @@ export const ImageSlider: React.FC<IImageSliderProps> = (props: IImageSliderProp
         renderBottomCenterControls={(props) => renderDotControls(props)}
       >
         {images.map((image: string, index: number) => 
-          <img key={index} src={image} style={{maxWidth: '100%'}} />
+          <img key={index} src={image} style={{maxWidth: '100%', height: '-webkit-fill-available'}} />
         )}
       </Carousel>
     </div>

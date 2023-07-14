@@ -26,7 +26,7 @@ const transformApplicationSettingsFromDB = (input: {[key:string]: any}): Proteus
  * @returns 
  */
 const transformProteusWebGLFileVersion = (url: string, version: string) => {
-  return process.env.REACT_APP_CDN_PROTEUS_RESOURCES + url.replace('####', version)
+  return process.env.REACT_APP_CDN_PROTEUS_RESOURCES + url.replace('BUILD_VERSION', version)
 }
 
 export {

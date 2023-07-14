@@ -32,16 +32,49 @@
 
 .Downloads-panel-container {
   background-color: var(--byowave-tab-selected-bg-colour);
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .Downloads-documents-container {
-  padding: 1rem;
-  border: 1px solid rgb(102 114 143);
-  background-color: rgb(62 63 86);
-  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.Downloads-documents-category-container {
+  padding-bottom: 1.4rem; 
+  margin-bottom: 2rem;
+  border-bottom: 1px dashed var(--byowave-cta-dark-colour)
 }
 
 .Downloads-document-item {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .6rem;
+  margin-top: 1rem
+}
+
+.Downloads-document-item button.Button-icon-small i {
+  font-size: 2rem
+}
+
+.Downloads-document-item-title {
+  color: var(--byowave-heading-text-colour);
+  font-weight: bold;
+}
+
+.Downloads-document-item-spinner {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-animation:spin 1s linear infinite;
+  -moz-animation:spin 1s linear infinite;
+  animation:spin 1s linear infinite;
+}
+
+.Downloads-document-item-spinner i {
+  width: auto;
+  color: var(--byowave-cta-colour);
+  font-size: 2rem;
 }
