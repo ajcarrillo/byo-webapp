@@ -95,7 +95,6 @@ const DownloadsDocuments: React.FC<IDownloadsDocumentsProps> = (props: IDownload
     (dependencies) => dependencies[0] === true
   )
 
-  console.log(documentList)
   return (
     <>
       {gettingDocuments && (
