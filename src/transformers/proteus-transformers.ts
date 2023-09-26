@@ -1,4 +1,4 @@
-import { ProteusSettings } from '../types/proteus-types'
+import { ProteusUserSettings } from '../types/proteus-types'
 
 /**
  * Transforms an array of modules from the database
@@ -6,8 +6,8 @@ import { ProteusSettings } from '../types/proteus-types'
  * @returns An object of type ProteusSettings
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const transformApplicationSettingsFromDB = (input: {[key:string]: any}): ProteusSettings => {
-  const output: ProteusSettings = {
+const transformApplicationSettingsFromDB = (input: {[key:string]: any}): ProteusUserSettings => {
+  const output: ProteusUserSettings = {
     firmwareVersion: input.firmwareVersion,
     displayHints: input.showHints === 1 ? true : false,
     antialiasing: input.antiAliasing === 1 ? true : false,

@@ -14,8 +14,8 @@ import {
 import { 
   getProteusModulesSagaWatcher,
   connectControllerSagaWatcher,
+  connectSerialPortSagaWatcher,
   getProteusSettingsSagaWatcher,
-  getControllerConfigSagaWatcher,
   setUnityReadySagaWatcher,
   setGamepadReadySagaWatcher,
   setMappingModeSagaWatcher,
@@ -47,8 +47,8 @@ export function* rootSaga(){
   yield fork(changePasswordSagaWatcher)
   yield fork(getProteusModulesSagaWatcher)
   yield fork(connectControllerSagaWatcher)
+  yield fork(connectSerialPortSagaWatcher)
   yield fork(getProteusSettingsSagaWatcher)
-  yield fork(getControllerConfigSagaWatcher)
   yield fork(setUnityReadySagaWatcher)
   yield fork(setGamepadReadySagaWatcher)
   yield fork(setMappingModeSagaWatcher)

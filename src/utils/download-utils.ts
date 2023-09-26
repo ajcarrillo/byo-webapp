@@ -51,8 +51,26 @@ const downloadDocumentFile = async (fileAddress: string): Promise<any> => {
   return response
 }
 
+/**
+ * Downloads a firmware file
+ * @param fileAddress The file address to download
+ * @returns {Promise<any>} The API response
+ */
+const downloadFirmwareFile = async (fileAddress: string): Promise<any> => {
+  const token = getStoredAccessToken().accesToken
+  const response = await apiDownload(
+    `${process.env.REACT_APP_API_BASE_URL}/media/download/firmware/file/${fileAddress}`,
+    'GET',
+    token,
+    undefined
+  )
+
+  return response
+}
+
 export {
   downloadFreeProductFile,
   downloadProductFile,
-  downloadDocumentFile
+  downloadDocumentFile,
+  downloadFirmwareFile
 }

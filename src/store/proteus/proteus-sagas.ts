@@ -1,11 +1,10 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 
 import { APIResponse } from '../../types/api-types'
-import { ControllerConfiguration } from '../../types/controller-types'
 import { ConnectedController } from '../../types/proteus-types'
 import { apiCall } from '../../utils/api-utils'
 import { generateApiError, generateControllerConnectionError } from '../../utils/error-utils'
-import { connectHidDevice, requestHardwareCofiguration } from '../../utils/proteus-utils'
+import { connectHidDevice, connectSerialPort } from '../../utils/proteus-utils'
 import { 
   getStoredAccessToken, 
   updateStoredAccessToken
@@ -17,14 +16,14 @@ import {
   PROTEUS_MODULES_API_ERROR_MESSAGES,
   PROTEUS_GET_APP_SETTINGS_REQUEST,
   PROTEUS_APP_SETTINGS_API_ERROR_MESSAGES,
-  PROTEUS_GET_CONTROLLER_CONFIG_REQUEST,
-  PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES,
   PROTEUS_SET_UNITY_READY_REQUEST,
   PROTEUS_SET_GAMEPAD_READY_REQUEST,
   PROTEUS_SET_MAPPING_MODE_REQUEST,
   PROTEUS_GALLERY_ITEMS_API_ERROR_MESSAGES,
   PROTEUS_GET_GALLERY_ITEMS_REQUEST,
-  PROTEUS_APPEND_GALLERY_ITEM_REQUEST
+  PROTEUS_APPEND_GALLERY_ITEM_REQUEST,
+  PROTEUS_CONNECT_SERIAL_ERROR_MESSAGES,
+  PROTEUS_CONNECT_SERIAL_REQUEST
 } from './proteus-constants'
 import { 
   getModulesFailure,
@@ -33,14 +32,14 @@ import {
   connectControllerSuccess,
   getApplicationSettingsFailure,
   getApplicationSettingsSuccess,
-  getControllerConfigFailure,
-  getControllerConfigSuccess,
   setUnityReadySuccess,
   setGamepadReadySuccess,
   setMappingModeSuccess,
   getGalleryItemsSuccess,
   getGalleryItemsFailure,
-  appendGalleryItemSuccess
+  appendGalleryItemSuccess,
+  connectSerialSuccess,
+  connectSerialFailure
 } from './proteus-actions'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,7 +93,7 @@ export function* getProteusModulesSaga(action: any){
   try {
     const response: APIResponse = yield call(
       apiCall, 
-      `${process.env.REACT_APP_API_BASE_URL}/controllers/module-list`,
+      `${process.env.REACT_APP_API_BASE_URL}/proteus/module-list`,
       'GET',
       token,
       'json'
@@ -160,24 +159,23 @@ export function* connectControllerSaga(action: any){
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function* getControllerConfigSaga(action: any){
+export function* connectSerialPortSaga(action: any){
   try {
-    const response: ControllerConfiguration = yield call(
-      requestHardwareCofiguration, 
-      action.deviceInterface,
-      action.availableModules
+    const response: ConnectedController = yield call(
+      connectSerialPort,
+      action.controller
     )
 
-    if(response){
-      yield put(getControllerConfigSuccess(response))
+    if(response.serialConnected){
+      yield put(connectSerialSuccess(response))
     }
     else {
-      yield put(getControllerConfigFailure(generateControllerConnectionError('UNKOWN_ERROR', PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES)))
+      yield put(connectSerialFailure(generateControllerConnectionError('CONNECT_CANCELLED', PROTEUS_CONNECT_SERIAL_ERROR_MESSAGES)))
     }
   } 
   catch(e) {
     const message = e instanceof Error ? e.message : 'UNKNOWN_ERROR'
-    yield put(getControllerConfigFailure(generateControllerConnectionError(message, PROTEUS_GET_CONTROLLER_CONFIG_ERROR_MESSAGES)))
+    yield put(connectSerialFailure(generateControllerConnectionError(message, PROTEUS_CONNECT_SERIAL_ERROR_MESSAGES)))
   }
 }
 
@@ -189,12 +187,12 @@ export function* connectControllerSagaWatcher(){
   yield takeLatest(PROTEUS_CONNECT_CONTROLLER_REQUEST, connectControllerSaga)
 }
 
-export function* getProteusSettingsSagaWatcher(){
-  yield takeLatest(PROTEUS_GET_APP_SETTINGS_REQUEST, getProteusSettingsSaga)
+export function* connectSerialPortSagaWatcher(){
+  yield takeLatest(PROTEUS_CONNECT_SERIAL_REQUEST, connectSerialPortSaga)
 }
 
-export function* getControllerConfigSagaWatcher(){
-  yield takeLatest(PROTEUS_GET_CONTROLLER_CONFIG_REQUEST, getControllerConfigSaga)
+export function* getProteusSettingsSagaWatcher(){
+  yield takeLatest(PROTEUS_GET_APP_SETTINGS_REQUEST, getProteusSettingsSaga)
 }
 
 export function* setUnityReadySagaWatcher(){

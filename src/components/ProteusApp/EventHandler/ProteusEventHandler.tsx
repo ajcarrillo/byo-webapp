@@ -2,11 +2,10 @@ import React, { useCallback, useEffect } from 'react'
 
 import { ReactUnityEventParameter } from '../../../types/unity-types'
 import { ConnectedController } from '../../../types/proteus-types'
-import { resolveInputReport } from '../../../utils/hid-utils'
 
 interface IProteusGalleryProps {
   broadcastUnityEvent: (evt: string, jsonData: string) => void,
-  broadcastControllerEvent: (eventType: string, payload: any) => void,
+  broadcastControllerEvent: (eventType: string, reportId: number, payload: any) => void,
   connectedController: ConnectedController | null,
   unityAddEventListener: (eventName: string, callback: (...parameters: ReactUnityEventParameter[]) => void) => void,
   unityRemoveEventListener: (eventName: string, callback: (...parameters: ReactUnityEventParameter[]) => void) => void,
@@ -34,7 +33,12 @@ const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryPr
    * @param payload 
    */
   const handleHIDControllerDisconnect = (evt: HIDConnectionEvent) => {
-    console.log(evt)
+    const { device } = evt
+
+    if(device.productId !== +(process.env.REACT_APP_PROTEUS_CONTROLLER_PRODUCT_ID || '')) 
+      return
+
+    broadcastControllerEvent('hidDisconnect', 0, null)
   }
 
   /**
@@ -48,7 +52,7 @@ const ProteusGallery: React.FC<IProteusGalleryProps> = (props: IProteusGalleryPr
     if(device.productId !== +(process.env.REACT_APP_PROTEUS_CONTROLLER_PRODUCT_ID || '') && reportId !== 0) 
       return
 
-    broadcastControllerEvent('inputReport', resolveInputReport(data))
+    broadcastControllerEvent('inputReport', reportId, data)
   }, [broadcastControllerEvent])
 
   /**

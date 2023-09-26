@@ -10,12 +10,12 @@ import {
 } from '../types/controller-types'
 
 /**
- * Returns a ModuleType from a hex value
- * @param hex A hex number
+ * Returns a ModuleType from a number
+ * @param index A number
  * @returns A ModuleType
  */
-const getModuleTypeFromHex = (hex: number): ModuleType => 
-  ModuleType[hex] as unknown as ModuleType
+const getModuleTypeFromDecimal = (index: number): ModuleType => 
+  ModuleType[index] as unknown as ModuleType
 
 /**
  * Returns a ModuleFace from a string value
@@ -61,7 +61,7 @@ const transformModuleListFromDB = (list: {[key:string]: any}[]): Module[] => {
       name: module.name,
       desc: module.desc,
       category: getModuleCategoryFromString(module.category),
-      type: getModuleTypeFromHex(parseInt(module.type, 16)),
+      type: getModuleTypeFromDecimal(parseInt(module.type)),
       faces: {
         top: getModuleFaceTypeFromString(module.faces.top),
         bottom: getModuleFaceTypeFromString(module.faces.bottom),
@@ -89,7 +89,7 @@ const transformModuleListFromHardware = (
   const modules: IModule[] = []
   list.forEach(item => {
     const module: Module | undefined = 
-      availableModules.find(m => m.type === getModuleTypeFromHex(parseInt(item.type, 16)))
+      availableModules.find(m => m.type === getModuleTypeFromDecimal(parseInt(item.type)))
 
     if (module){
       const buttons: ModuleButton[] = item.buttons.map((b: {[key:string]: string}) => ({
@@ -111,7 +111,7 @@ const transformModuleListFromHardware = (
 
 export {
   getModuleFaceTypeFromString,
-  getModuleTypeFromHex,
+  getModuleTypeFromDecimal,
   getXBoxButtonParamFromString,
   transformModuleListFromDB,
   transformModuleListFromHardware

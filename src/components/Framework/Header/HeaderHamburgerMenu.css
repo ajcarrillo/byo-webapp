@@ -7,7 +7,7 @@
   border-top: 1px solid rgb(12, 12, 14);
   border-radius: 0 0 0 10px;
   box-shadow: rgba(0, 0, 0, 0.2) -5px 0px 5px;
-
+  padding: .8rem 0;
 }
 
 .HeaderHamburgerMenu-item {
@@ -32,7 +32,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 24px;
+  height: 2rem;
   color: var(--byowave-cta-colour);
 }
 
@@ -42,6 +42,8 @@
 }
 
 .HeaderHamburgerMenu-item-icon i {
-  font-size: 14px;
+  font-size: 1rem;
+  width: 1.8rem;
+  text-align: left;
   color: var(--byowave-cta-colour);
 }

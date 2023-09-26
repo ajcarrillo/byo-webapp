@@ -11,6 +11,7 @@ import { ReactSelectInput } from '../../CustomControls/SelectDropdown/ReactSelec
 import { reactSelectCustomStyles } from '../../CustomControls/SelectDropdown/custom-styles'
 import AdminDocumentForm from './AdminDocumentForm'
 import { DocumentFile, ExistingDocumentFile } from './AdminDocuments'
+import { ClipboardButton } from '../../CustomControls'
 
 const initialErrors = {
   name: '',
@@ -236,26 +237,48 @@ const AdminDocumentsEdit: React.FC<IAdminDocumentsEditProps> = (props: IAdminDoc
       </div>
 
       {documentAddress && (
-        <AdminDocumentForm 
-          isNewDocument={false}
-          errors={errors}
-          apiLoading={apiLoading}
-          apiError={apiError}
-          saveComplete={saveComplete}
-          categoryList={categoryList}
-          name={name}
-          description={description}
-          descriptionLimit={descriptionLimit}    
-          category={category}  
-          documentFile={documentFile}
-          existingDocumentFile={existingDocumentFile}
-          handleNameChange={handleNameChange}
-          handleDescriptionChange={handleDescriptionChange}
-          handleCategoryChange={handleCategoryChange}
-          handleSelectDocumentFile={handleSelectDocumentFile}
-          handleClickSave={handleClickSave}
-          setSaveComplete={setSaveComplete}
-        />
+        <>
+          <div className="PanelLabel" style={{border: '1px solid rgb(67,69,81)', marginBottom: '1rem'}}>
+            <div className='Admin-documents-url-container'>
+
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <i className="fa-solid fa-face-grin-tongue-wink"></i>
+                <div style={{marginLeft: '.8rem'}}>
+                  <div>
+                    <div style={{color: 'var(--byowave-heading-text-colour)'}}>You can create a hyperlink to this document using the following URL:</div>
+                    <a href={`/downloads?document=${existingDocumentFile?.address}`} rel="noreferrer" target='_blank'>{`/downloads?document=${existingDocumentFile?.address}`}</a>
+                  </div>
+                </div>
+              </div>
+
+              <ClipboardButton
+                key={Date.now()}
+                copyText={`<a href='/downloads?document=${existingDocumentFile?.address}' rel='noreferrer' target='_blank'>${existingDocumentFile?.name}</a>`}
+              />
+            </div>
+          </div>
+
+          <AdminDocumentForm 
+            isNewDocument={false}
+            errors={errors}
+            apiLoading={apiLoading}
+            apiError={apiError}
+            saveComplete={saveComplete}
+            categoryList={categoryList}
+            name={name}
+            description={description}
+            descriptionLimit={descriptionLimit}    
+            category={category}  
+            documentFile={documentFile}
+            existingDocumentFile={existingDocumentFile}
+            handleNameChange={handleNameChange}
+            handleDescriptionChange={handleDescriptionChange}
+            handleCategoryChange={handleCategoryChange}
+            handleSelectDocumentFile={handleSelectDocumentFile}
+            handleClickSave={handleClickSave}
+            setSaveComplete={setSaveComplete}
+          />
+        </>
       )}
     </>
   )

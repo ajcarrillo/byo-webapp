@@ -5,12 +5,15 @@ import { findPairedHidDevice } from '../../utils/proteus-utils'
 import { 
   connectControllerRequest, 
   getApplicationSettingsRequest,
-  getModulesRequest
+  getModulesRequest,
+  setHidProcessingConfigRequest
 } from '../../store/proteus/proteus-actions'
 import { IStoreState } from '../../types/store-types'
 import ProteusShell from './ProteusShell'
 import Spinner from '../Spinner'
 import SplashScreen from '../../assets/images/proteus-splash-screen.png'
+
+
 import './ProteusApp.css'
 
 interface IProteusAppProps {
@@ -24,6 +27,7 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
   } = useSelector<IStoreState, IStoreState>((store) => store)
 
   const connectController = useCallback((pairedDevice: HIDDevice | undefined) => {
+    dispatch(setHidProcessingConfigRequest(true))
     dispatch(connectControllerRequest(pairedDevice))
   }, [dispatch])
 
@@ -72,7 +76,7 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
             {!proteus.connectedController?.hidConnected ? (
               <div className="Proteus-splashscreen-container">
                 <img src={SplashScreen} alt="Proteus Splash Screen" />
-                <div className="Proteus-splashscreen-version">Version: {proteus.version}</div>
+                <div className="Proteus-splashscreen-version">Version: {proteus.appVersion}</div>
                 <div className="Proteus-splashscreen-buttons">
                   <button className='Button-proteus' onClick={() => handleClickConnectDevice()}>
                     <span className="Button-proteus-icon">

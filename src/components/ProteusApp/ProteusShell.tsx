@@ -1,17 +1,42 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useUnityContext } from 'react-unity-webgl'
 
 import { IProteusState, ProteusMappingConfig } from '../../types/proteus-types'
+import { 
+  resolveHidInputReportConfigDataPage, 
+  resolveHidInputReportConfigHeader, 
+  resolveInputReport
+} from '../../utils/hid-utils'
 import { resolveControllerMappingMode, resolveControllerModuleFromMapping } from '../../utils/proteus-utils'
-import { getControllerConfigRequest, setGamepadReadyRequest, setMappingModeRequest, setUnityReadyRequest } from '../../store/proteus/proteus-actions'
+import { 
+  setControllerCommunicatingRequest, 
+  setControllerDisconnectRequest, 
+  setGamepadReadyRequest, 
+  setHidProcessingConfigRequest,
+  setMappingModeRequest, 
+  setUnityReadyRequest, 
+  setHidConfigHeaderSuccess,
+  setHidConfigDataPageSuccess
+} from '../../store/proteus/proteus-actions'
 import ProteusEventHandler from './EventHandler/ProteusEventHandler'
 import { transformProteusWebGLFileVersion } from '../../transformers/proteus-transformers'
+import { 
+  HID_REPORT_ID, 
+  HID_REPORT_SUBTYPE_CONFIG_DATA, 
+  HID_REPORT_SUBTYPE_CONFIG_HEADER, 
+  HID_REPORT_SUBTYPE_CONFIG_NEW, 
+  HID_REPORT_TYPE_CONFIG, 
+  HID_REPORT_TYPE_FIRMWARE,
+  HID_REPORT_TYPE_XBOX
+} from '../../utils/constants/hid-constants'
 import UnityContainer from './Unity/UnityContainer'
 import ProteusHints from './Hints/ProteusHints'
 import ProteusScene from './Scene/ProteusScene'
 import ProteusMapping from './Mapping/ProteusMapping'
 import ProteusGallery from './Gallery/ProteusGallery'
+import ProteusSettings from './Settings/ProteusSettings'
+import ProteusDataProcessor from './DataProcessor/ProteusDataProcessor'
 import ProteusLogo from '../../assets/images/proteus-header-logo.png'
 import ProteusLightGreen from '../../assets/images/proteus-footer-light-green.png'
 import ProteusLightRed from '../../assets/images/proteus-footer-light-red.png'
@@ -23,9 +48,11 @@ interface IProteusShellProps {
 const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) => {
   const dispatch = useDispatch()
   const { proteus } = props
-  const UNITY_GAME_OBJECT = 'ProteusInterface'
+  
   const [activeWorkspace, setActiveWorkspace] = useState('home')
   const [navigationDisabled, setNavigationDisabled] = useState(true)
+
+  const UNITY_GAME_OBJECT = 'ProteusInterface'
 
   /**
    * Generate the Unity Provider and interface objects for the Unity WebGL
@@ -43,10 +70,10 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
     takeScreenshot,
     unload,
   } = useUnityContext({
-    codeUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_CODE || '', proteus.version || ''),
-    dataUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_DATA || '', proteus.version || ''),
-    frameworkUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_FRAMEWORK || '', proteus.version || ''),
-    loaderUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_LOADER || '', proteus.version || ''),
+    codeUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_CODE || '', proteus.appVersion || ''),
+    dataUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_DATA || '', proteus.appVersion || ''),
+    frameworkUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_FRAMEWORK || '', proteus.appVersion || ''),
+    loaderUrl: transformProteusWebGLFileVersion(process.env.REACT_APP_PROTEUS_WEBGL_LOADER || '', proteus.appVersion || ''),
     webglContextAttributes: {
       alpha: true,
       antialias: proteus.settings?.antialiasing,
@@ -149,20 +176,68 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
     ) 
   }
 
+  const handleNewConfigEvent = async () => {
+    setNavigationDisabled(true)
+    dispatch(setHidProcessingConfigRequest(true))
+  }
+
   /**
    * Handles a Controller event emitted from the ProteusEventHandler component
    * @param eventType The string name of the event 
-   * @param payload The payload contained in the event
+   * @param reportId The input report ID
+   * @param payload The data contained in the event
    */
-  const handleControllerEvent = (eventType: string, payload: any) => {
-    if(eventType === 'inputReport'){
-      if(payload !== undefined && activeWorkspace === 'mapping'){
-        if(proteus.mapping && payload === proteus.mapping.control) return
-        
-        setMappingMode(payload)
+  const handleControllerEvent = (eventType: string, reportId: number, payload: DataView) => {
+    if(eventType === 'hidDisconnect')
+    {
+      dispatch(setControllerDisconnectRequest('You disconnected your controller'))
+    }
+    else if(eventType === 'inputReport' && reportId === HID_REPORT_ID)
+    {
+      // console.log(payload)
+      if(payload !== undefined){
+        const reportType = payload.getUint8(0)
+        const reportSubtype = payload.getUint8(1)
+
+        if(reportType === HID_REPORT_TYPE_CONFIG)
+        {
+          if(reportSubtype === HID_REPORT_SUBTYPE_CONFIG_NEW){
+            // User will have reconfigured the controller - halt the app - load data precessor
+            handleNewConfigEvent()
+          }
+          else if(reportSubtype === HID_REPORT_SUBTYPE_CONFIG_HEADER){
+            const configHeader = resolveHidInputReportConfigHeader(payload)
+            dispatch(setHidConfigHeaderSuccess(configHeader))
+          }
+          else if(reportSubtype === HID_REPORT_SUBTYPE_CONFIG_DATA){
+            const configDataPage = resolveHidInputReportConfigDataPage(payload)
+            dispatch(setHidConfigDataPageSuccess(configDataPage))
+          }
+        }
+        else if(reportType === HID_REPORT_TYPE_FIRMWARE)
+        {
+          //
+        }
+        else if(reportType === HID_REPORT_TYPE_XBOX)
+        {
+          if(activeWorkspace === 'mapping')
+          {
+            const inputData = resolveInputReport(payload)
+            // Ignore duplicate button presses
+            if(proteus.mapping && inputData === proteus.mapping.control) return
+    
+            setMappingMode(inputData || '')
+          }
+        }
       }
     }
+
+    dispatch(setControllerCommunicatingRequest(false))
   }
+
+  /**
+   * Tells Unity that a button has been pressed
+   */
   useEffect(() => {
     if(proteus.mapping?.control){
       sendMessage(
@@ -174,40 +249,24 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
   }, [proteus.mapping?.control, sendMessage])
 
   /**
-   * Requests the intial controller configuration if it is not in the store AND Unity is ready
-   */
-  const requestControllerConfig = useCallback(() => {
-    dispatch(getControllerConfigRequest(
-      proteus.connectedController?.hidDevice || null,
-      proteus.modules || []
-    ))
-  }, [dispatch, proteus.connectedController?.hidDevice, proteus.modules])
-
-
-  useEffect(() => {
-    if(proteus.unityReady && !proteus.connectedController?.controllerConfiguration) requestControllerConfig()
-  }, [proteus.connectedController?.controllerConfiguration, proteus.unityReady, requestControllerConfig])
-
-  /**
-   * Once we have a controller configuration and Unity is ready, we tell Unity to show its
-   * debug screen (if in debug mode), then we send the controller configuration
+   * If the data processor has finished, and we have a controller configuration, and Unity is ready, we render
    */
   useEffect(() => {
-    if(proteus.unityReady && proteus.connectedController?.controllerConfiguration?.modules){
-      setTimeout(() => {
-        //if(process.env.REACT_APP_PROTEUS_DEBUG === 'true')
-        //sendMessage(UNITY_GAME_OBJECT, 'ToggleDebug', 'show')
-        //console.log(JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules).replaceAll('"', '\\"'))
-        
-        sendMessage(
-          UNITY_GAME_OBJECT, 
-          'BuildControllerConfig', 
-          JSON.stringify({modules:proteus.connectedController?.controllerConfiguration?.modules})
-        )
-      }, 1000)
+    if(!proteus.hidReports?.processingControllerConfig){
+      if(proteus.unityReady && proteus.connectedController?.controllerConfiguration?.modules){
+        setTimeout(() => {
+          //console.log(JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules).replaceAll('"', '\\"'))
+          sendMessage(
+            UNITY_GAME_OBJECT, 
+            'BuildControllerConfig', 
+            JSON.stringify({modules:proteus.connectedController?.controllerConfiguration?.modules})
+          )
+        }, 1000)
+      }      
     }
-  }, [proteus.connectedController?.controllerConfiguration, proteus.unityReady, sendMessage])
+  }, [proteus.connectedController?.controllerConfiguration, proteus.hidReports?.processingControllerConfig, proteus.unityReady, sendMessage])
  
+  //console.log(proteus)
   return (
     <>
       <div className='Proteus-shell'>
@@ -217,7 +276,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
               <img src={ProteusLogo} alt="Proteus Logo" style={{width: '100%'}} />
             </div>          
           </div>
-          <div className='Proteus-shell-header-version'>Build Version: {proteus.version}</div>
+          <div className='Proteus-shell-header-version'>Build Version: {proteus.appVersion}</div>
           <div className='Proteus-shell-header-avatar'>&nbsp;</div>
         </div>
         <div className='Proteus-shell-workspace'>
@@ -266,11 +325,22 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
                 unityAddEventListener={addEventListener}
                 unityRemoveEventListener={removeEventListener}
               />
+
               <UnityContainer 
                 isLoaded={isLoaded}
                 loadingProgression={loadingProgression}
                 unityProvider={unityProvider}
               />
+
+              {proteus.hidReports?.processingControllerConfig && (
+                <ProteusDataProcessor 
+                  controller={proteus.connectedController}
+                  hidReports={proteus.hidReports} 
+                  latestFirmware={proteus.firmware} 
+                  availableModules={proteus.modules}
+                />
+              )}
+
               {!navigationDisabled &&
                 <>
                   <ProteusHints 
@@ -286,21 +356,37 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
                   />
                 </>
               }
-              <ProteusMapping 
-                gamepadReady={proteus.gamepadReady}
-                mapping={proteus.mapping} 
-                workspace={activeWorkspace}
-                language={'en'}
-              />
-              <ProteusGallery 
-                gallery={proteus.gallery}
-                galleryLoading={proteus.galleryLoading}
-                takeScreenshot={takeScreenshot}
-                setNavigationDisabled={setNavigationDisabled}
-                controllerConfig={JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules)}
-                workspace={activeWorkspace}
-                language={'en'}
-              />
+
+              {activeWorkspace === 'mapping' && (
+                <ProteusMapping 
+                  gamepadReady={proteus.gamepadReady}
+                  mapping={proteus.mapping} 
+                  workspace={activeWorkspace}
+                  language={'en'}
+                />                
+              )}
+
+              {activeWorkspace === 'gallery' && (
+                <ProteusGallery 
+                  gallery={proteus.gallery}
+                  galleryLoading={proteus.galleryLoading}
+                  takeScreenshot={takeScreenshot}
+                  setNavigationDisabled={setNavigationDisabled}
+                  controllerConfig={JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules)}
+                  workspace={activeWorkspace}
+                  language={'en'}
+                />
+              )}
+
+              {activeWorkspace === 'settings' && (
+                <ProteusSettings 
+                  controllerLights={proteus.connectedController?.controllerLights}
+                  setNavigationDisabled={setNavigationDisabled}
+                  workspace={activeWorkspace}
+                  language={'en'}
+                />
+              )}
+
             </div>
           </div>
         </div>
@@ -310,7 +396,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
           <div style={{paddingRight: '5px'}}>Controller connected: </div>
           <div style={{paddingRight: '10px', paddingTop: '2px'}}>
             <img 
-              className={`${proteus.connectedController?.communicating ? 'BlinkMeQuick' : ''}`}
+              className={`${proteus.controllerCommunicating ? 'BlinkMeQuick' : ''}`}
               src={proteus.connectedController?.hidConnected ? ProteusLightGreen : ProteusLightRed} 
               alt="Connected Light" 
               style={{width: '14px'}} 

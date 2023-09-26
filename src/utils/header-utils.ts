@@ -14,7 +14,7 @@ const getBurgerMenuItems = (isLoggedIn: boolean, isSmallScreen: boolean, userAdd
     ... isLoggedIn ? [{url: '/orders', title: 'Orders', icon: 'fa-solid fa-truck-fast'}] : [],
     ... isSmallScreen ? [{url: '/basket', title: 'Basket', icon: 'fa-solid fa-basket-shopping'}] : [],
     ... isLoggedIn ? [{url: `/profile/${userAddress}`, title: 'Profile', icon: 'fa-solid fa-user'}] : [],
-    ... isLoggedIn ? [{url: '/profile-settings', title: 'Profile Settings', icon: 'fa-solid fa-user-gear'}] : [],
+    ... isLoggedIn ? [{url: '/settings', title: 'Settings', icon: 'fa-solid fa-user-gear'}] : [],
     ... isLoggedIn && browser === 'Chrome' ? [{url: '/proteus', title: 'Proteus Controller', icon: 'fa-solid fa-gamepad'}] : [],
     ... isLoggedIn ? [{url: '/sign-out', title: 'Sign Out', icon: 'fa-solid fa-arrow-right-to-bracket'}] : [],
     ... isSmallScreen && !isLoggedIn ? [{url: '/sign-up', title: 'Sign Up', icon: 'fa-solid fa-user'}] : [],

@@ -1,0 +1,16 @@
+.ProteusDataProcessor-container {
+  position: absolute; 
+  z-index: 10; 
+  top: 0;
+  width: 100%;
+  height: calc(100vh - 230px);
+}
+
+.ProteusDataProcessor-inner {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto
+}

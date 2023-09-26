@@ -1,8 +1,10 @@
-import { Disability } from './disability-types'
-import { Controller } from './controller-types'
 import { APIError } from './api-types'
 import { Modify, SelectType } from './global-types'
 import { SingleValue } from 'react-select'
+
+/**
+ * Details
+ *************************************/
 
 export type User = {
   address: string,
@@ -32,6 +34,10 @@ export type UserContactExtended = Modify<UserContact, {
   americaStateCodeSelect?: SingleValue<SelectType>
 }>
 
+/**
+ * Profile
+ *************************************/
+
 export type UserProfile = {
   address: string,
   name: string,
@@ -50,14 +56,41 @@ export interface IUserProfileState {
   profile: UserProfile | null;
 }
 
-// export type UserDisabilities = {
-//   list: Disability[],
-// }
+/**
+ * GDPR
+ *************************************/
 
-// export interface IUserState {
-//   user: User,
-//   profile: UserProfile,
-//   disabilities: UserDisabilities,
-//   controllers: Controller[],
-//   contacts: UserContact[],
-// }
+export interface IUserGDPRData {
+  user: {
+    contacts: UserContact[],
+    details: User,
+    profile: {
+      name: string,
+      biography: string,
+    },
+    orders: UserGDPRShopOrder[],
+  }
+  proteus: {
+    controllerConfigs: UserGDPRProteusConfigItem[]
+  }
+}
+
+export type UserGDPRProteusConfigItem = {
+  configName: string,
+  configImage: string,
+}
+
+export type UserGDPRShopOrderItem = {
+  productCode: string,
+  productName: string,
+  productDescription: string,
+  productPrice: string,
+  amount: string,
+}
+
+export type UserGDPRShopOrder = {
+  orderNumber: string,
+  orderDate: string,
+  orderCost: string,
+  orderItems: UserGDPRShopOrderItem[]
+}

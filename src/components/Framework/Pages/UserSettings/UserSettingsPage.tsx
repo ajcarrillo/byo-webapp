@@ -2,13 +2,12 @@ import React, { useRef } from 'react'
 import { Transition } from 'react-transition-group'
 
 import { defaultTransitionStyle, transitionStyles, transitionDuration } from '../../transition-styles'
-import { CommunityContainer } from '../../../Community'
+import { UserSettingsContainer } from '../../../UserSettings'
 
-interface ICommunityPageProps {
-  tokenIsValid: boolean,
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IUserSettingsPageProps {}
 
-export const CommunityPage: React.FC<ICommunityPageProps> = (props: ICommunityPageProps) => {
+export const UserSettingsPage: React.FC<IUserSettingsPageProps> = (props: IUserSettingsPageProps) => {
   const nodeRef = useRef<HTMLDivElement>(null)
   
   return (
@@ -21,7 +20,7 @@ export const CommunityPage: React.FC<ICommunityPageProps> = (props: ICommunityPa
           }}
           ref={nodeRef}
         >
-          <CommunityContainer tokenIsValid={props.tokenIsValid} />
+          <UserSettingsContainer />
         </div>
       )}
     </Transition>

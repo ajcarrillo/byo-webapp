@@ -1,19 +1,19 @@
-.Admin-documents-container {
+.AdminFirmware-container {
   background-color: rgb(40,39,63);
 }
 
-.Admin-documents-url-container {
+.AdminFirmware-url-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.Admin-documents-url-container i {
+.AdminFirmware-url-container i {
   color: var(--byowave-alert-colour);
   font-size: 2.5rem;
 }
 
-.Admin-documents-new-product-image-container {
+.AdminFirmware-new-file-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +22,7 @@
   background-color:  rgb(61, 58, 84);
 }
 
-.Admin-documents-downloading-spinner {
+.AdminFirmware-downloading-spinner {
   width: 2rem;
   height: 2rem;
   display: flex;
@@ -33,12 +33,12 @@
   animation:spin 1s linear infinite;
 }
 
-.Admin-documents-downloading-spinner i {
+.AdminFirmware-downloading-spinner i {
   width: auto;
   color: var(--byowave-cta-colour);
 }
 
-.Admin-documents-save-panel {
+.AdminFirmware-save-panel {
   padding: 1rem; 
   margin-top: 1rem; 
   background-color: var(--byowave-panel-bg-colour);

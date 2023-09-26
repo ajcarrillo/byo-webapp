@@ -1,3 +1,45 @@
+export enum PControllerModule {
+  motherMaster,
+  motherSlave,
+  spacer,
+  edge,
+  charger,
+  analogRight,
+  analogLeft,
+  dPad,
+  fourButton,
+  twoButton,
+  oneButton,
+  triggerRight,
+  triggerLeft,
+  xBox,
+  joystick,
+}
+
+export enum PControllerButton {
+  leftAnalog,
+  leftAnalogPress,
+  rightAnalog,
+  rightAnalogPress,
+  stick,
+  leftTrigger,
+  rightTrigger,
+  leftButton,
+  rightButton,
+  dPadUp,
+  dPadRight,
+  dPadDown,
+  dPadLeft,
+  y,
+  b,
+  a,
+  x,
+  oB01,
+  tB01,
+  tB02
+}
+
+//----------------------
 export enum ProteusButton {
   oB01,     // Proteus One Button module
   tB01,     // Proteus Two Button module - button 1
@@ -39,30 +81,30 @@ export enum ModuleCategory {
 }
 
 export enum ModuleType {
-  motherMaster  = 0x00,
-  motherSlave   = 0x01,
-  spacer        = 0x02,
-  edge          = 0x03,
-  charger       = 0x04,
-  analogRight   = 0x05,
-  analogLeft    = 0x06,
-  dPad          = 0x07,
-  fourButton    = 0x08,
-  twoButton     = 0x09,
-  oneButton     = 0x10,
-  triggerRight  = 0x11,
-  triggerLeft   = 0x12,
-  xBox          = 0x13,
-  joystick      = 0x14,
+  motherMaster,
+  motherSlave,
+  spacer,
+  edge,
+  charger,
+  analogRight,
+  analogLeft,
+  dPad,
+  fourButton,
+  twoButton,
+  oneButton,
+  triggerRight,
+  triggerLeft,
+  xBox,
+  joystick,
 }
 
 export enum ModuleFace {
+  top,
+  bottom,
   front,
   back,
   left,
   right,
-  top,
-  bottom,
 }
 
 export enum ModuleFaceType {
@@ -111,9 +153,17 @@ export type Controller = {
   image: string,
   name: string,
   rating: number,
+  tags?: string,
 }
 
 export type ControllerConfiguration = {
   controller: Controller,
   modules: IModule[],
+}
+
+export type ControllerLights = {
+  red: string,
+  green: string,
+  blue: string,
+  brightness: string,
 }

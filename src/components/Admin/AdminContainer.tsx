@@ -7,6 +7,7 @@ import {
   AdminOrders,
   AdminCampaigns,
   AdminDocuments,
+  AdminFirmware,
 } from '.'
 import { isAdminRequest } from '../../store/community/community-actions'
 import { IStoreState } from '../../types/store-types'
@@ -123,6 +124,10 @@ const AdminContainer = (): ReactElement => {
 
         {adminWorkspace === 'documents' && (
           <AdminDocuments />
+        )}
+
+        {adminWorkspace === 'firmware' && (
+          <AdminFirmware />
         )}
       </div>
     </>

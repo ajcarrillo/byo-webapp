@@ -26,6 +26,7 @@ import SignInPage from '../Pages/SignIn'
 import SignOutPage from '../Pages/SignOut'
 import SignUpPage from '../Pages/SignUp'
 import UserProfilePage from '../Pages/UserProfile'
+import UserSettingsPage from '../Pages/UserSettings'
 
 import { IStoreState } from '../../../types/store-types'
 import { ShopBasketItem } from '../../../types/shop-types'
@@ -121,11 +122,12 @@ const PageRouter: React.FC<IPageRouterProps> = (props: IPageRouterProps) => {
           <Route path="/product/:address" render={(p) => <ProductPage {...p} />} />
           <Route path="/shop-group/:address" render={(p) => <ShopGroupPage {...p} />} />
           <Route path="/accessibility" render={(p) => <AccessibilityPage {...p} />} />
-          <Route path="/community" render={(p) => <CommunityPage {...p} />} />
           <PrivateRoute path="/profile/:address" component={UserProfilePage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/settings" component={UserSettingsPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/sign-out" component={SignOutPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/proteus" component={ProteusAppPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} />
           <PrivateRoute path="/orders" component={OrdersPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
+          <PrivateRoute path="/community" component={CommunityPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <PrivateRoute path="/admin" component={AdminPage} validToken={tokenIsValid} headerConfig={toolsHeaderConfig} /> 
           <Route path="/404" component={(p: any) => <NotFoundPage {...p} />} />
           <Redirect from='*' to='/404' />

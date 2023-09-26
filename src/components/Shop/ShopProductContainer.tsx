@@ -159,9 +159,13 @@ const ShopProductContainer: React.FC<IShopProductContainerProps> = (props: IShop
                     )}                  
                   </>
                 ) : (
-                  <DownloadButton 
-                    productAddress={selectedProduct?.productAddress} 
-                  />
+                  <>
+                    {selectedProduct?.productStockLevel !== '0' && (
+                      <DownloadButton 
+                        productAddress={selectedProduct?.productAddress} 
+                      />                   
+                    )}                   
+                  </>
                 )}
               </div> 
             </div>

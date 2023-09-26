@@ -1,53 +1,53 @@
 import React, { useState } from 'react'
 import Select, { SingleValue } from 'react-select'
 
-import { downloadDocumentFile } from '../../../utils/download-utils'
+import { downloadFirmwareFile } from '../../../utils/download-utils'
 import { updateStoredAccessToken } from '../../../utils/user-utils'
-import { ExistingDocumentFile, DocumentFile } from './AdminDocuments'
+import { ExistingFirmwareFile, FirmwareFile } from './AdminFirmware'
 import FileSelector from '../../FileSelector'
 import { reactSelectCustomStyles } from '../../CustomControls/SelectDropdown/custom-styles'
 import { SelectType } from '../../../types/global-types'
 import { ReactSelectInput } from '../../CustomControls/SelectDropdown/ReactSelectInput'
 
-interface IAdminDocumentFormProps {
+interface IAdminFirmwareFormProps {
   isNewDocument: boolean,
   errors: any,
   apiLoading: boolean,
   apiError: string,
   saveComplete: boolean,
-  categoryList: readonly SelectType[],
-  name: string,
-  description: string,
-  descriptionLimit: number,
-  category: SingleValue<SelectType>,
-  documentFile: DocumentFile | null,
-  existingDocumentFile: ExistingDocumentFile | null,
-  handleNameChange: (value: string) => void,
-  handleDescriptionChange: (value: string) => void,
-  handleCategoryChange: (value: SingleValue<SelectType>) => void,
-  handleSelectDocumentFile: (identifier: string | number, file: any) => void,
+  moduleList: readonly SelectType[],
+  version: string,
+  changeLog: string,
+  changeLogLimit: number,
+  module: SingleValue<SelectType>,
+  firmwareFile: FirmwareFile | null,
+  existingFirmwareFile: ExistingFirmwareFile | null,
+  handleVersionChange: (value: string) => void,
+  handleChangeLogChange: (value: string) => void,
+  handleModuleChange: (value: SingleValue<SelectType>) => void,
+  handleSelectFirmwareFile: (identifier: string | number, file: any) => void,
   handleClickSave: () => void,
   setSaveComplete: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const AdminDocumentForm: React.FC<IAdminDocumentFormProps> = (props: IAdminDocumentFormProps) => {
+const AdminFirmwareForm: React.FC<IAdminFirmwareFormProps> = (props: IAdminFirmwareFormProps) => {
   const { 
     isNewDocument,
     errors, 
     apiLoading,
     apiError,
     saveComplete,
-    categoryList,
-    name,
-    description,
-    descriptionLimit,
-    category,
-    documentFile,
-    existingDocumentFile,
-    handleNameChange,
-    handleDescriptionChange,
-    handleCategoryChange,
-    handleSelectDocumentFile,
+    moduleList,
+    version,
+    changeLog,
+    changeLogLimit,
+    module,
+    firmwareFile,
+    existingFirmwareFile,
+    handleVersionChange,
+    handleChangeLogChange,
+    handleModuleChange,
+    handleSelectFirmwareFile,
     handleClickSave,
     setSaveComplete
   } = props
@@ -58,7 +58,7 @@ const AdminDocumentForm: React.FC<IAdminDocumentFormProps> = (props: IAdminDocum
 
   const downloadFile = async (address: string) => {
     setDownloading(true)
-    const response = await downloadDocumentFile(address)
+    const response = await downloadFirmwareFile(address)
     if(response.status === 200){
       const fileURL = URL.createObjectURL(response.data)
       const anchor = document.createElement('a')
@@ -81,53 +81,53 @@ const AdminDocumentForm: React.FC<IAdminDocumentFormProps> = (props: IAdminDocum
     <div style={{display: 'flex'}}>
 
       <div style={{width: '60%', paddingRight: '2rem'}}>
-        <div className="PanelLabel" style={{marginBottom: '.4rem'}}>1. Details</div>
+        <div className="PanelLabel" style={{marginBottom: '.4rem'}}>1. Version</div>
 
         <div style={{marginBottom: '1rem'}}>
           <input
             className="Textfield-dark" 
             type='text' 
-            onChange={(e) => handleNameChange(e.target.value)} 
-            value={name}
-            placeholder="Document name.." 
+            onChange={(e) => handleVersionChange(e.target.value)} 
+            value={version}
+            placeholder="Version number xx.xx.xx" 
             style={{ width: '100%' }}
             data-lpignore="true"
             autoComplete='off'
           />
-          {errors.name && (
-            <div className="Formfield-error-inline">{errors.name}</div>
+          {errors.version && (
+            <div className="Formfield-error-inline">{errors.version}</div>
           )}
         </div>
 
         <div style={{marginBottom: '1rem'}}>
           <textarea
             className={'Textfield-dark'}
-            onChange={(e) => handleDescriptionChange(e.target.value)} 
-            placeholder="Document description.." 
+            onChange={(e) => handleChangeLogChange(e.target.value)} 
+            placeholder="Change log.." 
             style={{ width: '100%' }} 
-            rows={3} 
-            value={description}
+            rows={6} 
+            value={changeLog}
           ></textarea>
-          {errors.description && (
-            <div className="Formfield-error-inline" style={{marginTop: '.2rem', marginBottom: '.2rem'}}>{errors.description}</div>
+          {errors.changeLog && (
+            <div className="Formfield-error-inline" style={{marginTop: '.2rem', marginBottom: '.2rem'}}>{errors.changeLog}</div>
           )}            
-          <div style={{textAlign: 'right', fontSize: '.89rem', color: 'rgb(140,140,140)', marginBottom: '1rem'}}>{descriptionLimit - description.length || 0}</div>
+          <div style={{textAlign: 'right', fontSize: '.89rem', color: 'rgb(140,140,140)', marginBottom: '1rem'}}>{changeLogLimit - changeLog.length || 0}</div>
         </div>
 
-        <div className="PanelLabel" style={{marginBottom: '.4rem'}}>2. Category</div>
+        <div className="PanelLabel" style={{marginBottom: '.4rem'}}>2. Module</div>
 
         <div style={{marginBottom: '1rem'}}>
           <Select  
             styles={reactSelectCustomStyles} 
-            options={categoryList} 
-            value={category} 
-            onChange={(opt) => handleCategoryChange(opt)} 
-            placeholder='Document category..' 
+            options={moduleList} 
+            value={module} 
+            onChange={(opt) => handleModuleChange(opt)} 
+            placeholder='Cube module..' 
             components={{ Input: ReactSelectInput }} 
             maxMenuHeight={200}
           />
-          {errors.category && (
-            <div className="Formfield-error-inline">{errors.category}</div>
+          {errors.module && (
+            <div className="Formfield-error-inline">{errors.module}</div>
           )}
         </div>
       </div>
@@ -135,42 +135,42 @@ const AdminDocumentForm: React.FC<IAdminDocumentFormProps> = (props: IAdminDocum
       <div style={{width: '40%'}}>
         <div className="PanelLabel" style={{margin: '0 0 .4rem 0'}}>
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            <div>3. PDF File</div>
+            <div>3. Binary File</div>
             <button
               className="Button-small"
               onClick={() => fileSelectInput?.current?.click()}
             >
-              {documentFile || existingDocumentFile ? 'Reselect PDF File' : 'Select PDF File'}
+              {firmwareFile || existingFirmwareFile ? 'Reselect Bin File' : 'Select Bin File'}
             </button>
           </div>
         </div>
         {errors.file && (
           <div className="Formfield-error-inline" style={{marginTop: '.2rem', marginBottom: '.2rem'}}>{errors.file}</div>
         )}
-        <FileSelector ref={fileSelectInput} accept='application/pdf' identifier={'-not-used-'} update={handleSelectDocumentFile} />
-        {documentFile && (
-          <div className='Admin-documents-new-product-image-container'>
-            <div>{documentFile.name}</div>
+        <FileSelector ref={fileSelectInput} accept='application/octet-stream' identifier={'-not-used-'} update={handleSelectFirmwareFile} />
+        {firmwareFile && (
+          <div className='AdminFirmware-new-file-container'>
+            <div>{firmwareFile.name}</div>
           </div>
         )}
-        {existingDocumentFile && (
-          <div className='Admin-documents-new-product-image-container'>
+        {existingFirmwareFile && (
+          <div className='AdminFirmware-new-file-container'>
             <div>
               {downloading ? (
-                <div className='Admin-documents-downloading-spinner'>
+                <div className='AdminFirmware-downloading-spinner'>
                   <i className="fa-solid fa-spinner"></i>
                 </div>
               ) : (
                 <button 
                   className="Button-icon-small" 
-                  onClick={() => downloadFile(existingDocumentFile.address)} 
+                  onClick={() => downloadFile(existingFirmwareFile.address)} 
                   title='Download this file'
                 >
                   <i className="fa-solid fa-cloud-arrow-down"></i>
                 </button>                      
               )}
             </div>
-            <div>{existingDocumentFile.name}</div>
+            <div>{existingFirmwareFile.name}</div>
           </div>
         )}
 
@@ -180,16 +180,16 @@ const AdminDocumentForm: React.FC<IAdminDocumentFormProps> = (props: IAdminDocum
             className={apiLoading ? 'Button-standard-disabled' : 'Button-standard'} 
             onClick={() => handleClickSave()}
           >
-            Save Document
+            Save Firmware
           </button>
           {apiError && (
             <div className="Formfield-error-inline" style={{marginTop: '.6rem', marginBottom: '.2rem'}}>{apiError}</div>
           )} 
           <div 
-            className={`Admin-documents-save-panel ${saveComplete ? 'AlertShow' : 'AlertHide'}`} 
+            className={`AdminFirmware-save-panel ${saveComplete ? 'AlertShow' : 'AlertHide'}`} 
             onTransitionEnd={() => setSaveComplete(false)}
           >
-            {isNewDocument ? 'New Document Created' : 'Document Updated'}
+            {isNewDocument ? 'New Firmware Created' : 'Firmware Updated'}
           </div>
         </div>
       </div>
@@ -198,4 +198,4 @@ const AdminDocumentForm: React.FC<IAdminDocumentFormProps> = (props: IAdminDocum
   )
 }
 
-export default AdminDocumentForm
+export default AdminFirmwareForm

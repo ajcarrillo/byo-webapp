@@ -17,9 +17,9 @@ export const apiCall = async (
   url: string,
   verb: string,
   token?: string | null,
-  body?: any,
+  body?: any | null,
   contentType?: string,
-  abortController?: any
+  abortController?: AbortController
 ): Promise<APIResponse> => {
   const resp = await fetch(url, {
     ...(abortController && {signal: abortController.signal}),
