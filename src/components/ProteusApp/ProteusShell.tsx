@@ -6,7 +6,7 @@ import { IProteusState, ProteusMappingConfig } from '../../types/proteus-types'
 import { 
   resolveHidInputReportConfigDataPage, 
   resolveHidInputReportConfigHeader, 
-  resolveInputReport
+  resolveHidInputReportXboxInput
 } from '../../utils/hid-utils'
 import { resolveControllerMappingMode, resolveControllerModuleFromMapping } from '../../utils/proteus-utils'
 import { 
@@ -121,20 +121,6 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
   }
 
   /**
-   * Updates the Redux store with the control used on the gamepad,
-   * and the module it belongs to
-   * @param control 
-   */
-  const setMappingMode = (control: string) => {
-    const mappingConfig: ProteusMappingConfig = {
-      mode: resolveControllerMappingMode(control) as ProteusMappingConfig['mode'],
-      control,
-      module: resolveControllerModuleFromMapping(proteus.connectedController?.controllerConfiguration, control),
-    }
-    dispatch(setMappingModeRequest(mappingConfig))
-  }
-
-  /**
    * Handles events emitted from the ProteusEventHandler component
    * @param eventtName 
    * @param payload 
@@ -222,11 +208,19 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
         {
           if(activeWorkspace === 'mapping')
           {
-            const inputData = resolveInputReport(payload)
+            const inputData = resolveHidInputReportXboxInput(proteus.connectedController?.controllerConfiguration?.modules, payload)
+            console.log(inputData)
+
+            if(inputData.module === null) return
+            
+            //const inputData = resolveInputReport(payload)
             // Ignore duplicate button presses
-            if(proteus.mapping && inputData === proteus.mapping.control) return
-    
-            setMappingMode(inputData || '')
+            if(proteus.mapping){
+              if(inputData.control === proteus.mapping.control && inputData.module?.id === proteus.mapping.module?.id)
+                return
+            }
+            //setMappingMode(inputData || '')
+            dispatch(setMappingModeRequest(inputData))
           }
         }
       }
@@ -243,10 +237,10 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
       sendMessage(
         UNITY_GAME_OBJECT, 
         'ButtonPress', 
-        proteus.mapping?.control
+        `${proteus.mapping?.module?.id}:${proteus.mapping?.control}`
       )      
     }
-  }, [proteus.mapping?.control, sendMessage])
+  }, [proteus.mapping?.control, proteus.mapping?.module?.id, sendMessage])
 
   /**
    * If the data processor has finished, and we have a controller configuration, and Unity is ready, we render
@@ -255,7 +249,7 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
     if(!proteus.hidReports?.processingControllerConfig){
       if(proteus.unityReady && proteus.connectedController?.controllerConfiguration?.modules){
         setTimeout(() => {
-          //console.log(JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules).replaceAll('"', '\\"'))
+          console.log(JSON.stringify(proteus.connectedController?.controllerConfiguration?.modules).replaceAll('"', '\\"'))
           sendMessage(
             UNITY_GAME_OBJECT, 
             'BuildControllerConfig', 

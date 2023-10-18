@@ -49,10 +49,10 @@ const resolveControllerModuleMapping = (module: ProteusHidConfigDataPageModule):
     buttons = moduleRightAnalog(module)
     break
   case'triggerLeft':
-    //buttons = moduleLeftTrigger(module)
+    buttons = moduleLeftTrigger(module)
     break
   case'triggerRight':
-    //buttons = moduleRightTrigger(module)
+    buttons = moduleRightTrigger(module)
     break
   case'joystick':
     buttons = moduleJoystick(module)
@@ -165,6 +165,18 @@ const moduleRightTrigger = (
   ]
 }
 
+// XBox Input
+
+const xboxTriggerPressed = (value: number) => {
+  const NOT_PRESSED = 65535
+  if(value !== NOT_PRESSED)
+    return true
+  else
+    return false
+}
+
 export {
   prepareControllerData,
+  getModuleButton,
+  xboxTriggerPressed,
 }

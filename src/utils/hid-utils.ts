@@ -1,8 +1,11 @@
+import { IModule } from '../types/controller-types'
 import { 
   ProteusHidConfigDataPage, 
   ProteusHidConfigDataPageModule, 
-  ProteusHidConfigHeader 
+  ProteusHidConfigHeader, 
+  ProteusMappingConfig
 } from '../types/proteus-types'
+import { getModuleButton, xboxTriggerPressed } from './controller-utils'
 
 /**
  * Sends a HID output report
@@ -126,13 +129,110 @@ const resolveHidInputReportConfigDataPage = (data: DataView) => {
   return configDataPage
 }
 
+/**
+ * Resolves the button input report
+ * @param data The input report data view
+ * @returns The input report
+ */
+const resolveHidInputReportXboxInput = (controllerModules: IModule[] | undefined, data: DataView): ProteusMappingConfig => {
+  //console.log(controllerModules)
+  // 0 = Report Type
+  // 1 Report Subtype
+  // 2 = module ID
+  const moduleId = data.getUint8(2)
+  const analogNegX = detectAnalogMovement(data.getUint16(3), 65535, 1000)
+  const analogPosX = detectAnalogMovement(data.getUint16(4), 65535, 1000)
+  const analogNegY = detectAnalogMovement(data.getUint16(5), 65535, 1000)
+  const analogPosY = detectAnalogMovement(data.getUint16(6), 65535, 1000)
+  const stickNegX = detectAnalogMovement(data.getUint16(7), 65535, 1000)
+  const stickPosX = detectAnalogMovement(data.getUint16(8), 65535, 1000)
+  const stickNegY = detectAnalogMovement(data.getUint16(9), 65535, 1000)
+  const stickPosY = detectAnalogMovement(data.getUint16(10), 65535, 1000)
+  const trigger = data.getUint16(11)
+  const button = data.getUint8(12)
+
+  const module = controllerModules?.find(m => m.id === moduleId)
+
+  let mode = ''
+  let control = ''
+  if(button !== 255){
+    mode = 'button'
+    control = getModuleButton(button).toString()
+  }else if(xboxTriggerPressed(trigger)){
+    mode = 'trigger' 
+    control = module?.module.type.toString() === 'triggerLeft' ? 'leftTrigger' : 'rightTrigger'
+  }else if(
+    simpleAnalogDetect(data.getUint16(3), data.getUint16(4)) || 
+    simpleAnalogDetect(data.getUint16(5), data.getUint16(6))
+  )
+  {
+    mode = 'analog'
+    control = module?.module.type.toString() === 'analogLeft' ? 'leftAnalog' : 'rightAnalog'
+  }
+  else if(
+    simpleAnalogDetect(data.getUint16(7), data.getUint16(8)) || 
+    simpleAnalogDetect(data.getUint16(9), data.getUint16(10))
+  )
+  {
+    mode = 'analog'
+    control = 'stick'
+  }
+
+  // console.log({
+  //   moduleId,
+  //   analogNegX: data.getUint16(3),
+  //   analogPosX: data.getUint16(4),
+  //   analogNegY: data.getUint16(5),
+  //   analogPosY: data.getUint16(6),
+  //   stickNegX,
+  //   stickPosX,
+  //   stickNegY,
+  //   stickPosY,
+  //   trigger,
+  //   button
+  // })
+
+  return {mode: mode as ProteusMappingConfig['mode'], module: module || null, control}
+}
+
+const simpleAnalogDetect = (negative: number, positive: number) => {
+  if (negative !== positive)
+    return true
+  else
+    return false
+}
+
+/**
+ * Detects a stick/trigger movement, given a resting value of <resting> +- a <deadzone>
+ * @param input Input from the stick/trigger
+ * @param deadzone A deadzone in case a stick/trigger is not trimmed correctly
+ * @returns True/False
+ */
+const detectAnalogMovement = (input: number, resting: number, deadzone: number) => {
+  return (input < (resting - deadzone)) || (input > (resting + deadzone))
+}
+
 const testData = (pageNum: number) => {
+  // const motherMaster = {
+  //   moduleId: 0, 
+  //   moduleType: 0, //motherMaster
+  //   moduleRotation: 0, // 0 degress
+  //   connectsToModuleId: 255, // null value
+  //   connectsToModuleFaceId: 255, // null value
+  //   buttonMapping01: 255, // null value
+  //   buttonMapping02: 255, // null value
+  //   buttonMapping03: 255, // null value
+  //   buttonMapping04: 255, // null value
+  //   buttonMapping05: 255, // null value
+  //   buttonMapping06: 255, // null value
+  // }
+
   const motherMaster = {
     moduleId: 0, 
     moduleType: 0, //motherMaster
     moduleRotation: 0, // 0 degress
-    connectsToModuleId: 255, // null value
-    connectsToModuleFaceId: 255, // null value
+    connectsToModuleId: 14,
+    connectsToModuleFaceId: 1,
     buttonMapping01: 255, // null value
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -140,12 +240,15 @@ const testData = (pageNum: number) => {
     buttonMapping05: 255, // null value
     buttonMapping06: 255, // null value
   }
+
+
+
   const lAnalog = {
     moduleId: 1,
     moduleType: 6,
     moduleRotation: 8,
     connectsToModuleId: 0,
-    connectsToModuleFaceId: 2,
+    connectsToModuleFaceId: 4,
     buttonMapping01: 0, // left analog stick
     buttonMapping02: 1, // left analog stick button
     buttonMapping03: 0, // north direction
@@ -158,7 +261,7 @@ const testData = (pageNum: number) => {
     moduleType: 5,
     moduleRotation: 8,
     connectsToModuleId: 0,
-    connectsToModuleFaceId: 3,
+    connectsToModuleFaceId: 5,
     buttonMapping01: 2, // right analog stick
     buttonMapping02: 3, // right analog stick button
     buttonMapping03: 0, // north direction
@@ -171,7 +274,7 @@ const testData = (pageNum: number) => {
     moduleType: 8,
     moduleRotation: 8,
     connectsToModuleId: 0,
-    connectsToModuleFaceId: 0,
+    connectsToModuleFaceId: 2,
     buttonMapping01: 13, // Y
     buttonMapping02: 14, // B
     buttonMapping03: 15, // A
@@ -184,7 +287,7 @@ const testData = (pageNum: number) => {
     moduleType: 12,
     moduleRotation: 12,
     connectsToModuleId: 1,
-    connectsToModuleFaceId: 2,
+    connectsToModuleFaceId: 4,
     buttonMapping01: 5, // left trigger
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -197,7 +300,7 @@ const testData = (pageNum: number) => {
     moduleType: 11,
     moduleRotation: 4,
     connectsToModuleId: 2,
-    connectsToModuleFaceId: 3,
+    connectsToModuleFaceId: 5,
     buttonMapping01: 6, // right trigger
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -210,7 +313,7 @@ const testData = (pageNum: number) => {
     moduleType: 3,
     moduleRotation: 0,
     connectsToModuleId: 1,
-    connectsToModuleFaceId: 3,
+    connectsToModuleFaceId: 5,
     buttonMapping01: 255, // null value
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -223,7 +326,7 @@ const testData = (pageNum: number) => {
     moduleType: 7,
     moduleRotation: 4,
     connectsToModuleId: 6,
-    connectsToModuleFaceId: 1,
+    connectsToModuleFaceId: 3,
     buttonMapping01: 9, // Up
     buttonMapping02: 10, // Right
     buttonMapping03: 11, // Down
@@ -233,10 +336,10 @@ const testData = (pageNum: number) => {
   }
   const xBox = {
     moduleId: 8,
-    moduleType: 8,
+    moduleType: 13,
     moduleRotation: 0,
     connectsToModuleId: 0,
-    connectsToModuleFaceId: 1,
+    connectsToModuleFaceId: 3,
     buttonMapping01: 255, // null value
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -249,7 +352,7 @@ const testData = (pageNum: number) => {
     moduleType: 9,
     moduleRotation: 0,
     connectsToModuleId: 6,
-    connectsToModuleFaceId: 1,
+    connectsToModuleFaceId: 2,
     buttonMapping01: 18, // Two Button 1
     buttonMapping02: 19, // Two Button 2
     buttonMapping03: 255, // null value
@@ -262,7 +365,7 @@ const testData = (pageNum: number) => {
     moduleType: 14,
     moduleRotation: 0,
     connectsToModuleId: 2,
-    connectsToModuleFaceId: 5,
+    connectsToModuleFaceId: 1,
     buttonMapping01: 4, // Joystick
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -275,7 +378,7 @@ const testData = (pageNum: number) => {
     moduleType: 2,
     moduleRotation: 0,
     connectsToModuleId: 0,
-    connectsToModuleFaceId: 5,
+    connectsToModuleFaceId: 1,
     buttonMapping01: 255, // null value
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -288,7 +391,7 @@ const testData = (pageNum: number) => {
     moduleType: 4,
     moduleRotation: 0,
     connectsToModuleId: 11,
-    connectsToModuleFaceId: 5,
+    connectsToModuleFaceId: 1,
     buttonMapping01: 255, // null value
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -301,8 +404,22 @@ const testData = (pageNum: number) => {
     moduleType: 10,
     moduleRotation: 0,
     connectsToModuleId: 2,
-    connectsToModuleFaceId: 2,
+    connectsToModuleFaceId: 4,
     buttonMapping01: 17, // One Button
+    buttonMapping02: 255, // null value
+    buttonMapping03: 255, // null value
+    buttonMapping04: 255, // null value
+    buttonMapping05: 255, // null value
+    buttonMapping06: 255, // null value
+  }
+
+  const motherSlave = {
+    moduleId: 14,
+    moduleType: 1, //motherSlave
+    moduleRotation: 0,
+    connectsToModuleId: 255,
+    connectsToModuleFaceId: 255,
+    buttonMapping01: 255, // null value
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
     buttonMapping04: 255, // null value
@@ -315,96 +432,9 @@ const testData = (pageNum: number) => {
   else if(pageNum === 1)
     return [triggerRight, edge, dPad, xBox, twoButton]
   else if(pageNum === 2)
-    return [joystick, spacer, charger, oneButton]
+    return [joystick, spacer, charger, oneButton, motherSlave]
   else
     return []
-}
-
-/**
- * Returns the button/control name from the input report
- * @param data The input report data view
- * @returns String or undefined
- */
-const resolveInputReport = (data: DataView) => {
-  const stickLeftX = detectAnalogMovement(data.getUint8(1))
-  const stickLeftY = detectAnalogMovement(data.getUint8(3))
-  const stickRightX = detectAnalogMovement(data.getUint8(5))
-  const stickRightY = detectAnalogMovement(data.getUint8(7))
-  const triggersA = data.getUint8(8)
-  const triggersB = data.getUint8(9)  
-  const digitalButtons = data.getUint8(10)
-  const analogButtons = data.getUint8(11)
-
-  if (digitalButtons !== 0) return resolveHIDButton(digitalButtons)
-  if (analogButtons !== 0) return resolveHIDAnalogButton(analogButtons)
-  if (triggersA === 128 && triggersB > 128) return 'leftTrigger'
-  if (triggersA === 128 && triggersB < 128) return 'rightTrigger'
-  if (stickLeftX || stickLeftY) return 'leftAnalog'
-  if (stickRightX || stickRightY) return 'rightAnalog'
-
-  return undefined
-}
-
-/**
- * Returns the name of the button from the HID input report
- * @param buttonNumber The button number
- * @returns The string value of the button name
- */
-const resolveHIDButton = (buttonNumber: number) => {
-  switch(buttonNumber){
-  case 1:
-    return 'a'
-  case 2:
-    return 'b'
-  case 4:
-    return 'x'
-  case 8:
-    return 'y'
-  case 16:
-    return 'leftButton'
-  case 32:
-    return 'rightButton'
-  case 64:
-    return 'select'
-  case 128:
-    return 'start'
-  default:
-    return undefined
-  }
-}
-
-/**
- * Returns the name of the button from the HID input report
- * @param buttonNumber The button number
- * @returns The string value of the button name
- */
-const resolveHIDAnalogButton = (buttonNumber: number) => {
-  switch(buttonNumber){
-  case 1:
-    return 'leftAnalogPress'
-  case 2:
-    return 'rightAnalogPress'
-  case 4:
-    return 'dPadUp'
-  case 12:
-    return 'dPadRight'
-  case 20:
-    return 'dPadDown'
-  case 28:
-    return 'dPadLeft'
-  default:
-    return undefined
-  }
-}
-
-/**
- * Detects a stick/trigger movement, given a resting value of 128 +- a deadzone
- * @param input Input from the stick/trigger
- * @param deadzone A deadzone in case a stick/trigger is not trimmed correctly
- * @returns True/False
- */
-const detectAnalogMovement = (input: number, deadzone = 20) => {
-  return (input < (128 - deadzone)) || (input > (128 + deadzone))
 }
 
 const parseHexArray = (hexString: string) => {
@@ -424,6 +454,6 @@ export {
   parseHexArray,
   resolveHidInputReportConfigHeader,
   resolveHidInputReportConfigDataPage,
-  resolveInputReport,
+  resolveHidInputReportXboxInput,
   sendHidOutputReport,
 }
