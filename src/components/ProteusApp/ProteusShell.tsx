@@ -163,6 +163,11 @@ const ProteusShell: React.FC<IProteusShellProps> = (props: IProteusShellProps) =
   }
 
   const handleNewConfigEvent = async () => {
+    if(activeWorkspace !== 'home'){
+      dispatch(setMappingModeRequest(null))
+      handleClickWorkspace('home')
+    }
+
     setNavigationDisabled(true)
     dispatch(setHidProcessingConfigRequest(true))
   }

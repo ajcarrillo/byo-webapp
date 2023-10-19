@@ -213,26 +213,12 @@ const detectAnalogMovement = (input: number, resting: number, deadzone: number) 
 }
 
 const testData = (pageNum: number) => {
-  // const motherMaster = {
-  //   moduleId: 0, 
-  //   moduleType: 0, //motherMaster
-  //   moduleRotation: 0, // 0 degress
-  //   connectsToModuleId: 255, // null value
-  //   connectsToModuleFaceId: 255, // null value
-  //   buttonMapping01: 255, // null value
-  //   buttonMapping02: 255, // null value
-  //   buttonMapping03: 255, // null value
-  //   buttonMapping04: 255, // null value
-  //   buttonMapping05: 255, // null value
-  //   buttonMapping06: 255, // null value
-  // }
-
   const motherMaster = {
     moduleId: 0, 
     moduleType: 0, //motherMaster
     moduleRotation: 0, // 0 degress
-    connectsToModuleId: 14,
-    connectsToModuleFaceId: 1,
+    connectsToModuleId: 255, // null value
+    connectsToModuleFaceId: 255, // null value
     buttonMapping01: 255, // null value
     buttonMapping02: 255, // null value
     buttonMapping03: 255, // null value
@@ -240,6 +226,20 @@ const testData = (pageNum: number) => {
     buttonMapping05: 255, // null value
     buttonMapping06: 255, // null value
   }
+
+  // const motherMaster = {
+  //   moduleId: 0, 
+  //   moduleType: 0, //motherMaster
+  //   moduleRotation: 0, // 0 degress
+  //   connectsToModuleId: 14,
+  //   connectsToModuleFaceId: 1,
+  //   buttonMapping01: 255, // null value
+  //   buttonMapping02: 255, // null value
+  //   buttonMapping03: 255, // null value
+  //   buttonMapping04: 255, // null value
+  //   buttonMapping05: 255, // null value
+  //   buttonMapping06: 255, // null value
+  // }
 
 
 
@@ -288,8 +288,8 @@ const testData = (pageNum: number) => {
     moduleRotation: 12,
     connectsToModuleId: 1,
     connectsToModuleFaceId: 4,
-    buttonMapping01: 5, // left trigger
-    buttonMapping02: 255, // null value
+    buttonMapping01: 7, // left button
+    buttonMapping02: 5, // left trigger
     buttonMapping03: 255, // null value
     buttonMapping04: 255, // null value
     buttonMapping05: 255, // null value
@@ -301,8 +301,8 @@ const testData = (pageNum: number) => {
     moduleRotation: 4,
     connectsToModuleId: 2,
     connectsToModuleFaceId: 5,
-    buttonMapping01: 6, // right trigger
-    buttonMapping02: 255, // null value
+    buttonMapping01: 8, // right button
+    buttonMapping02: 6, // right trigger
     buttonMapping03: 255, // null value
     buttonMapping04: 255, // null value
     buttonMapping05: 255, // null value

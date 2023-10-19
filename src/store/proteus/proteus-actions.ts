@@ -96,7 +96,7 @@ export const setControllerLightingRequest = (lights: ControllerLights) => ({
   payload: lights,
 })
 
-export const setMappingModeRequest = (mapping: ProteusMappingConfig) => ({
+export const setMappingModeRequest = (mapping: ProteusMappingConfig | null) => ({
   type: PROTEUS_SET_MAPPING_MODE_REQUEST,
   mapping,
 })

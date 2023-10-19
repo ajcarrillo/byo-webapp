@@ -56,7 +56,8 @@ const ProteusAppContainer: React.FC<IProteusAppProps> = (props: IProteusAppProps
    */
   const checkPairedDeviceExists = useCallback(async () => {
     const devices = await navigator.hid.getDevices()
-    const pairedDevice = findPairedHidDevice(devices)
+    //const pairedDevice = findPairedHidDevice(devices)
+    const pairedDevice = undefined
     if(pairedDevice){
       connectController(pairedDevice)
     }
