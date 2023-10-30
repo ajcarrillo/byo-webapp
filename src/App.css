@@ -4,34 +4,39 @@
   --byowave-cta-hover-colour: rgb(135, 144, 235);
   --byowave-cta-disabled-colour: rgb(45, 43, 53);
   --byowave-cta-text-colour: rgb(220, 220, 220);
-  --byowave-cta-disabled-text-colour: rgb(68, 64, 84);  
-  --byowave-alert-colour: rgb(124,15,208);
+  --byowave-cta-disabled-text-colour: rgb(68, 64, 84);
+  --byowave-alert-colour: rgb(124, 15, 208);
   --byowave-alert-text-colour: rgb(216, 175, 248);
   --byowave-paragraph-text-colour: rgb(178, 181, 212);
   --byowave-heading-text-colour: rgb(201, 204, 232);
-  --byowave-panel-bg-colour: rgb(38,40,56);
+  --byowave-panel-bg-colour: rgb(38, 40, 56);
   --byowave-panel-hover-bg-colour: rgb(51, 54, 75);
   --byowave-panel-text-colour: rgb(102, 104, 128);
-  --byowave-panel-text-light-colour: rgb(103,106,133);
+  --byowave-panel-text-light-colour: rgb(103, 106, 133);
   --byowave-inputfield-bg-colour: rgb(25, 26, 34);
   --byowave-inputfield-text-colour: rgb(134, 139, 180);
   --byowave-inputfield-text-disabled-colour: rgb(121, 121, 121);
   --byowave-inputfield-placeholder-text-colour: rgb(63, 65, 82);
-  --byowave-custom-control-border-colour: rgb(88,102,223);
-  --byowave-custom-control-bg-colour: rgb(58,56,81);
-  --byowave-custom-control-inner-colour: rgb(135,146,247);
-  --byowave-custom-control-text-colour: rgb(132,136,168);
+  --byowave-custom-control-border-colour: rgb(88, 102, 223);
+  --byowave-custom-control-bg-colour: rgb(58, 56, 81);
+  --byowave-custom-control-inner-colour: rgb(135, 146, 247);
+  --byowave-custom-control-text-colour: rgb(132, 136, 168);
   --byowave-image-border-colour: rgb(81, 83, 103);
-  --byowave-scrollbar-bg-colour: rgb(11,15,32);
-  --byowave-scrollbar-handle-colour: rgb(81,111,248);
-  --byowave-tab-bg-colour: rgb(35,34,58);
-  --byowave-tab-selected-bg-colour: rgb(40,39,63);
-  --byowave-tab-text-colour: rgb(99,102,147);
-  --byowave-tab-selected-text-colour: rgb(114,118,169);
+  --byowave-scrollbar-bg-colour: rgb(11, 15, 32);
+  --byowave-scrollbar-handle-colour: rgb(81, 111, 248);
+  --byowave-tab-bg-colour: rgb(35, 34, 58);
+  --byowave-tab-selected-bg-colour: rgb(40, 39, 63);
+  --byowave-tab-text-colour: rgb(99, 102, 147);
+  --byowave-tab-selected-text-colour: rgb(114, 118, 169);
 }
 
-.Colour-white-bright { color: var(--byowave-heading-text-colour) }
-.Colour-blue-bright { color: var(--byowave-cta-colour) }
+.Colour-white-bright {
+  color: var(--byowave-heading-text-colour)
+}
+
+.Colour-blue-bright {
+  color: var(--byowave-cta-colour)
+}
 
 * {
   margin: 0;
@@ -43,8 +48,8 @@
 html {
   font-size: 14px;
   font-family: 'Ropa Sans', sans-serif;
-  background-color: rgb(29,30,41);
-  color: rgb(178,178,178);
+  background-color: rgb(29, 30, 41);
+  color: rgb(178, 178, 178);
 }
 
 body {
@@ -65,36 +70,106 @@ a {
 
 a:hover {
   color: var(--byowave-cta-hover-colour);
-  text-decoration: none ;
+  text-decoration: none;
 }
 
-p { 
-  line-height: 1.6rem; 
+p {
+  line-height: 1.6rem;
   color: var(--byowave-paragraph-text-colour);
 }
 
-h1, h2, h3 { color: var(--byowave-heading-text-colour) }
+h1,
+h2,
+h3 {
+  color: var(--byowave-heading-text-colour)
+}
 
 .App-container {
   width: 100%;
   height: 100%;
 }
 
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-@keyframes fade-out { 0% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
-@keyframes fade { to { height: 0; opacity: 0; margin: 0; } }
-@keyframes blinker { 50% { opacity: 0; } }
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  to {
+    height: 0;
+    opacity: 0;
+    margin: 0;
+  }
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 @keyframes bounce-stretch {
-  0%   { transform: scale(1,1)    translateY(0); }
-  10%  { transform: scale(1.1,.9) translateY(0); }
-  30%  { transform: scale(.9,1.1) translateY(-100px); }
-  50%  { transform: scale(1,1)    translateY(0); }
-  57%  { transform: scale(1,1)    translateY(-7px); }
-  64%  { transform: scale(1,1)    translateY(0); }
-  100% { transform: scale(1,1)    translateY(0); }
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+
+  10% {
+    transform: scale(1.1, .9) translateY(0);
+  }
+
+  30% {
+    transform: scale(.9, 1.1) translateY(-100px);
+  }
+
+  50% {
+    transform: scale(1, 1) translateY(0);
+  }
+
+  57% {
+    transform: scale(1, 1) translateY(-7px);
+  }
+
+  64% {
+    transform: scale(1, 1) translateY(0);
+  }
+
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
 }
 
 .BounceStretch {
@@ -112,24 +187,24 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
 
 .HideAfterDelay {
   height: auto;
-  animation: fade 1s linear; 
-  animation-delay: 2s; 
+  animation: fade 1s linear;
+  animation-delay: 2s;
   animation-fill-mode: forwards;
 }
 
 .FadeInAfterDelay {
   height: auto;
-  animation: fade-in .8s linear; 
-  animation-delay: .5s; 
+  animation: fade-in .8s linear;
+  animation-delay: .5s;
   animation-fill-mode: forwards;
   -webkit-animation: fade-in .8s;
   -moz-animation: fade-in .8s;
   -o-animation: fade-in .8s;
   -ms-animation: fade-in .8s;
-  -webkit-animation-delay: .5s; 
-  -moz-animation-delay: .5s; 
-  -o-animation-delay: .5s; 
-  -ms-animation-delay: .5s; 
+  -webkit-animation-delay: .5s;
+  -moz-animation-delay: .5s;
+  -o-animation-delay: .5s;
+  -ms-animation-delay: .5s;
   -webkit-animation-fill-mode: forwards;
   -moz-animation-fill-mode: forwards;
   -o-animation-fill-mode: forwards;
@@ -295,7 +370,7 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
   font-size: 1rem;
 }
 
-.Textfield-dark-disabled { 
+.Textfield-dark-disabled {
   background-color: var(--byowave-inputfield-bg-colour);
   opacity: 0.5;
   color: var(--byowave-inputfield-text-disabled-colour);
@@ -340,10 +415,10 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
 .Tab-item-off {
   cursor: pointer;
   display: inline-block;
-  color: rgb(100,100,100);
+  color: rgb(100, 100, 100);
   padding: 0.5rem 1rem;
-  background-image: linear-gradient(rgb(53, 53, 53), rgb(42,42,42));
-  border-bottom: 1px solid rgb(32,32,32);
+  background-image: linear-gradient(rgb(53, 53, 53), rgb(42, 42, 42));
+  border-bottom: 1px solid rgb(32, 32, 32);
 }
 
 .Tab-item-off:hover {
@@ -355,7 +430,7 @@ h1, h2, h3 { color: var(--byowave-heading-text-colour) }
   color: rgb(209, 209, 209);
   padding: 0.5rem 1rem;
   border-radius: 6px 6px 0 0;
-  background-image: linear-gradient(rgb(70,70,70), rgb(42,42,42));
+  background-image: linear-gradient(rgb(70, 70, 70), rgb(42, 42, 42));
 }
 
 form {
@@ -364,7 +439,7 @@ form {
 }
 
 label {
-  color:rgb(145, 145, 145);
+  color: rgb(145, 145, 145);
   font-size: .9rem;
   padding-left: .4rem;
 }
@@ -385,7 +460,7 @@ textarea {
 
 input[type=range]::-webkit-slider-runnable-track {
   -webkit-appearance: none;
-  background: rgba(50,50,50,1);
+  background: rgba(50, 50, 50, 1);
   height: 4px;
 }
 
@@ -395,7 +470,7 @@ input[type=range]:focus {
 
 input[type=range]::-moz-range-track {
   -moz-appearance: none;
-  background: rgba(50,50,50,1);
+  background: rgba(50, 50, 50, 1);
   height: 4px;
 }
 
@@ -407,7 +482,7 @@ input[type=range]::-webkit-slider-thumb {
   /* max-width: 40px; */
   position: relative;
   bottom: 6px;
-  background-color: rgb(128,92,36);
+  background-color: rgb(128, 92, 36);
   cursor: -webkit-grab;
 }
 
@@ -419,7 +494,7 @@ input[type=range]::-moz-range-thumb {
   /* max-width: 40px; */
   position: relative;
   bottom: 6px;
-  background-color: rgb(128,92,36);
+  background-color: rgb(128, 92, 36);
   cursor: -moz-grab;
 }
 
@@ -453,14 +528,8 @@ input[type=range]::-moz-range-thumb:active {
   border: 3px solid var(--byowave-scrollbar-bg-colour);
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1024px) {}
 
-}
+@media screen and (max-width: 768px) {}
 
-@media screen and (max-width: 768px) {
-
-}
-
-@media screen and (max-width: 480px) {
-
-}
+@media screen and (max-width: 480px) {}
