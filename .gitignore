@@ -5,3 +5,4 @@
 /config/*
 !/config/Readme.md
 /coverage
+.vscode/settings.json
