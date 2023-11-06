@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Headings */
+
+  h1 {
+    @apply tw-text-heading-1 tw-font-bold tw-leading-relaxed tw-font-hind tw-text-white;
+  }
+
+  h2 {
+    @apply tw-text-heading-2 tw-font-bold tw-leading-normal tw-font-hind tw-text-white;
+  }
+
+  h3 {
+    @apply tw-text-heading-3 tw-font-bold tw-leading-tight tw-font-hind tw-text-white;
+  }
+
+  h4 {
+    @apply tw-text-heading-4 tw-font-bold tw-leading-tight tw-font-hind tw-text-white;
+  }
+
+  h5 {
+    @apply tw-text-heading-5 tw-font-bold tw-leading-snug tw-font-hind tw-text-white;
+  }
+
+  h6 {
+    @apply tw-text-heading-6 tw-font-bold tw-leading-snug tw-font-hind tw-text-white;
+  }
+
+  /* Heading Variants */
+
+  .font-medium {
+    font-weight: 500;
+    color: #FFFFFF;
+  }
+
+  .font-regular {
+    font-weight: 400;
+    color: #FFFFFF;
+  }
+
+  .font-light {
+    font-weight: 300;
+    color: #FFFFFF;
+  }
+
+  /* Normal Text */
+
+  .body-large {
+    @apply tw-text-body-large tw-leading-relaxed tw-font-hind tw-text-white;
+  }
+
+  .body-large.font-medium {
+    font-weight: 500;
+  }
+
+  .body-large.font-regular {
+    font-weight: 400;
+  }
+
+  .body-large.font-light {
+    font-weight: 300;
+  }
+
+  .body-small {
+    @apply tw-text-body-small tw-leading-relaxed tw-font-hind tw-text-white;
+  }
+
+  .body-small.font-medium {
+    font-weight: 500;
+  }
+
+  .body-small.font-regular {
+    font-weight: 400;
+  }
+
+  .body-small.font-light {
+    font-weight: 300;
+  }
+
+  /* Caption */
+
+  .caption {
+    @apply tw-text-caption tw-leading-snug tw-font-hind tw-text-white;
+  }
+
+  .caption.font-medium {
+    font-weight: 500;
+  }
+
+  .caption.font-regular {
+    font-weight: 400;
+  }
+
+  .caption.font-light {
+    font-weight: 300;
+  }
+
+  .layout__page {
+    @apply tw-w-full tw-mx-auto tw-px-8;
+    max-width: 90rem;
+  }
+}
