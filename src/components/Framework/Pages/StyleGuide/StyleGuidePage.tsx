@@ -1,6 +1,7 @@
 import React from 'react'
 import { Buttons, Colors } from '../../../StyleGuide'
 import { Typography } from '@mui/material'
+import FirmwareUpdateButtton from '../../../StyleGuide/FirmwareUpdateButtton'
 
 
 export const StyleGuidePage: React.FC = () => {
@@ -102,6 +103,11 @@ export const StyleGuidePage: React.FC = () => {
       <Colors />
       <hr />
       <Buttons />
+      <hr />
+      <Typography variant='h3' className='font-play'>
+        Firmware update modal
+      </Typography>
+      <FirmwareUpdateButtton />
     </div>
   )
 }
