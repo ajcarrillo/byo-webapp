@@ -1,0 +1,12 @@
+.circle-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 1rem;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  background-color: #CCC;
+  border-radius: 50%;
+}
